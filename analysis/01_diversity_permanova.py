@@ -30,12 +30,21 @@ METHOD
                      negative eigenvalues are discarded, not corrected.
     PERMANOVA        sequential (adonis2-style) sums of squares from traces of
                      hat matrices, trace(H G H), with 9,999 permutations.
-                     Station is fitted first, then sample type, then their
-                     interaction.  Permutations of sample type are RESTRICTED
-                     to within station: the three plastic and three water
+                     Two models are fitted, matching the two reported in the
+                     manuscript.  The first is station then sample type, and
+                     gives the station and sample-type terms.  The second is
+                     river-or-sea, then sample type, then their interaction,
+                     and gives the interaction term only.
+                     For the sample-type term, permutations are RESTRICTED to
+                     within station: the three plastic and three water
                      replicates are exchangeable with each other but not
                      across stations, and an unrestricted permutation would
                      test a null nobody is proposing.
+                     The interaction term is currently permuted WITHOUT that
+                     restriction, and the permuted labels are those of the
+                     combined factor rather than of sample type.  The
+                     restricted scheme is the one the design argues for, and
+                     this term is to be moved onto it.
 
 READ THIS BEFORE QUOTING A p-VALUE
     With four stations x two types x three replicates the permutable space is
