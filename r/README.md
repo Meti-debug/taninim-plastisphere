@@ -49,4 +49,8 @@ github.com/cozygene/FEAST, not the Bioconductor package of the same name.
   permuted within site. The `adonis2` calls in `figures_as_run.R` use the
   package defaults of 999 unrestricted permutations and are not the reported
   test.
-- The blaCTX-M group 1 amplicon phylogeny has no script in this repository.
+- The blaCTX-M group 1 amplicon phylogeny is not in this folder. It is in
+  `phylogeny/ctxm/`, which has its own README: `run_all.sh`,
+  `01_build_panel_and_tree.sh` for the allele panel, alignment and IQ-TREE run,
+  and `02` to `06` for the figure panels. The alignment used for the tree, the
+  treefile and the allele collapse table are in `output/ctxm/`.

@@ -1,9 +1,8 @@
-# From river to sea: plastisphere-mediated dispersal of pathogens and antibiotic resistance into the Eastern Mediterranean Sea
+# The Taninim River-Sea Continuum: Plastisphere’s Persistence, Connectivity, and Potential Pathogen Dispersal into the Eastern Mediterranean Sea
 
 Data analysis
 
-Analysis code for the study of plastic-bound and planktonic bacterial
-communities along the Taninim River–Eastern Mediterranean Sea continuum.
+Analysis code for the study.
 
 Twenty-four libraries: 12 plastic-bound and 12 planktonic, 3 replicates at
 each of 4 sites (R1 Ada Stream confluence, R2 estuary, S1 river mouth,
@@ -28,9 +27,10 @@ preprocessing/   reads -> abundance tables (see its own README)
 analysis/        Python statistics; writes intermediates to output/
 figures/         Python plots; reads the intermediates, writes plots
 r/               R analyses and figures, one script per analysis
-phylogeny/       reference 16S tree (see its own README)
+phylogeny/       reference 16S tree, and blaCTX-M group 1 amplicon tree in
+                 phylogeny/ctxm/ (each has its own README)
 data/            the input tables (not tracked; see data/README.md)
-output/          everything generated (not tracked)
+output/          everything generated; only output/ctxm/ is tracked
 ```
 
 Scripts use paths relative to the repository root, so run them from there:
