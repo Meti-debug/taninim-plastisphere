@@ -1,0 +1,7 @@
+run date   2026-11-10T16:32:41Z
+mafft      v7.526 (2024/Apr/26)
+iqtree     IQ-TREE multicore version 2.0.7 for Linux 64-bit built Apr  1 2024
+seqkit     seqkit v2.13.0
+window     CDS positions 28-400
+model      MFP (ModelFinder; selection recorded in ctxm_group1.iqtree)
+support    1000 SH-aLRT replicates, 1000 ultrafast bootstrap, --bnni

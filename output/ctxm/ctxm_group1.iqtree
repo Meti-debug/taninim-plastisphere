@@ -1,0 +1,409 @@
+IQ-TREE 2.0.7 built Apr  1 2024
+
+Input file name: tree_input.fasta
+Type of analysis: ModelFinder + tree reconstruction + ultrafast bootstrap (1000 replicates)
+Random seed number: 244646
+
+REFERENCES
+----------
+
+To cite IQ-TREE please use:
+
+Bui Quang Minh, Heiko A. Schmidt, Olga Chernomor, Dominik Schrempf,
+Michael D. Woodhams, Arndt von Haeseler, and Robert Lanfear (2020)
+IQ-TREE 2: New models and efficient methods for phylogenetic inference
+in the genomic era. Mol. Biol. Evol., in press.
+https://doi.org/10.1093/molbev/msaa015
+
+To cite ModelFinder please use: 
+
+Subha Kalyaanamoorthy, Bui Quang Minh, Thomas KF Wong, Arndt von Haeseler,
+and Lars S Jermiin (2017) ModelFinder: Fast model selection for
+accurate phylogenetic estimates. Nature Methods, 14:587–589.
+https://doi.org/10.1038/nmeth.4285
+
+Since you used ultrafast bootstrap (UFBoot) please also cite: 
+
+Diep Thi Hoang, Olga Chernomor, Arndt von Haeseler, Bui Quang Minh,
+and Le Sy Vinh (2018) UFBoot2: Improving the ultrafast bootstrap
+approximation. Mol. Biol. Evol., 35:518–522.
+https://doi.org/10.1093/molbev/msx281
+
+SEQUENCE ALIGNMENT
+------------------
+
+Input data: 64 sequences with 373 nucleotide sites
+Number of constant sites: 225 (= 60.3217% of all sites)
+Number of invariant (constant or ambiguous constant) sites: 225 (= 60.3217% of all sites)
+Number of parsimony informative sites: 116
+Number of distinct site patterns: 82
+
+ModelFinder
+-----------
+
+Best-fit model according to BIC: K2P+R2
+
+List of models sorted by BIC scores: 
+
+Model                  LogL         AIC      w-AIC        AICc     w-AICc         BIC      w-BIC
+K2P+R2            -1520.329    3284.657 -   0.0192    3404.705 +     0.59    3763.090 +    0.854
+TNe+R2            -1520.323    3286.646 -  0.00711    3409.152 +   0.0639    3769.001 -   0.0445
+K3P+R2            -1520.332    3286.663 -  0.00705    3409.169 +   0.0634    3769.017 -   0.0441
+TIM3e+R2          -1517.602    3283.204 -   0.0397    3408.204 +    0.103    3769.480 -    0.035
+HKY+F+R2          -1516.360    3282.719 +   0.0506    3410.250 -   0.0369    3772.916 -  0.00628
+TPM3+F+R2         -1514.081    3280.161 +    0.182    3410.259 -   0.0367    3774.280 -  0.00317
+TPM3u+F+R2        -1514.081    3280.161 +    0.182    3410.259 -   0.0367    3774.280 -  0.00317
+TIM2e+R2          -1520.274    3288.547 -  0.00275    3413.547 -   0.0071    3774.823 -  0.00242
+TIMe+R2           -1520.326    3288.651 -  0.00261    3413.651 -  0.00674    3774.927 -   0.0023
+TVMe+R2           -1517.546    3285.093 -   0.0155    3412.623 -   0.0113    3775.290 -  0.00192
+TN+F+R2           -1514.980    3281.960 +    0.074    3412.058 -   0.0149    3776.079 -  0.00129
+TIM3+F+R2         -1512.799    3279.598 +    0.241    3412.300 -   0.0132    3777.639 - 0.000592
+TPM2+F+R2         -1516.356    3284.712 -   0.0187    3414.809 -  0.00378    3778.831 - 0.000326
+TPM2u+F+R2        -1516.356    3284.712 -   0.0187    3414.809 -  0.00378    3778.831 - 0.000326
+K3Pu+F+R2         -1516.360    3284.719 -   0.0186    3414.817 -  0.00376    3778.838 - 0.000325
+SYM+R2            -1517.564    3287.129 -  0.00558    3417.226 -  0.00113    3781.248 - 9.74e-05
+TIM2+F+R2         -1514.974    3283.947 -   0.0274    3416.650 -  0.00151    3781.988 - 6.73e-05
+TIM+F+R2          -1514.978    3283.955 -   0.0273    3416.657 -   0.0015    3781.996 -  6.7e-05
+TVM+F+R2          -1514.070    3284.140 -   0.0249    3419.485 - 0.000365    3786.102 -  8.6e-06
+GTR+F+R2          -1512.852    3283.704 -    0.031    3421.728 - 0.000119    3789.587 - 1.51e-06
+GTR+F+G4          -1521.047    3298.094 - 2.32e-05    3433.438 -  3.4e-07    3800.056 - 8.02e-09
+JC+R2             -1542.397    3326.794 - 1.36e-11    3444.420 -  1.4e-09    3801.305 -  4.3e-09
+GTR+F+R3          -1512.822    3287.644 -  0.00432    3431.146 - 1.07e-06    3801.371 - 4.16e-09
+F81+F+R2          -1536.452    3320.905 - 2.59e-10    3445.905 - 6.68e-10    3807.181 - 2.28e-10
+GTR+F+I+G4        -1522.063    3302.126 - 3.09e-06    3440.151 - 1.19e-08    3808.010 -  1.5e-10
+GTR+F+I           -1525.535    3307.070 - 2.61e-07    3442.415 - 3.83e-09    3809.032 - 9.02e-11
+GTR+F             -1533.137    3320.273 - 3.55e-10    3452.975 - 1.95e-11    3818.314 - 8.71e-13
+
+AIC, w-AIC   : Akaike information criterion scores and weights.
+AICc, w-AICc : Corrected AIC scores and weights.
+BIC, w-BIC   : Bayesian information criterion scores and weights.
+
+Plus signs denote the 95% confidence sets.
+Minus signs denote significant exclusion.
+
+SUBSTITUTION PROCESS
+--------------------
+
+Model of substitution: K2P+R2
+
+Rate parameter R:
+
+  A-C: 1.0000
+  A-G: 2.9335
+  A-T: 1.0000
+  C-G: 1.0000
+  C-T: 2.9335
+  G-T: 1.0000
+
+State frequencies: (equal frequencies)
+
+Rate matrix Q:
+
+  A        -1    0.2027    0.5946    0.2027
+  C    0.2027        -1    0.2027    0.5946
+  G    0.5946    0.2027        -1    0.2027
+  T    0.2027    0.5946    0.2027        -1
+
+Model of rate heterogeneity: FreeRate with 2 categories
+Site proportion and rates:  (0.9664,0.671) (0.03356,10.47)
+
+ Category  Relative_rate  Proportion
+  1         0.671          0.9664
+  2         10.47          0.03356
+
+MAXIMUM LIKELIHOOD TREE
+-----------------------
+
+Log-likelihood of the tree: -1510.4524 (s.e. 79.6506)
+Unconstrained log-likelihood (without tree): -1132.8952
+Number of free parameters (#branches + #model parameters): 122
+Akaike information criterion (AIC) score: 3264.9047
+Corrected Akaike information criterion (AICc) score: 3384.9527
+Bayesian information criterion (BIC) score: 3743.3373
+
+Total tree length (sum of branch lengths): 0.7451
+Sum of internal branch lengths: 0.5679 (76.2102% of tree length)
+
+WARNING: 35 near-zero internal branches (<0.0027) should be treated with caution
+         Such branches are denoted by '**' in the figure below
+
+NOTE: Tree is UNROOTED although outgroup taxon 'blaCTX-M-14_and_1_more' is drawn at root
+Numbers in parentheses are SH-aLRT support (%) / ultrafast bootstrap support (%)
+
+                                                                                                            +**blaCTX-M-15_and_55_more
+                                                                                                         +**| (0/4)
+                                                                                                         |  |                                      +**blaCTX-M-55_and_10_more
+                                                                                                         |  |                                   +**| (0/9)
+                                                                                                         |  |                                   |  +--blaCTX-M-136
+                                                                                                         |  |                                +**| (0/5)
+                                                                                                         |  |                                |  |              +**blaCTX-M-1_and_7_more
+                                                                                                         |  |                                |  |           +**| (0/13)
+                                                                                                         |  |                                |  |           |  +--blaCTX-M-158
+                                                                                                         |  |                                |  |        +**| (0/14)
+                                                                                                         |  |                                |  |        |  +--blaCTX-M-175
+                                                                                                         |  |                                |  |     +--| (89.4/75)
+                                                                                                         |  |                                |  |     |  |  +--blaCTX-M-166
+                                                                                                         |  |                                |  |     |  +**| (0/10)
+                                                                                                         |  |                                |  |     |     |  +**blaCTX-M-36
+                                                                                                         |  |                                |  |     |     +--| (83/92)
+                                                                                                         |  |                                |  |     |        +**blaCTX-M-36_S1W
+                                                                                                         |  |                                |  |  +--| (77.2/66)
+                                                                                                         |  |                                |  |  |  +**blaCTX-M-23
+                                                                                                         |  |                                |  +--| (90.9/61)
+                                                                                                         |  |                                |     +**blaCTX-M-116
+                                                                                                         |  |                             +**| (0/8)
+                                                                                                         |  |                             |  +--blaCTX-M-114
+                                                                                                         |  |                          +--| (84.3/34)
+                                                                                                         |  |                          |  +--blaCTX-M-226
+                                                                                                         |  |                       +**| (0/5)
+                                                                                                         |  |                       |  |                 +--blaCTX-M-220_and_1_more
+                                                                                                         |  |                       |  |              +**| (0/5)
+                                                                                                         |  |                       |  |              |  |  +--blaCTX-M-238
+                                                                                                         |  |                       |  |              |  +**| (0/11)
+                                                                                                         |  |                       |  |              |     +--blaCTX-M-258
+                                                                                                         |  |                       |  |           +**| (0/4)
+                                                                                                         |  |                       |  |           |  +--blaCTX-M-189
+                                                                                                         |  |                       |  |        +**| (0/6)
+                                                                                                         |  |                       |  |        |  |  +--blaCTX-M-262
+                                                                                                         |  |                       |  |        |  +--| (79.2/82)
+                                                                                                         |  |                       |  |        |     |  +--blaCTX-M-263
+                                                                                                         |  |                       |  |        |     +--| (83.9/93)
+                                                                                                         |  |                       |  |        |        |  +--blaCTX-M-264
+                                                                                                         |  |                       |  |        |        +--| (80.4/91)
+                                                                                                         |  |                       |  |        |           +**blaCTX-M-265
+                                                                                                         |  |                       |  |     +**| (0/4)
+                                                                                                         |  |                       |  |     |  +--blaCTX-M-82
+                                                                                                         |  |                       |  |  +**| (0/3)
+                                                                                                         |  |                       |  |  |  +---blaCTX-M-260
+                                                                                                         |  |                       |  +**| (0/6)
+                                                                                                         |  |                       |     +--blaCTX-M-66
+                                                                                                         |  |                    +**| (0/6)
+                                                                                                         |  |                    |  +--blaCTX-M-244
+                                                                                                         |  |                 +**| (0/5)
+                                                                                                         |  |                 |  +--blaCTX-M-231
+                                                                                                         |  |              +**| (0/6)
+                                                                                                         |  |              |  +--blaCTX-M-210
+                                                                                                         |  |           +**| (0/3)
+                                                                                                         |  |           |  +--blaCTX-M-101
+                                                                                                         |  |        +**| (0/3)
+                                                                                                         |  |        |  +--blaCTX-M-254
+                                                                                                         |  |     +**| (0/5)
+                                                                                                         |  |     |  +--blaCTX-M-80
+                                                                                                         |  |  +**| (0/3)
+                                                                                                         |  |  |  |  +--blaCTX-M-190_and_1_more
+                                                                                                         |  |  |  +--| (86.5/67)
+                                                                                                         |  |  |     +**blaCTX-M-218
+                                                                                                         |  +**| (0/5)
+                                                                                                         |     +--blaCTX-M-186
+                                                                                                      +**| (0/6)
+                                                                                                      |  +--blaCTX-M-188
+                                                                                                   +**| (0/4)
+                                                                                                   |  +--blaCTX-M-184
+                                                                                                +**| (0/5)
+                                                                                                |  +--blaCTX-M-182
+                                                                                             +**| (0/2)
+                                                                                             |  +--blaCTX-M-193
+                                                                                          +**| (0/1)
+                                                                                          |  +--blaCTX-M-183
+                                                                                       +**| (0/3)
+                                                                                       |  +--blaCTX-M-232
+                                                                                    +**| (0/10)
+                                                                                    |  +--blaCTX-M-139
+                                                                                 +**| (0/10)
+                                                                                 |  +--blaCTX-M-142
+                                                                              +**| (0/10)
+                                                                              |  +--blaCTX-M-187
+                                                                           +--| (92.6/41)
+                                                                           |  +--blaCTX-M-154
+                                                                        +**| (0/10)
+                                                                        |  +--blaCTX-M-212
+                                                                     +**| (0/15)
+                                                                     |  +**blaCTX-M-177
+                                                                  +--| (31/26)
+                                                                  |  |  +**R1W
+                                                                  |  +--| (40.4/92)
+                                                                  |     +**R1P
+                                                               +--| (77.9/30)
+                                                               |  |  +--blaCTX-M-30
+                                                               |  +--| (91/94)
+                                                               |     +**blaCTX-M-29
+                                                            +--| (86.1/63)
+                                                            |  |           +**blaCTX-M-12_and_1_more
+                                                            |  |        +--| (90.7/82)
+                                                            |  |        |  +--blaCTX-M-60
+                                                            |  |     +--| (83.8/41)
+                                                            |  |     |  +**blaCTX-M-206
+                                                            |  |  +--| (81.2/57)
+                                                            |  |  |  +**blaCTX-M-169
+                                                            |  +--| (78.9/69)
+                                                            |     +**blaCTX-M-62
+                                                         +--| (80.3/55)
+                                                         |  +--blaCTX-M-37
+                                                      +--| (75.1/64)
+                                                      |  +--blaCTX-M-68
+                                                   +--| (0/37)
+                                                   |  |  +**blaCTX-M-10_and_1_more
+                                                   |  +**| (0/54)
+                                                   |     +--blaCTX-M-246
++--------------------------------------------------| (100/100)
+|                                                  +**blaCTX-M-53
+|
++--blaCTX-M-14_and_1_more
+|
++**blaCTX-M-65
+
+Tree in newick format:
+
+(((((((((((((((((((((blaCTX-M-15_and_55_more:0.0000009898,(((((((((((((blaCTX-M-55_and_10_more:0.0000009898,blaCTX-M-136:0.0027002509)0/9:0.0000009898,(((((blaCTX-M-1_and_7_more:0.0000009898,blaCTX-M-158:0.0026998813)0/13:0.0000009898,blaCTX-M-175:0.0027006289)0/14:0.0000009898,(blaCTX-M-166:0.0026999224,(blaCTX-M-36:0.0000009898,blaCTX-M-36_S1W:0.0000009898)83/92:0.0027042863)0/10:0.0000009898)89.4/75:0.0055019224,blaCTX-M-23:0.0000009898)77.2/66:0.0054499109,blaCTX-M-116:0.0000009898)90.9/61:0.0055835876)0/5:0.0000009898,blaCTX-M-114:0.0027000219)0/8:0.0000009898,blaCTX-M-226:0.0027031601)84.3/34:0.0027044135,((((((blaCTX-M-220_and_1_more:0.0027002840,(blaCTX-M-238:0.0027002959,blaCTX-M-258:0.0027003077)0/11:0.0000009898)0/5:0.0000009898,blaCTX-M-189:0.0027002722)0/4:0.0000009898,(blaCTX-M-262:0.0054792846,(blaCTX-M-263:0.0042634976,(blaCTX-M-264:0.0027105697,blaCTX-M-265:0.0000009898)80.4/91:0.0042624699)83.9/93:0.0051686887)79.2/82:0.0027257197)0/6:0.0000009898,blaCTX-M-82:0.0027091701)0/4:0.0000009898,blaCTX-M-260:0.0410778126)0/3:0.0000009898,blaCTX-M-66:0.0027000586)0/6:0.0000009898)0/5:0.0000009898,blaCTX-M-244:0.0027004237)0/6:0.0000009898,blaCTX-M-231:0.0027446685)0/5:0.0000009898,blaCTX-M-210:0.0027006898)0/6:0.0000009898,blaCTX-M-101:0.0027035697)0/3:0.0000009898,blaCTX-M-254:0.0027035811)0/3:0.0000009898,blaCTX-M-80:0.0054426748)0/5:0.0000009898,(blaCTX-M-190_and_1_more:0.0027048866,blaCTX-M-218:0.0000009898)86.5/67:0.0027036323)0/3:0.0000009898,blaCTX-M-186:0.0027005289)0/5:0.0000009898)0/4:0.0000009898,blaCTX-M-188:0.0027005402)0/6:0.0000009898,blaCTX-M-184:0.0027036613)0/4:0.0000009898,blaCTX-M-182:0.0027005627)0/5:0.0000009898,blaCTX-M-193:0.0027005739)0/2:0.0000009898,blaCTX-M-183:0.0027036949)0/1:0.0000009898,blaCTX-M-232:0.0027005962)0/3:0.0000009898,blaCTX-M-139:0.0027037172)0/10:0.0000009898,blaCTX-M-142:0.0027006184)0/10:0.0000009898,blaCTX-M-187:0.0027345336)0/10:0.0000009898,blaCTX-M-154:0.0027006423)92.6/41:0.0055153923,blaCTX-M-212:0.0027050333)0/10:0.0000009898,blaCTX-M-177:0.0000009898)0/15:0.0000009898,(R1W:0.0000009898,R1P:0.0000009898)40.4/92:0.0027047100)31/26:0.0028057198,(blaCTX-M-30:0.0027346557,blaCTX-M-29:0.0000009898)91/94:0.0083547466)77.9/30:0.0027400919,((((blaCTX-M-12_and_1_more:0.0000009898,blaCTX-M-60:0.0027051980)90.7/82:0.0055233010,blaCTX-M-206:0.0000009898)83.8/41:0.0027438483,blaCTX-M-169:0.0000009898)81.2/57:0.0027007941,blaCTX-M-62:0.0000009898)78.9/69:0.0027506074)86.1/63:0.0088109723,blaCTX-M-37:0.0083148662)80.3/55:0.0110182124,blaCTX-M-68:0.0125750981)75.1/64:0.0042557866,(blaCTX-M-10_and_1_more:0.0000009898,blaCTX-M-246:0.0027017551)0/54:0.0000009898)0/37:0.0027044000,blaCTX-M-53:0.0000009898)100/100:0.4738091594,blaCTX-M-14_and_1_more:0.0027045256,blaCTX-M-65:0.0000009898);
+
+CONSENSUS TREE
+--------------
+
+Consensus tree is constructed from 1000 bootstrap trees
+Log-likelihood of consensus tree: -1511.523607
+Robinson-Foulds distance between ML tree and consensus tree: 56
+
+Branches with support >0.000000% are kept (extended consensus)
+Branch lengths are optimized by maximum likelihood on original alignment
+Numbers in parentheses are bootstrap supports (%)
+
+                                                                                 +--blaCTX-M-15_and_55_more
+                                                                              +--| (1)
+                                                                              |  |           +--blaCTX-M-55_and_10_more
+                                                                              |  |        +--| (10)
+                                                                              |  |        |  +--blaCTX-M-114
+                                                                              |  |     +--| (16)
+                                                                              |  |     |  |  +--blaCTX-M-136
+                                                                              |  |     |  +--| (13)
+                                                                              |  |     |     +--blaCTX-M-226
+                                                                              |  |  +--| (34)
+                                                                              |  |  |  |              +--blaCTX-M-1_and_7_more
+                                                                              |  |  |  |           +--| (14)
+                                                                              |  |  |  |           |  |  +--blaCTX-M-158
+                                                                              |  |  |  |           |  +--| (18)
+                                                                              |  |  |  |           |     +--blaCTX-M-175
+                                                                              |  |  |  |        +--| (36)
+                                                                              |  |  |  |        |  +--blaCTX-M-166
+                                                                              |  |  |  |     +--| (75)
+                                                                              |  |  |  |     |  |  +--blaCTX-M-36
+                                                                              |  |  |  |     |  +--| (92)
+                                                                              |  |  |  |     |     +--blaCTX-M-36_S1W
+                                                                              |  |  |  |  +--| (66)
+                                                                              |  |  |  |  |  +--blaCTX-M-23
+                                                                              |  |  |  +--| (61)
+                                                                              |  |  |     +--blaCTX-M-116
+                                                                              |  +--| (11)
+                                                                              |     +---blaCTX-M-260
+                                                                           +--|
+                                                                           |  |  +--blaCTX-M-220_and_1_more
+                                                                           |  +--| (10)
+                                                                           |  |  +--blaCTX-M-186
+                                                                           |  |
+                                                                           |  |     +--blaCTX-M-190_and_1_more
+                                                                           |  |  +--| (67)
+                                                                           |  |  |  +--blaCTX-M-218
+                                                                           |  +--| (3)
+                                                                           |  |  |  +--blaCTX-M-188
+                                                                           |  |  +--| (10)
+                                                                           |  |     +--blaCTX-M-254
+                                                                           |  |
+                                                                           |  |     +--blaCTX-M-66
+                                                                           |  |  +--| (6)
+                                                                           |  |  |  +--blaCTX-M-189
+                                                                           |  +--| (2)
+                                                                           |  |  |  +--blaCTX-M-82
+                                                                           |  |  +--| (8)
+                                                                           |  |     |  +--blaCTX-M-262
+                                                                           |  |     +--| (82)
+                                                                           |  |        |  +--blaCTX-M-263
+                                                                           |  |        +--| (93)
+                                                                           |  |           |  +--blaCTX-M-264
+                                                                           |  |           +--| (91)
+                                                                           |  |              +--blaCTX-M-265
+                                                                           |  |
+                                                                           |  |  +--blaCTX-M-101
+                                                                           |  +--| (7)
+                                                                           |  |  +--blaCTX-M-210
+                                                                           |  |
+                                                                           |  |  +--blaCTX-M-139
+                                                                           |  +--| (13)
+                                                                           |  |  +--blaCTX-M-244
+                                                                           |  |
+                                                                           |  |  +--blaCTX-M-182
+                                                                           |  +--| (8)
+                                                                           |  |  +--blaCTX-M-184
+                                                                           |  |
+                                                                           |  |  +--blaCTX-M-80
+                                                                           |  +--| (23)
+                                                                           |  |  +--blaCTX-M-231
+                                                                           |  |
+                                                                           |  |  +--blaCTX-M-183
+                                                                           |  +--| (13)
+                                                                           |  |  +--blaCTX-M-193
+                                                                           |  |
+                                                                           |  |  +--blaCTX-M-238
+                                                                           |  +--| (11)
+                                                                           |     +--blaCTX-M-258
+                                                                        +--| (4)
+                                                                        |  +--blaCTX-M-232
+                                                                     +--| (10)
+                                                                     |  +--blaCTX-M-142
+                                                                  +--| (10)
+                                                                  |  +--blaCTX-M-154
+                                                               +--| (16)
+                                                               |  +--blaCTX-M-187
+                                                            +--| (41)
+                                                            |  |        +--blaCTX-M-30
+                                                            |  |     +--| (94)
+                                                            |  |     |  +--blaCTX-M-29
+                                                            |  |  +--| (41)
+                                                            |  |  |  |           +**R1W
+                                                            |  |  |  |        +**|
+                                                            |  |  |  |        |  +**S1W
+                                                            |  |  |  |     +**|
+                                                            |  |  |  |     |  +**ScW
+                                                            |  |  |  |  +--|
+                                                            |  |  |  |  |  +**R2W
+                                                            |  |  |  +--| (92)
+                                                            |  |  |     +--R1P
+                                                            |  +--| (27)
+                                                            |     |  +--blaCTX-M-177
+                                                            |     +--| (30)
+                                                            |        +--blaCTX-M-212
+                                                         +--| (30)
+                                                         |  |           +--blaCTX-M-12_and_1_more
+                                                         |  |        +--| (82)
+                                                         |  |        |  +--blaCTX-M-60
+                                                         |  |     +--| (41)
+                                                         |  |     |  +--blaCTX-M-206
+                                                         |  |  +--| (57)
+                                                         |  |  |  +--blaCTX-M-169
+                                                         |  +--| (69)
+                                                         |     +--blaCTX-M-62
+                                                      +--| (63)
+                                                      |  +--blaCTX-M-37
+                                                   +--| (55)
+                                                   |  +--blaCTX-M-68
++--------------------------------------------------| (64)
+|                                                  |     +--blaCTX-M-10_and_1_more
+|                                                  |  +--| (54)
+|                                                  |  |  +--blaCTX-M-246
+|                                                  +--| (49)
+|                                                     +--blaCTX-M-53
+| (100)
++--blaCTX-M-14_and_1_more
+|
++--blaCTX-M-65
+
+
+Consensus tree in newick format: 
+
+((((((((((((blaCTX-M-15_and_55_more:0.0000025259,((((blaCTX-M-55_and_10_more:0.0000028741,blaCTX-M-114:0.0026446583)10:0.0000025259,(blaCTX-M-136:0.0026448927,blaCTX-M-226:0.0026476632)13:0.0000025259)16:0.0000025259,(((((blaCTX-M-1_and_7_more:0.0000025862,(blaCTX-M-158:0.0026455003,blaCTX-M-175:0.0026461953)18:0.0000025259)14:0.0000025259,blaCTX-M-166:0.0026455201)36:0.0000025259,(blaCTX-M-36:0.0000025259,blaCTX-M-36_S1W:0.0000025259)92:0.0026496964)75:0.0053889300,blaCTX-M-23:0.0000025259)66:0.0053880071,blaCTX-M-116:0.0000025186)61:0.0054673185)34:0.0026482152,blaCTX-M-260:0.0402858746)11:0.0000023466)1:0.0000025259,(blaCTX-M-220_and_1_more:0.0026447722,blaCTX-M-186:0.0026447650)10:0.0000025259,((blaCTX-M-190_and_1_more:0.0026489245,blaCTX-M-218:0.0000025259)67:0.0026478060,(blaCTX-M-188:0.0026447429,blaCTX-M-254:0.0026477480)10:0.0000025259)3:0.0000025259,((blaCTX-M-66:0.0026447328,blaCTX-M-189:0.0026447271)6:0.0000025259,(blaCTX-M-82:0.0026535057,(blaCTX-M-262:0.0053660188,(blaCTX-M-263:0.0041734803,(blaCTX-M-264:0.0026547357,blaCTX-M-265:0.0000025259)91:0.0041739541)93:0.0050603731)82:0.0026688488)8:0.0000025259)2:0.0000025259,(blaCTX-M-101:0.0026478314,blaCTX-M-210:0.0026450490)7:0.0000025259,(blaCTX-M-139:0.0026478956,blaCTX-M-244:0.0026448740)13:0.0000025259,(blaCTX-M-182:0.0026448009,blaCTX-M-184:0.0026478042)8:0.0000025259,(blaCTX-M-80:0.0053294332,blaCTX-M-231:0.0026864091)23:0.0000025259,(blaCTX-M-183:0.0026477964,blaCTX-M-193:0.0026447774)13:0.0000025259,(blaCTX-M-238:0.0026448563,blaCTX-M-258:0.0026448661)11:0.0000025259):0.0000025259,blaCTX-M-232:0.0026448967)4:0.0000025259,blaCTX-M-142:0.0026449075)10:0.0000025259,blaCTX-M-154:0.0026449187)10:0.0000025259,blaCTX-M-187:0.0026777973)16:0.0054000866,(((blaCTX-M-30:0.0026778303,blaCTX-M-29:0.0000025259)94:0.0082610275,((((R1W:0.0000000000,S1W:0.0000000000):0.0000000000,ScW:0.0000000000):0.0000000000,R2W:0.0000000000):0.0000025259,R1P:0.0000021824)92:0.0000025259)41:0.0026490352,(blaCTX-M-177:0.0000025259,blaCTX-M-212:0.0026492461)30:0.0000023544)27:0.0000025259)41:0.0055280414,((((blaCTX-M-12_and_1_more:0.0000025259,blaCTX-M-60:0.0026492294)82:0.0054079285,blaCTX-M-206:0.0000025259)41:0.0026864679,blaCTX-M-169:0.0000029231)57:0.0026451549,blaCTX-M-62:0.0000025259)69:0.0026478806)30:0.0086478749,blaCTX-M-37:0.0081523711)63:0.0107818781,blaCTX-M-68:0.0123147865)55:0.0041603312,((blaCTX-M-10_and_1_more:0.0000025259,blaCTX-M-246:0.0026461790)54:0.0000025259,blaCTX-M-53:0.0026495622)49:0.0000027433)64:0.4742204453,blaCTX-M-14_and_1_more:0.0000025259,blaCTX-M-65:0.0026470482)100;
+
+TIME STAMP
+----------
+
+Date and time: Tue Nov 10 18:33:18 2026
+Total CPU time used: 34.284584 seconds (0h:0m:34s)
+Total wall-clock time used: 29.08362731 seconds (0h:0m:29s)
+

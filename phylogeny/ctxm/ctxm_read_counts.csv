@@ -1,0 +1,8 @@
+bc,code,site,matrix,ctxm,total
+bc01,R1W,River 1,Water,334,8468819
+bc02,R1P,River 1,Plastic biofilm,688,5358069
+bc03,R2W,River 2,Water,2761,6904395
+bc04,S1W,Sea 1,Water,38720,11638313
+bc05,S1P,Sea 1,Plastic biofilm,39,11042649
+bc06,ScW,Sea control,Water,1654,6322459
+bc07,ScP,Sea control,Plastic biofilm,17,3321551

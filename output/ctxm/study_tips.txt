@@ -1,0 +1,6 @@
+R1W
+R1P
+R2W
+S1W
+ScW
+blaCTX-M-36_S1W
