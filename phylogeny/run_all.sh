@@ -1,15 +1,14 @@
 #!/usr/bin/env bash
-# Build the reference 16S tree end to end.
+# Build the reference 16S tree end-to-end.
 #
 #   bash phylogeny/run_all.sh
 #
 # Run from the repository root, with data/counts.csv in place and
-# NCBI_EMAIL set.  Roughly 30-60 minutes: most of it is the NCBI retrieval and
 # the IQ-TREE run.
 
 set -euo pipefail
 [ -s data/counts.csv ] || { echo "put counts.csv in data/ first"; exit 1; }
-: "${NCBI_EMAIL:?export NCBI_EMAIL=you@example.org  (NCBI requires a contact address)}"
+: "${NCBI_EMAIL:?export NCBI_EMAIL=metigizawmaranata@gmail.com  (NCBI requires a contact address)}"
 mkdir -p output
 
 echo "== 1/2  retrieving reference sequences"
