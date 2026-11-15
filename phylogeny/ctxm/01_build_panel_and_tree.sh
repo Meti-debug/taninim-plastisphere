@@ -31,7 +31,7 @@ set -euo pipefail
 
 D="${CTXM_DATA:?export CTXM_DATA to the directory holding refs/ and consensus/}"
 WORK="${CTXM_WORK:-output/ctxm}"
-LO="${CTXM_LO:-1}"          # first CDS position covered by the amplicon
+LO="${CTXM_LO:-28}"         # first CDS position after the forward primer footprint
 HI="${CTXM_HI:-400}"        # last position with usable depth (>=100x, all samples)
 THREADS="${CTXM_THREADS:-8}"
 
@@ -208,4 +208,5 @@ echo "report    $WORK/ctxm_group1.iqtree     (model, alignment length, support)"
 echo "versions  $WORK/ctxm_versions.txt      (quote these in the Methods)"
 echo "deposit   $WORK/haplotype_collapse.tsv"
 echo
-echo "next: Rscript phylogeny/ctxm/02_plot_tree_gene.R"
+echo "next: Rscript phylogeny/ctxm/04_plot_sample_tree.R   (complete tree)"
+echo "      Rscript phylogeny/ctxm/06_plot_figure5c.R      (Figure 5C)"

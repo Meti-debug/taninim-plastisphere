@@ -10,12 +10,16 @@
 #     tip. R1W, R1P, R2W and ScW sit at IQ-TREE's minimum branch length from
 #     each other, so drawing four tips would imply divergence that is not in
 #     the data. S1W is NOT collapsed with them: it is one substitution away.
-#   * The group 9 outgroup is dropped. Its branch is about 0.5 where the whole
-#     ingroup spans 0.01, so including it flattens the ingroup into a line at
-#     panel size. The caption states the rooting; the full tree shows it.
-#   * No support values. The one well-supported node, group 1 versus group 9 at
-#     100/100, spans all 68 group 1 tips and is not a clade this panel draws, so
-#     no number here could stand for it.
+#   * The group 9 outgroup is drawn, so the panel shows the rooting the Methods
+#     and caption describe. Its stem is about 0.47 where the whole ingroup spans
+#     about 0.01, so that one edge is shortened for display, marked with a break
+#     and labelled with its true length.
+#   * One support value: group 1 versus group 9, 100/100, the split the Results
+#     cite for this panel. It is read from the complete tree before pruning;
+#     pruning does not change a split that separates the outgroup from all of
+#     group 1. Every other node is unresolved and carries no number here.
+#   * Zero-length branches are collapsed to polytomies, as in the full tree.
+#   * Gene names are italic bla with the allele as subscript.
 #   * Tree lines are black. Colour is used only for the study annotations.
 # =============================================================================
 suppressPackageStartupMessages({
@@ -26,10 +30,10 @@ suppressPackageStartupMessages({
 
 TREE    <- Sys.getenv("CTXM_TREE",   "output/ctxm/ctxm_group1.treefile")
 OUTDIR  <- Sys.getenv("CTXM_OUTDIR", "figures")
-KEEP_N  <- as.integer(Sys.getenv("CTXM_KEEP", "8"))
-FIG_W   <- as.numeric(Sys.getenv("CTXM_W", "3.2"))
-FIG_H   <- as.numeric(Sys.getenv("CTXM_H", "2.6"))
-HAPNAME <- Sys.getenv("CTXM_HAPNAME", "blaCTX-M-177-like Taninim haplotype")
+KEEP_N  <- as.integer(Sys.getenv("CTXM_KEEP", "14"))
+FIG_W   <- as.numeric(Sys.getenv("CTXM_W", "4.2"))
+FIG_H   <- as.numeric(Sys.getenv("CTXM_H", "3.1"))
+HAPNAME <- Sys.getenv("CTXM_HAPNAME", "blaCTX-M-177-like Taninim variant")
 VARNAME <- Sys.getenv("CTXM_VARNAME", "Taninim variant")
 NOTEX   <- as.numeric(Sys.getenv("CTXM_NOTEX", "3.0"))  # red box column, as a
 # multiple of the tree's x extent. Tip labels are drawn in device space and run
@@ -41,6 +45,7 @@ dir.create(OUTDIR, showWarnings = FALSE, recursive = TRUE)
 
 tr <- ape::read.tree(TREE)
 OGPAT <- "^blaCTX-M-(14|27|65)(_and_[0-9]+_more)?$"
+source("phylogeny/ctxm/plot_helpers.R")
 
 # Collapsed reference tips are written by 01 as blaCTX-M-15_and_50_more. Render
 # them the way the published figure does: two alleles as "blaCTX-M-12 / -96",
@@ -62,8 +67,8 @@ group_label <- function(lab) {
   head_allele <- m[2]; n <- as.integer(m[3]) + 1
   mem <- members_of[[lab]]
   if (n == 2 && length(mem) == 2) {
-    other <- sub("^blaCTX-M", "", setdiff(mem, head_allele)[1])
-    return(paste0(head_allele, " /", other))
+    other <- setdiff(mem, head_allele)[1]
+    return(paste0(head_allele, " / ", other))
   }
   paste0(head_allele, " group (n = ", n, ")")
 }
@@ -99,10 +104,14 @@ other_study <- setdiff(study_tips, site_tips)      # e.g. blaCTX-M-36_S1W
 anchor <- c(reps, other_study)
 cand <- setdiff(tr$tip.label, c(study_tips, og_tips))
 nearest <- sort(apply(d[cand, anchor, drop = FALSE], 1, min))
-keep <- unique(c(anchor, names(head(nearest, KEEP_N))))
+keep <- unique(c(anchor, names(head(nearest, KEEP_N)), og_tips))
+STEM_SUP <- stem_support(tr, og_tips)
 sub <- ape::keep.tip(tr, keep)
+sub <- collapse_zero(sub)
+STEM <- shorten_stem(sub, og_tips, show_len = 0.008)
+sub <- STEM$tree
 message("drawing ", length(keep), " tips (", length(collapsed_away),
-        " collapsed, ", length(og_tips), " outgroup dropped)")
+        " identical study tips collapsed, ", length(og_tips), " outgroup kept)")
 
 # --- labels and the red sample annotations -----------------------------------
 SITELAB <- c(R1W = "R1W", R1P = "R1P", R2W = "R2W", R2P = "R2P",
@@ -124,7 +133,8 @@ for (i in seq_along(sub$tip.label)) {
     tip_note[i] <- paste(SITELAB[members], collapse = ", ")
   } else if (lab %in% other_study) {                 # e.g. blaCTX-M-36_S1W
     is_study[i] <- TRUE
-    tip_show[i] <- sub("_[^_]+$", "", lab)
+    # a known allele recovered here: name it as a match, not as the reference
+    tip_show[i] <- paste0(sub("_[^_]+$", "", lab), "-identical sequence")
     tip_note[i] <- sub("^.*_", "", lab)
   } else {
     tip_show[i] <- group_label(lab)
@@ -133,6 +143,7 @@ for (i in seq_along(sub$tip.label)) {
 
 meta <- data.frame(label = sub$tip.label, show = tip_show,
                    note = tip_note, study = is_study,
+                   expr = gene_exprs(tip_show, is_study),
                    stringsAsFactors = FALSE)
 
 p <- ggtree(sub, size = 0.5, colour = "black") %<+% meta
@@ -151,7 +162,7 @@ nmax    <- max(nchar(meta$show))
 notemax <- max(nchar(meta$note), na.rm = TRUE)
 
 xmax    <- max(p$data$x, na.rm = TRUE)
-lab_off <- xmax * 0.04
+lab_off <- xmax * 0.10
 K       <- nmax + notemax + 4        # characters to fit right of the tree
 a       <- K * char_in / FIG_W
 if (a >= 0.95)
@@ -163,21 +174,40 @@ message(sprintf("panel: %d tips, longest label %d chars, note column at %.1f%% o
                 length(keep), nmax, 100 * note_x / (xmax + extra)))
 
 p <- p +
-  geom_tiplab(aes(label = show, fontface = ifelse(study, 2, 3)),
+  geom_tiplab(aes(label = expr), parse = TRUE,
               size = TIPSIZE, offset = lab_off, align = TRUE,
               linetype = "dotted", linesize = 0.2, colour = "black",
               show.legend = FALSE) +
-  geom_tippoint(size = 1.1, colour = "black") +
+  geom_tippoint(size = 0.8, colour = "black") +
   geom_label(data = function(d) d[!is.na(d$note) & d$isTip, ],
              aes(x = note_x, label = note),
              size = 2.4, colour = "red", fill = "white",
              label.size = 0.3, label.padding = unit(0.10, "lines"),
              hjust = 0, show.legend = FALSE) +
-  geom_treescale(width = 0.002, fontsize = 2.3, offset = 0.4) +
+  geom_treescale(x = 0, y = -0.6, width = 0.005, fontsize = 2.3,
+                 offset = 0.35, linesize = 0.35) +
   theme_tree() +
   ggplot2::expand_limits(x = xmax + extra) +
   coord_cartesian(clip = "off") +
   theme(plot.margin = margin(4, 6, 4, 4))
+
+# break on the shortened stem, its true length, and the support of that split
+d  <- p$data
+y  <- d$y[d$node == STEM$stem_child]
+x0 <- d$x[d$node == STEM$stem_parent]; x1 <- d$x[d$node == STEM$stem_child]
+xm <- x0 + (x1 - x0) * 0.3; dx <- (x1 - x0) * 0.05; dy <- 0.35
+brk <- data.frame(x = c(xm - 2 * dx, xm + dx) - dx, xend = c(xm, xm + 3 * dx) - dx,
+                  y = y - dy, yend = y + dy)
+p <- p +
+  annotate("rect", xmin = xm - 2 * dx, xmax = xm + dx, ymin = y - 0.2,
+           ymax = y + 0.2, fill = "white", colour = NA) +
+  geom_segment(data = brk, aes(x = x, xend = xend, y = y, yend = yend),
+               inherit.aes = FALSE, linewidth = 0.3) +
+  annotate("text", x = x1 - (x1 - x0) * 0.1, y = y + 0.42, size = 1.8,
+           hjust = 1, label = STEM_SUP) +
+  annotate("text", x = x0 - (x1 - x0) * 0.15, y = y - 0.42, size = 1.8,
+           hjust = 1, label = sprintf("%.2f", STEM$true_len)) +
+  hexpand(0.08, direction = -1)
 
 pdf_out <- file.path(OUTDIR, "Figure5C_CTXM.pdf")
 png_out <- file.path(OUTDIR, "Figure5C_CTXM.png")

@@ -18,14 +18,12 @@ bash phylogeny/ctxm/01_build_panel_and_tree.sh
 
 echo "== 2/2  figures"
 CTXM_TREE="$WORK/ctxm_group1.treefile" Rscript phylogeny/ctxm/04_plot_sample_tree.R
-
-# 02 and 03 expect the label format of the earlier tree behind the published
-# figure, not the output of 01; see README.md. Run them explicitly with
-# CTXM_TREE pointing at that tree.
+CTXM_TREE="$WORK/ctxm_group1.treefile" Rscript phylogeny/ctxm/06_plot_figure5c.R
 
 echo
 echo "tree      $WORK/ctxm_group1.treefile"
 echo "report    $WORK/ctxm_group1.iqtree"
 echo "versions  $WORK/ctxm_versions.txt"
 echo "deposit   $WORK/haplotype_collapse.tsv"
-echo "figures   figures/Figure_CTXM_sample_tree.pdf"
+echo "figures   figures/Figure_CTXM_sample_tree.pdf  (complete tree)"
+echo "          figures/Figure5C_CTXM.pdf            (Figure 5C)"

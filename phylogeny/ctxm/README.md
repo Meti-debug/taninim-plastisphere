@@ -20,9 +20,12 @@ Or one step at a time:
 | step | script |
 |---|---|
 | curate the panel, align, trim to the window, infer the tree | `01_build_panel_and_tree.sh` |
-| publication figure, gene-first tip labels | `02_plot_tree_gene.R` |
-| publication figure with location and abundance panels | `03_plot_tree_bars.R` |
-| one tip per sample, support values at every node | `04_plot_sample_tree.R` |
+| complete tree, one tip per sample, support at every resolved node | `04_plot_sample_tree.R` |
+| Figure 5C: pruned panel, identical study tips drawn once | `06_plot_figure5c.R` |
+
+Both plotting scripts source `plot_helpers.R` (gene-name typesetting,
+zero-length branch collapse, stem shortening). Outputs go to `figures/`:
+`Figure_CTXM_sample_tree.*` and `Figure5C_CTXM.*`.
 
 Dependencies:
 
@@ -44,42 +47,31 @@ The tips for this study are **per-sample consensus sequences of a single
 blaCTX-M group 1 amplicon**, roughly 400 bp of the CDS. They are not whole
 genes, not assemblies, and not separate alleles.
 
-**Over the positions called in every sample, the seven sample sequences are
-identical.** The branching among the study tips reflects which positions were
-masked as N in each consensus, not sequence divergence. Nothing in that part of
-the topology can support a claim about which lineages moved along the transect,
-and the caption has to say so. Reporting the sample tips as distinct haplotypes
-would misrepresent them.
+**Over the 28-400 window, the five sample consensus sequences are identical.**
+Any branching among the study tips in the complete tree is IQ-TREE placing
+identical sequences, not sequence divergence, and it cannot support a claim
+about which lineages moved along the transect. Figure 5C therefore draws them as
+one tip. Reporting the sample tips as distinct haplotypes would misrepresent
+them.
 
-Two consensus sequences do differ once the window is widened, which is why
-`04_plot_sample_tree.R` carries a haplotype A/B assignment. That assignment is
-window-dependent, so it is only meaningful alongside the window actually used.
+## Rooting
 
-## Rooting: unresolved, and it has to be resolved before submission
-
-The two routes in this folder root the tree differently, and the difference is
-not cosmetic.
-
-- `01_build_panel_and_tree.sh` passes `-o <group-9 allele>` to IQ-TREE. CTX-M
-  group 9 is a separate lineage, so this is an **outgroup rooting** and it does
-  locate the root of group 1.
-- `02_plot_tree_gene.R` and `03_plot_tree_bars.R` re-root in R on
-  `blaCTX-M-36___g1`. CTX-M-36 is a **group-1** allele, so this is an **ingroup
-  rooting**. It orients the drawing but does not locate the root of group 1,
-  and the basal alleles that then appear at the foot of the figure are an
-  artefact of that choice rather than a finding.
-
-The published figure came from the second route. Whichever is kept, the Methods
-must describe that one and must not describe both. If the group-9 rooting is
-adopted, note also that `04_plot_sample_tree.R` drops the outgroup tips *after*
-rooting, so the drawn tree is rooted without displaying its own outgroup — a
-reader cannot otherwise reconcile the figure with the Methods.
+`01_build_panel_and_tree.sh` passes `-o <group-9 allele>` to IQ-TREE. CTX-M
+group 9 is a separate lineage, so this is an outgroup rooting and it locates the
+root of group 1. Both figures draw the outgroup. Its stem is about 0.47
+substitutions per site against about 0.01 for all of group 1, so that single
+edge is shortened for display and marked with a break and its true length. In
+the pruned Figure 5C the stem runs to the common ancestor of the retained group
+1 tips and reads 0.51.
 
 ## Support values: display is not interpretation
 
 IQ-TREE is run with `-alrt 1000 -B 1000`, giving paired SH-aLRT/UFBoot labels.
-`04_plot_sample_tree.R` prints the pair at **every** node and marks only those
-passing SH-aLRT >= 80 and UFBoot >= 95.
+38 of the 61 internal branches are at IQ-TREE's minimum length and carry no
+substitution. They are polytomies drawn as bifurcations, so both figures collapse
+them first. `04_plot_sample_tree.R` then prints the pair at every remaining node
+(23) and marks those passing SH-aLRT >= 80 and UFBoot >= 95. Figure 5C shows only
+the group 1 versus group 9 split (100/100).
 
 Low values therefore appear in the figure on purpose. That is not a
 contradiction of the threshold as long as the Methods separates the two
@@ -107,13 +99,11 @@ Methods cannot be checked against the panel.
 ## The window
 
 The amplicon covers part of the CDS, so the alignment is cut to a fixed
-coordinate window rather than trimmed with trimAl. Three windows appear across
-the exploratory runs: 1-400, 8-422 and 28-402. **The window stated in the
-Methods must be the one that produced the deposited tree**, and the retained
-alignment length is reported by IQ-TREE in the `.iqtree` file.
-
-The 28-402 window excludes the primer footprints. If a window including them is
-used, say so, because primer-derived positions are not independent evidence.
+coordinate window rather than trimmed with trimAl. The deposited tree uses CDS
+positions 28-400, which excludes the primer footprints; this is the default in
+`01_build_panel_and_tree.sh` (`CTXM_LO`, `CTXM_HI`). Exploratory runs used other
+windows; if the window is changed, the Methods and every number below change
+with it.
 
 ## To report in the Methods
 
@@ -124,42 +114,44 @@ Measured from the run of 2026-11-10, recorded in
 mafft              v7.526, --auto --adjustdirection
 seqkit             v2.13.0
 iqtree             2.0.7, -m MFP -B 1000 -alrt 1000 --bnni
-window             CDS positions 1-400
-alignment          69 sequences, 400 columns, 93 distinct patterns
-sites              127 parsimony-informative, 35 singleton, 238 constant
-samples            5 amplicon consensus sequences (R1W, R1P, R2W, S1W, ScW)
-reference tips     64 after collapsing identical alleles over the window
+window             CDS positions 28-400 (primer footprints excluded)
+alignment          64 sequences, 373 columns, 82 distinct patterns
+sites              116 parsimony-informative, 225 constant
+study sequences    6: five consensus (R1W, R1P, R2W, S1W, ScW) and the
+                   blaCTX-M-36-identical sequence from S1W
+reference tips     58 after collapsing identical alleles over the window
+reference alleles  135 collapsed to 58 distinct tips
 rooting            group-9 outgroup (blaCTX-M-14_and_1_more, blaCTX-M-65)
-support shown      all nodes; interpreted as supported at >=80 SH-aLRT / >=95 UFBoot
-reference alleles  135 collapsed to 64 distinct tips over the window
-mafft strategy     --auto resolved to L-INS-i
-model selected     K2P+R2, by BIC (AICc agreed; AIC preferred TIM3+F+R2)
-log-likelihood     -1653.504
-tree length        0.774
+model selected     K2P+R2, by BIC
+log-likelihood     -1510.452
+tree length        0.745
+support shown      every non-zero-length node; supported at >=80 SH-aLRT / >=95 UFBoot
 ```
 
 Take every number from those two files, not from memory.
 
-The model is **selected**, not assumed. Writing "inference was performed under
-K2P+R2" describes an a priori choice that was not made and invites a reviewer
-to ask how it was justified. Write that ModelFinder selected it under BIC.
+The model is **selected**, not assumed. Write that ModelFinder selected it under
+BIC.
 
 ## Two things the run reports that belong in the paper
 
 IQ-TREE prints, during alignment parsing:
 
 ```
-NOTE: ScW is identical to R1W but kept for subsequent analysis
+NOTE: R1P is identical to R1W but kept for subsequent analysis
+NOTE: R2W (identical to R1W) is ignored but added at the end
+NOTE: S1W (identical to R1W) is ignored but added at the end
+NOTE: ScW (identical to R1W) is ignored but added at the end
+NOTE: blaCTX-M-36_S1W is identical to blaCTX-M-36 but kept for subsequent analysis
 ```
 
-The sea-control and upstream-river consensus sequences are identical across
-the whole 400 bp window. A statement that the haplotype was detected at all
+The five consensus sequences are identical across the 373-column window, which
+is why Figure 5C draws them as one tip. A statement that the haplotype was detected at all
 four sites is true as detection, but it is four detections of one sequence,
 not four related sequences, and the text should not imply otherwise.
 
 Five libraries yielded a consensus, not seven. S1P and ScP, at 39 and 17
-reads, did not. Any figure showing seven sample tips does not match this
-alignment, and the Methods must state five.
+reads, did not.
 
 Note also that the community 16S tree in `phylogeny/` was built in a separate
 environment, with `apt-get install mafft trimal iqtree` and no version pin. Its
