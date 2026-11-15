@@ -25,12 +25,13 @@ Two independent routes through the data, kept separate throughout:
 ```
 preprocessing/   reads -> abundance tables (see its own README)
 analysis/        Python statistics; writes intermediates to output/
-figures/         Python plots; reads the intermediates, writes plots
+figures/         Python plot scripts, and the CTX-M figure files
 r/               R analyses and figures, one script per analysis
 phylogeny/       reference 16S tree, and blaCTX-M group 1 amplicon tree in
                  phylogeny/ctxm/ (each has its own README)
 data/            the input tables (not tracked; see data/README.md)
-output/          everything generated; only output/ctxm/ is tracked
+output/          everything generated; only output/ctxm/ is tracked (the
+                 deposited CTX-M alignment, tree and IQ-TREE report)
 ```
 
 Scripts use paths relative to the repository root, so run them from there:
@@ -107,6 +108,31 @@ record. See `r/README.md`.
 
 `bash phylogeny/run_all.sh` builds the reference 16S tree from the 500 most
 abundant species. See `phylogeny/README.md`.
+
+### CTX-M group 1 tree (Figure 5C and the complete tree)
+
+The tree is deposited in `output/ctxm/`, so the figures can be redrawn without
+re-running IQ-TREE. From the repository root:
+
+```bash
+Rscript phylogeny/ctxm/02_plot_complete_tree.R   # figures/Figure_CTXM_sample_tree.pdf/.png
+Rscript phylogeny/ctxm/03_plot_figure5c.R        # figures/Figure5C_CTXM.pdf/.png
+```
+
+| file | role |
+|---|---|
+| `phylogeny/ctxm/01_build_panel_and_tree.sh` | curate references, align (MAFFT), cut to CDS 28-400, collapse identical alleles, infer the tree (IQ-TREE) |
+| `phylogeny/ctxm/02_plot_complete_tree.R` | complete tree, all tips, SH-aLRT/UFBoot at every resolved node |
+| `phylogeny/ctxm/03_plot_figure5c.R` | Figure 5C, the tree pruned to the tips in `figure5c_tips.txt` |
+| `phylogeny/ctxm/plot_helpers.R` | shared plotting functions |
+| `output/ctxm/ctxm_group1.treefile` | the tree both figures are drawn from |
+| `output/ctxm/ctxm_group1.iqtree`, `.log` | model selection, alignment statistics, support |
+| `output/ctxm/tree_input.fasta` | the alignment the tree was inferred from |
+| `output/ctxm/haplotype_collapse.tsv` | which alleles each collapsed reference tip stands for |
+
+R packages: ggtree, treeio, ape, ggplot2, dplyr (see `phylogeny/ctxm/README.md`
+for a conda command). Re-running `01` needs the raw consensus and reference
+sequences, `export CTXM_DATA=...`, then `bash phylogeny/ctxm/run_all.sh`.
 
 ## Reproducing the OTU table
 

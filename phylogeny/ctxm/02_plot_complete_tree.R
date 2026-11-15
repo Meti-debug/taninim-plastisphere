@@ -16,7 +16,7 @@
 #
 # Study tips are read from study_tips.txt, written by 01_build_panel_and_tree.sh.
 #
-#   Rscript phylogeny/ctxm/04_plot_sample_tree.R
+#   Rscript phylogeny/ctxm/02_plot_complete_tree.R
 #
 # The group-9 outgroup is KEPT in the drawing by default. Dropping it costs
 # more than it saves: treeio::drop.tip discards the @data slot that carries the

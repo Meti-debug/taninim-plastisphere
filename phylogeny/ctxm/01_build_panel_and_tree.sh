@@ -208,5 +208,5 @@ echo "report    $WORK/ctxm_group1.iqtree     (model, alignment length, support)"
 echo "versions  $WORK/ctxm_versions.txt      (quote these in the Methods)"
 echo "deposit   $WORK/haplotype_collapse.tsv"
 echo
-echo "next: Rscript phylogeny/ctxm/04_plot_sample_tree.R   (complete tree)"
-echo "      Rscript phylogeny/ctxm/06_plot_figure5c.R      (Figure 5C)"
+echo "next: Rscript phylogeny/ctxm/02_plot_complete_tree.R   (complete tree)"
+echo "      Rscript phylogeny/ctxm/03_plot_figure5c.R      (Figure 5C)"

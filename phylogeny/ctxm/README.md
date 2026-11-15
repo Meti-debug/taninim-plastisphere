@@ -20,8 +20,8 @@ Or one step at a time:
 | step | script |
 |---|---|
 | curate the panel, align, trim to the window, infer the tree | `01_build_panel_and_tree.sh` |
-| complete tree, one tip per sample, support at every resolved node | `04_plot_sample_tree.R` |
-| Figure 5C: the tree pruned to the tips in `figure5c_tips.txt` | `06_plot_figure5c.R` |
+| complete tree, one tip per sample, support at every resolved node | `02_plot_complete_tree.R` |
+| Figure 5C: the tree pruned to the tips in `figure5c_tips.txt` | `03_plot_figure5c.R` |
 
 Both plotting scripts source `plot_helpers.R` (gene-name typesetting,
 zero-length branch collapse, stem shortening). Outputs go to `figures/`:
@@ -40,6 +40,24 @@ pip install biopython
 find them and reports "not available for this version of R", which is
 misleading — the problem is the repository, not the R version. Use
 `BiocManager::install()` or the conda env above.
+
+## Files kept in output/ctxm
+
+| file | content |
+|---|---|
+| `ctxm_group1.treefile` | maximum-likelihood tree with SH-aLRT/UFBoot node labels; both figures use it |
+| `ctxm_group1.contree` | UFBoot consensus tree |
+| `ctxm_group1.iqtree`, `ctxm_group1.log` | IQ-TREE report and log |
+| `ctxm_versions.txt` | tool versions, window, options |
+| `tree_input.fasta` | the 373-column alignment the tree was inferred from |
+| `set.aln.fasta` | full-length alignment before cutting to the window |
+| `group1_clean.fasta`, `outgroup.fasta`, `study.fasta` | curated group 1 references, group 9 outgroup, study sequences |
+| `haplotype_collapse.tsv` | members of each collapsed reference tip |
+| `drop.txt` | alleles excluded before alignment |
+| `study_ids.txt`, `study_tips.txt` | study sequence identifiers and their tip labels |
+
+IQ-TREE's working files (checkpoint, bootstrap trees, distance matrices,
+splits) are not kept; `01` writes them again when run.
 
 ## What this tree is, and what it is not
 
@@ -76,7 +94,7 @@ identical S1W sequence.
 IQ-TREE is run with `-alrt 1000 -B 1000`, giving paired SH-aLRT/UFBoot labels.
 38 of the 61 internal branches are at IQ-TREE's minimum length and carry no
 substitution. They are polytomies drawn as bifurcations, so both figures collapse
-them first. `04_plot_sample_tree.R` then prints the pair at every remaining node
+them first. `02_plot_complete_tree.R` then prints the pair at every remaining node
 (23) and marks those passing SH-aLRT >= 80 and UFBoot >= 95. Figure 5C prints the
 pair at every node it draws except the root.
 

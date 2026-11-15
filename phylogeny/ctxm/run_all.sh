@@ -17,8 +17,8 @@ echo "== 1/2  curating the panel, aligning, inferring the tree"
 bash phylogeny/ctxm/01_build_panel_and_tree.sh
 
 echo "== 2/2  figures"
-CTXM_TREE="$WORK/ctxm_group1.treefile" Rscript phylogeny/ctxm/04_plot_sample_tree.R
-CTXM_TREE="$WORK/ctxm_group1.treefile" Rscript phylogeny/ctxm/06_plot_figure5c.R
+CTXM_TREE="$WORK/ctxm_group1.treefile" Rscript phylogeny/ctxm/02_plot_complete_tree.R
+CTXM_TREE="$WORK/ctxm_group1.treefile" Rscript phylogeny/ctxm/03_plot_figure5c.R
 
 echo
 echo "tree      $WORK/ctxm_group1.treefile"

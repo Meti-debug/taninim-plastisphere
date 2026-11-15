@@ -2,7 +2,7 @@
 # =============================================================================
 # Figure 5C: CTX-M group 1 amplicon tree, pruned to a panel.
 #
-#   Rscript phylogeny/ctxm/06_plot_figure5c.R
+#   Rscript phylogeny/ctxm/03_plot_figure5c.R
 #
 # Inputs, all in the repository:
 #   output/ctxm/ctxm_group1.treefile     the deposited IQ-TREE tree

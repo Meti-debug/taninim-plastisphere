@@ -1,5 +1,5 @@
 # =============================================================================
-# Shared helpers for 04_plot_sample_tree.R and 06_plot_figure5c.R.
+# Shared helpers for 02_plot_complete_tree.R and 03_plot_figure5c.R.
 #
 #   source("phylogeny/ctxm/plot_helpers.R")
 # =============================================================================
