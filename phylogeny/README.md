@@ -1,6 +1,6 @@
 # Phylogeny of the detected taxa
 
-    data/counts.csv -> species list -> NCBI 16S -> MAFFT -> trimAl -> IQ-TREE
+data/counts.csv -> species list -> NCBI 16S -> MAFFT -> trimAl -> IQ-TREE
 
 Everything at once, from the repository root:
 
@@ -37,7 +37,7 @@ name detected in this study**. They are not the reads from these libraries.
 Reference 16S rRNA sequences (NCBI) for the N most abundant species detected,
 aligned with MAFFT and trimmed with trimAl; maximum-likelihood tree inferred
 with IQ-TREE under GTR+G with 1,000 ultrafast bootstrap replicates. Rings show
-phylum, dominant.
+the most dominant family.
 
 ## Reproducibility: the accession table
 
@@ -51,32 +51,9 @@ phylum, dominant.
 | `retrieved_title` | the record's own description |
 
 without the accessions the tree cannot be
-rebuilt.
+reproduced.
 
-## The genus fallback, and why the table matters
-
-When no species-level record is found, the original notebook fell back to a
-type-strain record **of the genus** and then relabelled it with the species
-name. A tip reading *Legionella tunisiensis* could carry a different
-*Legionella* sequence entirely, and nothing recorded that it had happened.
-
-The fallback is kept — dropping those taxa would thin the tree — but every
-fallback is now recorded in `fetched_as`, which the annotation step reads so
-that those tips can be marked. Species-level resolution cannot be claimed for
-them.
-
-## Changes from the original notebook
-
-1. **Accessions and fallback status are recorded.** They were not, which made
-   the tree unreproducible and the fallback invisible.
-2. **Plastic and water columns are selected by position** (`c[2]`), matching
-   the rest of the pipeline. `"P" in c` matches any column containing the
-   letter P anywhere and is fragile to renaming.
-3. **trimAl failure is fatal** rather than silently falling through to the
-   untrimmed alignment. The silent fallback would have put a Methods statement
-   in the manuscript that did not describe what was run.
-
-## To report in the Methods
+## Methods
 
 Fill from the run:
 
@@ -86,10 +63,3 @@ mafft                 --auto  (version: CHECK)
 trimal                -automated1  (version: CHECK)
 iqtree                -m GTR+G -B 1000 -T AUTO  (version: CHECK)
 alignment             CHECK columns before trimming, CHECK after
-```
-
-`iqtree` reports its version and the retained alignment length in the `.log`
-and `.iqtree` files — take the numbers from there, not from memory.
-
-Consider `-m MFP` (ModelFinder) instead of a fixed `GTR+G`: it costs little and
-removes an obvious reviewer question. If GTR+G is kept, say why in the Methods.
