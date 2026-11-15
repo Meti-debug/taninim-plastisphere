@@ -119,6 +119,14 @@ Rscript phylogeny/ctxm/02_plot_complete_tree.R   # figures/Figure_CTXM_sample_tr
 Rscript phylogeny/ctxm/03_plot_figure5c.R        # figures/Figure5C_CTXM.pdf/.png
 ```
 
+Panel C as placed in the composite Figure 5 (1758 x 1044 px at 600 dpi, text
+scaled to match panels A and B):
+
+```bash
+CTXM_STEM=Figure5C_CTXM_composite CTXM_W=2.93 CTXM_H=1.74 CTXM_TEXT=0.66 \
+CTXM_TREE_FR=0.40 CTXM_ROOT_LEN=0.013 Rscript phylogeny/ctxm/03_plot_figure5c.R
+```
+
 | file | role |
 |---|---|
 | `phylogeny/ctxm/01_build_panel_and_tree.sh` | curate references, align (MAFFT), cut to CDS 28-400, collapse identical alleles, infer the tree (IQ-TREE) |

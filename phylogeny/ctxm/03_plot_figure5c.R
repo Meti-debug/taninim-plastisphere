@@ -35,6 +35,12 @@ FIG_W   <- as.numeric(Sys.getenv("CTXM_W", "6.5"))
 FIG_H   <- as.numeric(Sys.getenv("CTXM_H", "2.8"))
 HAPNAME <- Sys.getenv("CTXM_HAPNAME", "blaCTX-M-177-like Taninim Haplotype")
 SCALE   <- Sys.getenv("CTXM_SCALE", "yes")      # "no" hides the scale bar
+# For placing the panel into a composite figure at a smaller physical size:
+# CTXM_TEXT multiplies every text size and line width, CTXM_TREE_FR is the share
+# of the panel width given to the tree, CTXM_STEM names the output files.
+TXT     <- as.numeric(Sys.getenv("CTXM_TEXT", "1"))
+TREE_FR <- as.numeric(Sys.getenv("CTXM_TREE_FR", "0.42"))
+STEMNAME <- Sys.getenv("CTXM_STEM", "Figure5C_CTXM")
 
 source("phylogeny/ctxm/plot_helpers.R")
 OGPAT <- "^blaCTX-M-(14|27|65)(_and_[0-9]+_more)?$"
@@ -68,7 +74,7 @@ sup <- vapply((n + 1):(n + tr$Nnode), function(k) {
 supdf <- data.frame(node = (n + 1):(n + tr$Nnode), sup = sup)
 
 # --- 5. fixed-length root branches ---------------------------------------------
-ROOT_LEN <- 0.009
+ROOT_LEN <- as.numeric(Sys.getenv("CTXM_ROOT_LEN", "0.009"))   # drawn root branch length
 root_edges <- which(tr$edge[, 1] == n + 1)
 true_root <- tr$edge.length[root_edges]
 tr$edge.length[root_edges] <- ROOT_LEN
@@ -102,14 +108,13 @@ NOTES <- data.frame(
   boxed = c(TRUE, FALSE))
 
 # --- draw ----------------------------------------------------------------------
-TIPSIZE <- 2.5                                        # mm
-p <- ggtree(ape::ladderize(tr, right = TRUE), linewidth = 0.35) %<+% meta %<+% supdf
+TIPSIZE <- 2.5 * TXT                                  # mm
+p <- ggtree(ape::ladderize(tr, right = TRUE), linewidth = 0.35 * TXT) %<+% meta %<+% supdf
 d <- p$data
 
 # Label widths are MEASURED with the same font and size, then converted to data
 # units, so the arrows start where each label ends whatever the label text.
 xmax    <- max(d$x)
-TREE_FR <- 0.42                                       # share of width for the tree
 xr      <- xmax / TREE_FR
 lab_off <- xmax * 0.03
 MARGIN_IN <- 8 / 72                                   # plot.margin, left + right
@@ -135,21 +140,21 @@ p <- p +
   # five-point stars from DejaVu Sans; ggplot has no star point shape
   geom_text2(aes(subset = isTip & !is.na(star), x = x + lab_off + star_x,
                  label = ifelse(star == "filled", "\u2605", "\u2606")),
-             family = "DejaVu Sans", size = 3.2, hjust = 0.5) +
+             family = "DejaVu Sans", size = 3.2 * TXT, hjust = 0.5) +
   geom_text2(aes(subset = !isTip & !is.na(sup), label = sup),
-             fontface = "bold", size = 2.2, hjust = 1.08, vjust = -0.35) +
+             fontface = "bold", size = 2.2 * TXT, hjust = 1.08, vjust = -0.35) +
   geom_segment(data = ann, aes(x = x0, xend = x1, y = y, yend = y),
-               inherit.aes = FALSE, colour = "red", linewidth = 0.4,
-               arrow = arrow(length = unit(1.4, "mm"), type = "open")) +
+               inherit.aes = FALSE, colour = "red", linewidth = 0.4 * TXT,
+               arrow = arrow(length = unit(1.4 * TXT, "mm"), type = "open")) +
   geom_label(data = ann[ann$boxed, ], aes(x = x1 + xr * 0.01, y = y, label = text),
-             inherit.aes = FALSE, hjust = 0, size = 2.3, fontface = "bold",
-             colour = "black", border.colour = "red", linewidth = 0.5,
+             inherit.aes = FALSE, hjust = 0, size = 2.3 * TXT, fontface = "bold",
+             colour = "black", border.colour = "red", linewidth = 0.5 * TXT,
              label.r = unit(0, "pt"), label.padding = unit(0.3, "lines"),
              lineheight = 0.95) +
   geom_text(data = ann[!ann$boxed, ], aes(x = x1 + xr * 0.01, y = y, label = text),
-            inherit.aes = FALSE, hjust = 0, size = 2.3, fontface = "bold") +
+            inherit.aes = FALSE, hjust = 0, size = 2.3 * TXT, fontface = "bold") +
   annotate("text", x = -xr * 0.03, y = max(d$y) + 0.5, label = "C",
-           fontface = "bold", size = 4, hjust = 0)
+           fontface = "bold", size = 4 * TXT, hjust = 0)
 
 # break marks on the two root branches
 rb <- d[d$parent == n + 1 & d$node != n + 1, ]
@@ -163,11 +168,11 @@ p <- p +
             ymin = y - 0.12, ymax = y + 0.12), inherit.aes = FALSE,
             fill = "white", colour = NA) +
   geom_segment(data = brk, aes(x = x, xend = xend, y = y, yend = yend),
-               inherit.aes = FALSE, linewidth = 0.35)
+               inherit.aes = FALSE, linewidth = 0.35 * TXT)
 
 if (SCALE == "yes")
   p <- p + geom_treescale(x = xmax * 0.6, y = -0.4, width = 0.005,
-                          fontsize = 2.1, offset = 0.3, linesize = 0.35)
+                          fontsize = 2.1 * TXT, offset = 0.3, linesize = 0.35 * TXT)
 
 p <- p + theme_tree() +
   coord_cartesian(xlim = c(-xr * 0.04, xr), ylim = c(-0.8, max(d$y) + 0.8), expand = FALSE,
@@ -176,8 +181,8 @@ p <- p + theme_tree() +
         plot.background = element_rect(fill = "white", colour = NA))
 
 dir.create(OUTDIR, showWarnings = FALSE, recursive = TRUE)
-pdf_out <- file.path(OUTDIR, "Figure5C_CTXM.pdf")
-png_out <- file.path(OUTDIR, "Figure5C_CTXM.png")
+pdf_out <- file.path(OUTDIR, paste0(STEMNAME, ".pdf"))
+png_out <- file.path(OUTDIR, paste0(STEMNAME, ".png"))
 ggsave(pdf_out, p, width = FIG_W, height = FIG_H, device = cairo_pdf)  # cairo: star glyphs
 ggsave(png_out, p, width = FIG_W, height = FIG_H, dpi = 600)
 cat(pdf_out, " / ", png_out, " written\n", sep = "")
