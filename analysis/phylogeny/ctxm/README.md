@@ -17,7 +17,6 @@ study consensus sequences + curated group 1 references + group 9 outgroup
 | `02_plot_complete_tree.R` | complete tree with all tips and support values | `output/figures/Figure_CTXM_sample_tree.pdf/.png` |
 | `03_plot_figure5c.R` | Figure 5C, the tree pruned to the tips in `figure5c_tips.txt` | `output/figures/Figure5C_CTXM.pdf/.png` |
 | `plot_helpers.R` | functions shared by the two plotting scripts | |
-| `run_all.sh` | runs all three in order | |
 
 ## Running
 
@@ -33,7 +32,7 @@ To rebuild the tree from the consensus and reference sequences:
 
 ```bash
 export CTXM_DATA=/path/to/ctxm/analysis   # holds refs/ and consensus/
-bash analysis/phylogeny/ctxm/run_all.sh
+bash analysis/phylogeny/ctxm/01_build_panel_and_tree.sh
 ```
 
 ## Dependencies

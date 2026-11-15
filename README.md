@@ -92,7 +92,7 @@ CTXM_TREE_FR=0.40 CTXM_ROOT_LEN=0.013 Rscript analysis/phylogeny/ctxm/03_plot_fi
 
 R packages: ggtree, treeio, ape, ggplot2, dplyr (see `analysis/phylogeny/ctxm/README.md`
 for a conda command). Re-running `01` needs the raw consensus and reference
-sequences, `export CTXM_DATA=...`, then `bash analysis/phylogeny/ctxm/run_all.sh`.
+sequences: `export CTXM_DATA=...`, then `bash analysis/phylogeny/ctxm/01_build_panel_and_tree.sh`.
 
 ## Input tables
 
