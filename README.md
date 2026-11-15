@@ -1,7 +1,6 @@
 # The Taninim River-Sea Continuum: Plastisphere’s Persistence, Connectivity, and Potential Pathogen Dispersal into the Eastern Mediterranean Sea
 
-Analysis code for the paper of the same title by Dhiba, M.G. et al., submitted
-to the International Journal of Molecular Sciences.
+Analysis code for the paper of the same title.
 
 - **Species-level profiles** from Kraken2 and Bracken, run through the EPI2ME
   `wf-metagenomics` workflow. Everything that needs a taxonomic name comes
