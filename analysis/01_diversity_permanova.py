@@ -42,12 +42,15 @@ METHOD
                      station.  With two stations per region, it describes these
                      four stations, not river versus sea in general.
 
-The p-VALUEs
-    With four stations x two types x three replicates the permutable space is
-    small.  A restricted permutation test on sample type has 20^4 = 160,000
-    distinct arrangements, which is plenty; a per-station test has only 20, so
-    the smallest two-sided p obtainable at one station is 0.10.  That floor is
-    a property of the design, not of the software.
+P-VALUES IN THE PAPER
+    The PERMANOVA p-values (Fig. 3F, Supplementary Table S1) come from 9,999
+    permutations, so the smallest value reported is p = 0.0001.  Restricting
+    sample type to within stations still leaves 20^4 = 160,000 distinct
+    arrangements.  Within a single station (three plastic, three water) there
+    are only 20, so a per-station permutation test cannot give a two-sided p
+    below 0.10.  For this reason Shannon diversity is compared per station
+    with Welch's t-test (Fig. 3A-D), and the per-station dispersion tests in
+    Supplementary Table S1 enumerate all permutations.
 """
 import os
 import numpy as np, pandas as pd, itertools, json
