@@ -2,13 +2,13 @@
 #
 # Shannon diversity per sample type, with Wilcoxon tests and boxplots.
 #
-# Extracted from r/figures_as_run.R, lines 1676-1860, which is the session code
-# deposited verbatim. Paths were made relative; nothing else was changed.
+# Taken from the R session code used for the paper; paths were made
+# relative and nothing else was changed.
 #
 # Run from the repository root:
-#   Rscript r/02_alpha_diversity.R
+#   Rscript analysis/r/02_alpha_diversity.R
 
-source("r/00_paths.R")
+source("analysis/r/00_paths.R")
 
 library(vegan)
 
@@ -39,14 +39,14 @@ boxplot(Shannon ~ SampleType, data = alpha_df,
 wilcox.test(Shannon ~ SampleType, data = alpha_df)
 
 
-Load data
+# Load data
 library(vegan)
 library(ggplot2)
 library(ggpubr)
 
 # 1.1 Load metadata
-meta_full <- read.table("Ligation_all_metadata (1).txt",
-                        header = TRUE, stringsAsFactors = FALSE)
+meta_full <- read.table(file.path(DATA, "metadata.tsv"),
+                        header = TRUE, sep = "\t", stringsAsFactors = FALSE)
 
 # 1.2 sp_counts: species (rows) × samples (columns), already in R
 # Check sample names
@@ -67,7 +67,7 @@ sp_counts_clean <- sp_counts[ , meta_clean$SampleID]
 # Final sanity check
 stopifnot(all.equal(colnames(sp_counts_clean), meta_clean$SampleID) == TRUE)
 
-Plastic Vs water– plot + Wilcoxon
+# Plastic Vs water– plot + Wilcoxon
 
 
 # Wilcoxon test
@@ -100,7 +100,7 @@ fig_alpha_overall <- ggboxplot(alpha_df,
 fig_alpha_overall
 
 
-Alpha diversity per site with ns
+# Alpha diversity per site with ns
 
 fig_alpha_site <- ggboxplot(alpha_df,
                             x = "SampleType", y = "Shannon",
@@ -128,10 +128,10 @@ fig_alpha_site <- ggboxplot(alpha_df,
   )
 
 fig_alpha_site
-Beta diversity (Bray–Curtis, PERMANOVA, NMDS)
+# Beta diversity (Bray–Curtis, PERMANOVA, NMDS)
 bray <- vegdist(t(sp_counts_clean), method = "bray")
 
-PERMANOVA
+# PERMANOVA
 # Overall SampleType effect
 adonis_ST <- adonis2(bray ~ SampleType, data = meta_clean)
 
@@ -142,7 +142,7 @@ adonis_S  <- adonis2(bray ~ Site, data = meta_clean)
 adonis_int <- adonis2(bray ~ SampleType * Site, data = meta_clean)
 adonis_int
 
-NMDS ordination and base‑R plot
+# NMDS ordination and base‑R plot
 scr <- scores(ord, display = "sites")
 ord_df <- data.frame(scr,
                      SampleType = alpha_df$SampleType,
@@ -173,9 +173,9 @@ fig_beta_NMDS <- ggplot(ord_df, aes(x = NMDS1, y = NMDS2)) +
 
 fig_beta_NMDS
 
-DESeq2 differential abundance, spatial gradient, SourceTracker2, co-occurrence networks (SpiecEasi; SparCC option), and functional profiling options
+# DESeq2 differential abundance, spatial gradient, SourceTracker2, co-occurrence networks (SpiecEasi; SparCC option), and functional profiling options
 
-Read data and basic objects
+# Read data and basic objects
 
   
 

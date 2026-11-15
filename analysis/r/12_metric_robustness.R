@@ -2,15 +2,15 @@
 #
 # Repeats the river or sea x sample type PERMANOVA (adonis2, terms added
 # sequentially, 9,999 permutations) and the within-site permutation test of
-# river-sea turnover (r/08_dispersion_turnover.R) under six distance measures.
+# river-sea turnover (analysis/r/08_dispersion_turnover.R) under six distance measures.
 # Also reports, for each fraction, the ratio of the median river-sea distance to
 # the median distance between sites within the same salinity regime.
 # Reported in Results 3.2 and Supplementary-1.
 #
 # Run from the repository root:
-#   Rscript r/12_metric_robustness.R
+#   Rscript analysis/r/12_metric_robustness.R
 
-source("r/00_paths.R")
+source("analysis/r/00_paths.R")
 suppressMessages(library(vegan))
 set.seed(42)
 NPERM <- 9999

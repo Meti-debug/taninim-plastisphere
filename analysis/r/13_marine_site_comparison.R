@@ -10,9 +10,9 @@
 # Reported in Results 3.2.
 #
 # Run from the repository root:
-#   Rscript r/13_marine_site_comparison.R
+#   Rscript analysis/r/13_marine_site_comparison.R
 
-source("r/00_paths.R")
+source("analysis/r/00_paths.R")
 suppressMessages(library(vegan))
 
 x <- read.csv(file.path(DATA, "counts.csv"), check.names = FALSE)

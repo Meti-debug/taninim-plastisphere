@@ -6,12 +6,12 @@
 # water reads, and the twelve most abundant.
 #
 # Uses the FEAST-filtered table rarefied to 91,000 reads (seed 42), as in
-# r/09_feast_sensitivity.R. Sequencing labels: R2* = R1, R3* = R2.
+# analysis/r/09_feast_sensitivity.R. Sequencing labels: R2* = R1, R3* = R2.
 #
 # Run from the repository root:
-#   Rscript r/10_river_signature.R
+#   Rscript analysis/r/10_river_signature.R
 
-source("r/00_paths.R")
+source("analysis/r/00_paths.R")
 DEPTH <- 91000
 
 counts_raw <- read.csv(file.path(DATA, "counts.csv"), check.names = FALSE)

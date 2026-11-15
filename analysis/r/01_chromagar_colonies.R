@@ -2,13 +2,13 @@
 #
 # CHROMagar colony colours and total growth, stacked bars per river.
 #
-# Extracted from r/figures_as_run.R, lines 1-79, which is the session code
-# deposited verbatim. Paths were made relative; nothing else was changed.
+# Taken from the R session code used for the paper; paths were made
+# relative and nothing else was changed.
 #
 # Run from the repository root:
-#   Rscript r/01_chromagar_colonies.R
+#   Rscript analysis/r/01_chromagar_colonies.R
 
-source("r/00_paths.R")
+source("analysis/r/00_paths.R")
 
 #Figure 2. CHROMagar colony morphology, total growth, and ESBL confirmation across sampled rivers. (A)  CHROMagar ESBL Stacked bar chart showing the proportional distribution of colony colors for each sampled river. (B) CHROMagar Ampicillin Stacked bar chart showing the proportional distribution of colony colors on medium. Numbers inside segments indicate raw colony counts where n > 10. Colony colors correspond to putative bacterial identities based on CHROMagar manufacturer guidelines: metallic blue and turquoise colonies are indicative of Escherichia coli and related Enterobacteriaceae; pink colonies suggest Klebsiella, Enterobacter, or Citrobacter spp.; purple colonies are associated with other Gram-negative organisms; yellow tinge colonies indicate non-fermenting Gram-negatives. (C) Total colony counts comparing growth on CHROMagar (total bacteria), CHROMagar Ampicillin (ampicillin-resistant bacteria), and CHROMagar ESBL (ESBL-producing bacteria) across sampling locations. (D) ESBL confirmation from river water isolates. Oxidase-positive colonies (teal) were excluded as non-Gram-negative Enterobacteriaceae. Of the remaining oxidase-negative candidates, confirmed ESBL-positive (red) and ESBL-negative (blue) isolates are shown. Taninim River yielded the highest proportion of confirmed ESBL-producing Gram-negative bacteria (24 of 25 oxidase-negative candidates), followed by Hadera River (6 of 9), while Yarkon and Alexander rivers yielded no confirmed ESBL producers.
 

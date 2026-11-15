@@ -24,9 +24,9 @@ Two independent routes through the data, kept separate throughout:
 
 ```
 analysis/             Python statistics; writes results to output/
+analysis/r/           R analyses and figures, one script per analysis
 analysis/phylogeny/   reference 16S tree, and the blaCTX-M group 1 amplicon
                       tree in analysis/phylogeny/ctxm/ (each has a README)
-r/                    R analyses and figures, one script per analysis
 output/               everything generated; only output/ctxm/ is tracked (the
                       CTX-M alignment, tree and IQ-TREE report); figures are
                       written to output/figures/
@@ -66,9 +66,9 @@ Within each group the numeric prefix is the order.
 | `03_four_site_persistence.py` | OTUs present at all four sites, plastic vs planktonic, with its permutation test | an `otu_table.tsv` |
 | `04_discovery_depth_sensitivity.py` | side-by-side comparison of two OTU tables built at different discovery depths | two `otu_table.tsv` |
 
-### r
+### analysis/r
 
-Run in order from the repository root; each sources `r/00_paths.R`.
+Run in order from the repository root; each sources `analysis/r/00_paths.R`.
 
 | script | what it produces |
 |---|---|
@@ -80,10 +80,9 @@ Run in order from the repository root; each sources `r/00_paths.R`.
 | `06_source_tracking_feast.R` | FEAST source tracking and its stacked bars |
 | `07_itol_annotations.R` | iTOL annotation rings for the reference tree |
 
-`figures_as_run.R` is the full session code, kept verbatim as the provenance
-record. See `r/README.md`.
+See `analysis/r/README.md`.
 
-### phylogeny
+### analysis/phylogeny
 
 `bash analysis/phylogeny/run_all.sh` builds the reference 16S tree from the 500 most
 abundant species. See `analysis/phylogeny/README.md`.

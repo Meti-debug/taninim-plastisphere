@@ -4,7 +4,7 @@ Run from the repository root, in order. Each script sources `00_paths.R`,
 which sets `DATA` to `data/` and `OUT` to `output/`.
 
 ```bash
-Rscript r/01_chromagar_colonies.R
+Rscript analysis/r/01_chromagar_colonies.R
 ```
 
 | script | what it produces |
@@ -24,32 +24,30 @@ Rscript r/01_chromagar_colonies.R
 | `12_metric_robustness.R` | river or sea x sample type PERMANOVA and turnover test under six distance measures (Supplementary-1) |
 | `13_marine_site_comparison.R` | river signature at the river mouth versus the reference beach, for plastic and water (Results 3.2) |
 
-Inputs are described in the top-level `README.md`. `02`, `03` and `08` also need
+Inputs are described in the top-level `README.md`. `02` uses `sp_counts`, `sp_counts_clean` and
+`meta_clean` built by `03`, so run `03` first in the same R session:
+
+```r
+source("analysis/r/03_beta_diversity_pcoa.R")
+source("analysis/r/02_alpha_diversity.R")
+``` `02`, `03` and `08` also need
 `metadata.tsv`: one row per library, with site and sample type.
 
 ## Provenance
 
-`figures_as_run.R` is the full R session code, deposited verbatim. Scripts
-`01`–`07` are extracted from it, with absolute paths replaced by
-`DATA` and `OUT` and nothing else changed; each script's header gives the line
-range it came from. The session file also contains superseded versions of some
-figures, a network analysis and Venn panels that are not in the manuscript, and
-a Colab notebook block that built the reference 16S tree. It is kept as the
-record of what was run.
-
-`08` to `13` were written after the
-session file, for the tests added in revision. `08` builds the Bray-Curtis
+Scripts `01`–`07` are taken from the R session code used for the paper, with
+absolute paths replaced by `DATA` and `OUT` and nothing else changed. `08` to
+`13` were written afterwards, for the tests added in revision. `08` builds the Bray-Curtis
 matrix exactly as `03` does. `09` needs the source-tracking FEAST from
 github.com/cozygene/FEAST, not the Bioconductor package of the same name.
 
-## Not in this folder
+## Related code outside this folder
 
 - The PERMANOVA reported in the manuscript was computed by
   `analysis/01_diversity_permanova.py`, with 9,999 permutations and sample type
-  permuted within site. The `adonis2` calls in `figures_as_run.R` use the
-  package defaults of 999 unrestricted permutations and are not the reported
-  test.
-- The blaCTX-M group 1 amplicon phylogeny is not in this folder. It is in
+  permuted within site. The `adonis2` calls in `02` and `03` use the package
+  defaults (999 unrestricted permutations) and are not the reported test.
+- The blaCTX-M group 1 amplicon phylogeny is in
   `analysis/phylogeny/ctxm/`, which has its own README: `run_all.sh`,
   `01_build_panel_and_tree.sh` for the allele panel, alignment and IQ-TREE run,
   `02_plot_complete_tree.R` and `03_plot_figure5c.R` for the figures. The alignment used for the tree, the

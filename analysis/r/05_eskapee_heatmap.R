@@ -2,13 +2,13 @@
 #
 # Heatmap of ESKAPEE species abundance by site and sample type.
 #
-# Extracted from r/figures_as_run.R, lines 81-178, which is the session code
-# deposited verbatim. Paths were made relative; nothing else was changed.
+# Taken from the R session code used for the paper; paths were made
+# relative and nothing else was changed.
 #
 # Run from the repository root:
-#   Rscript r/05_eskapee_heatmap.R
+#   Rscript analysis/r/05_eskapee_heatmap.R
 
-source("r/00_paths.R")
+source("analysis/r/00_paths.R")
 
 #Figure 10. Distribution of ESKAPEE pathogens along the river–estuary–sea continuum. 
 

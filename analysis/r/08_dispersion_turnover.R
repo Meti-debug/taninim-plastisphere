@@ -7,12 +7,12 @@
 # Reported in Results 3.2 and Supplementary-1.
 #
 # The count matrix, site relabelling and Bray-Curtis matrix are built exactly as
-# in r/03_beta_diversity_pcoa.R.
+# in analysis/r/03_beta_diversity_pcoa.R.
 #
 # Run from the repository root:
-#   Rscript r/08_dispersion_turnover.R
+#   Rscript analysis/r/08_dispersion_turnover.R
 
-source("r/00_paths.R")
+source("analysis/r/00_paths.R")
 
 library(vegan)
 library(dplyr)

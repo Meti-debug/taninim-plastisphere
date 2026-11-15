@@ -2,13 +2,13 @@
 #
 # Bray-Curtis dissimilarity, PCoA ordination and pairwise dissimilarity panels.
 #
-# Extracted from r/figures_as_run.R, lines 1436-1675, which is the session code
-# deposited verbatim. Paths were made relative; nothing else was changed.
+# Taken from the R session code used for the paper; paths were made
+# relative and nothing else was changed.
 #
 # Run from the repository root:
-#   Rscript r/03_beta_diversity_pcoa.R
+#   Rscript analysis/r/03_beta_diversity_pcoa.R
 
-source("r/00_paths.R")
+source("analysis/r/00_paths.R")
 
 library(vegan)
 library(ggplot2)
