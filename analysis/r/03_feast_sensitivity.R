@@ -23,7 +23,7 @@
 #   R2* = manuscript R1, R3* = manuscript R2, S1P4 = manuscript S1P1.
 #
 # Run from the repository root:
-#   Rscript analysis/r/09_feast_sensitivity.R
+#   Rscript analysis/r/03_feast_sensitivity.R
 
 source("analysis/r/00_paths.R")
 

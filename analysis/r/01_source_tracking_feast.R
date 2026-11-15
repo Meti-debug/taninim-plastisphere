@@ -6,7 +6,7 @@
 # relative and nothing else was changed.
 #
 # Run from the repository root:
-#   Rscript analysis/r/06_source_tracking_feast.R
+#   Rscript analysis/r/01_source_tracking_feast.R
 
 source("analysis/r/00_paths.R")
 

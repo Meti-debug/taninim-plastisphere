@@ -6,11 +6,11 @@
 # communities, and a check of the river or sea x sample type PERMANOVA.
 # Reported in Results 3.2 and Supplementary-1.
 #
-# The count matrix, site relabelling and Bray-Curtis matrix are built exactly as
-# in analysis/r/03_beta_diversity_pcoa.R.
+# The count matrix, site relabelling and Bray-Curtis matrix are built the same
+# way as for the PCoA in the paper (Bray-Curtis on species counts).
 #
 # Run from the repository root:
-#   Rscript analysis/r/08_dispersion_turnover.R
+#   Rscript analysis/r/02_dispersion_turnover.R
 
 source("analysis/r/00_paths.R")
 

@@ -1,7 +1,7 @@
 # FEAST source tracking at genus level
 #
 # Repeats the four primary source-sink scenarios and the eight S1 water source
-# pools of analysis/r/09_feast_sensitivity.R on genus-level counts, to test whether the
+# pools of analysis/r/03_feast_sensitivity.R on genus-level counts, to test whether the
 # attributions depend on species-level assignment. Species counts are summed by
 # genus; filtering, rarefaction to 91,000 reads (seed 42), the multiple-sink
 # configuration and seeds 1 to 5 are as at species level.
@@ -9,7 +9,7 @@
 # Sequencing labels: R2* = manuscript R1, R3* = manuscript R2, S1P4 = S1P1.
 #
 # Run from the repository root:
-#   Rscript analysis/r/11_feast_genus.R
+#   Rscript analysis/r/05_feast_genus.R
 
 source("analysis/r/00_paths.R")
 library(FEAST)

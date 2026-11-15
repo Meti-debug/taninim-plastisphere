@@ -44,18 +44,18 @@ Within each group the numeric prefix is the order.
 
 ### analysis/r
 
-Run in order from the repository root; each sources `analysis/r/00_paths.R`.
+FEAST source tracking and the dispersion and robustness tests, which are run in
+R. Each script runs on its own; see `analysis/r/README.md`.
 
 | script | what it produces |
 |---|---|
-| `02_alpha_diversity.R` | Shannon diversity per sample type, Wilcoxon tests |
-| `03_beta_diversity_pcoa.R` | Bray-Curtis, PCoA, pairwise dissimilarity panels |
-| `04_core_microbiome_heatmap.R` | the 15 most abundant consistently detected species |
-| `05_eskapee_heatmap.R` | ESKAPEE species abundance by site and sample type |
-| `06_source_tracking_feast.R` | FEAST source tracking and its stacked bars |
-| `07_itol_annotations.R` | iTOL annotation rings for the reference tree |
-
-See `analysis/r/README.md`.
+| `01_source_tracking_feast.R` | FEAST source tracking, four source-sink scenarios |
+| `02_dispersion_turnover.R` | betadisper dispersion and river-sea turnover tests |
+| `03_feast_sensitivity.R` | FEAST sensitivity for the S1 water sink |
+| `04_river_signature.R` | non-marine taxa in river-mouth water |
+| `05_feast_genus.R` | FEAST on genus-level counts |
+| `06_metric_robustness.R` | PERMANOVA and turnover under six distance measures |
+| `07_marine_site_comparison.R` | river signature at the river mouth versus the reference beach |
 
 ### analysis/phylogeny
 

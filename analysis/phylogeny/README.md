@@ -16,8 +16,8 @@ Or one step at a time:
 | build the species list and fetch one 16S sequence per species | `01_fetch_reference_16S.py` |
 | align, trim, infer the maximum-likelihood tree | `02_align_trim_tree.sh` |
 
-The iTOL annotation files for the paper figure are written by the R figure
-code, not from this folder.
+The tree was drawn and annotated in iTOL v6 (branch colours by site, inner ring
+by sample type, outer ring by family).
 
 `trim_alignment.py` is a helper: it runs the `trimal` binary when it is on PATH
 and pytrimal otherwise, because trimal is not packaged on Ubuntu 24.04.

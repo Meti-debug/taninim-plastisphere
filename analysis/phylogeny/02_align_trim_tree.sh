@@ -64,4 +64,4 @@ echo "== IQ-TREE"
 
 [ -s "${PREFIX}.treefile" ] || { echo "no tree produced - see ${PREFIX}.log"; exit 1; }
 echo "tree: ${PREFIX}.treefile"
-echo "next: python analysis/phylogeny/03_itol_annotations.py"
+echo "next: open output/phylo_tree.treefile in iTOL (itol.embl.de)"
