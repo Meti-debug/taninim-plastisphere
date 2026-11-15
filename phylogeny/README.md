@@ -29,7 +29,7 @@ sudo apt-get install -y mafft iqtree
 pip install biopython pandas numpy pytrimal
 ```
 
-## What this tree is, and what it is not
+## What this tree is
 
 The tips are **reference 16S sequences downloaded from NCBI for each species
 name detected in this study**. They are not the reads from these libraries.
