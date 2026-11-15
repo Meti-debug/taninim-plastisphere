@@ -16,7 +16,7 @@ Or one step at a time:
 | build the species list and fetch one 16S sequence per species | `01_fetch_reference_16S.py` |
 | align, trim, infer the maximum-likelihood tree | `02_align_trim_tree.sh` |
 
-The iTOL annotation files for the published figure are written by the R figure
+The iTOL annotation files for the paper figure are written by the R figure
 code, not from this folder.
 
 `trim_alignment.py` is a helper: it runs the `trimal` binary when it is on PATH

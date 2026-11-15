@@ -88,7 +88,7 @@ def label(cx, cy, text, size, color=BLK, bold=False):
 
 
 def pct_str(n, total):
-    """two significant figures, as in the published figure: 17%, 2.3%, 0.068%"""
+    """two significant figures, as in the paper figure: 17%, 2.3%, 0.068%"""
     if n == 0:
         return "(0%)"
     return f"({100 * n / total:.2g}%)"

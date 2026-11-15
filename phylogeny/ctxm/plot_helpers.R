@@ -4,7 +4,7 @@
 #   source("phylogeny/ctxm/plot_helpers.R")
 # =============================================================================
 
-# Gene names in journal style: italic "bla", subscript allele.
+# Gene names as in the paper: italic "bla", subscript allele.
 #   "blaCTX-M-36"                 -> italic bla, subscript CTX-M-36
 #   "blaCTX-M-15 group (n = 56)"  -> the same, followed by " group (n = 56)"
 #   anything without a bla prefix -> plain text

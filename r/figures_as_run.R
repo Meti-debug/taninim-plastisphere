@@ -4077,7 +4077,7 @@ Circular dataset label: Yes
 Cover Setting (Colored ranges panel)
 Cover: Full (to fill clade sectors with solid color)
 Export
-Format: SVG or PDF for publication quality
+Format: SVG or PDF for the paper figure
 This is everything applied in sequence to produce the final figure!
 Sonnet 4.6
 
