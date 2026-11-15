@@ -32,13 +32,16 @@ METHOD
                      Two models are fitted, matching the two reported in the
                      manuscript.  The first is station then sample type, and
                      gives the station and sample-type terms.  The second is
-                     river-or-sea, then sample type, then their interaction,
-                     and gives the interaction term only.
+                     station + sample type + river-or-sea x sample type, and
+                     gives the interaction term only.
                      For the sample-type term, permutations are restricted to
                      within station: the three plastic and three water
                      replicates are exchanged with each other but not across
-                     stations.  The station term and the interaction term use
-                     unrestricted permutations of the combined labels.
+                     stations.  The station term uses unrestricted
+                     permutations.  The interaction is tested by permuting
+                     residuals of the model without it (Freedman-Lane), within
+                     station.  With two stations per region, it describes these
+                     four stations, not river versus sea in general.
 
 The p-VALUEs
     With four stations x two types x three replicates the permutable space is
@@ -164,8 +167,39 @@ pf_type = permanova_term([site, typ], 1, restrict=site, nperm=9999)
 print("panel F  site :", {k: round(v, 4) for k, v in pf_site.items()})
 print("panel F  type :", {k: round(v, 4) for k, v in pf_type.items()})
 
-ph_int = permanova_term([hab, typ, np.char.add(np.char.add(hab, "_"), typ)], 2,
-                        restrict=None, nperm=9999)
+def permanova_fl(reduced, full, restrict, nperm=9999):
+    """Freedman-Lane test of the terms in `full` beyond `reduced`.
+
+    The residuals of the reduced model are permuted (rows and columns of the
+    residual Gower matrix), within levels of `restrict`, and the F statistic
+    for the added terms is recomputed on each permuted matrix
+    (Anderson & ter Braak 2003)."""
+    I = np.eye(n)
+    Hr, Hf = hat(*reduced), hat(*full)
+    df_t = np.linalg.matrix_rank(design(*full)) - np.linalg.matrix_rank(design(*reduced))
+    df_e = n - np.linalg.matrix_rank(design(*full))
+    def F(M):
+        num = np.trace((Hf - Hr) @ M @ (Hf - Hr)) / df_t
+        den = np.trace((I - Hf) @ M @ (I - Hf)) / df_e
+        return num / den
+    Fobs = F(G)
+    R = (I - Hr) @ G @ (I - Hr)
+    hits = 0
+    for _ in range(nperm):
+        idx = np.arange(n)
+        for s_ in np.unique(restrict):
+            k = np.where(restrict == s_)[0]
+            idx[k] = rng.permutation(k)
+        if F(R[np.ix_(idx, idx)]) >= Fobs - 1e-12:
+            hits += 1
+    ss_t = np.trace((Hf - Hr) @ G @ (Hf - Hr))
+    return dict(R2=float(ss_t / SST), F=float(Fobs), df=int(df_t), df_res=int(df_e),
+                p=(hits + 1) / (nperm + 1))
+
+# River-or-sea x sample type, conditional on the four sites: site absorbs the
+# region main effect, and the interaction is the one extra degree of freedom.
+hab_typ = np.char.add(np.char.add(hab, "_"), typ)
+ph_int = permanova_fl([site, typ], [site, typ, hab_typ], restrict=site, nperm=9999)
 print("panel H  habitat x type :", {k: round(v, 4) for k, v in ph_int.items()})
 
 # ---------- alpha per site -------------------------------------------------
