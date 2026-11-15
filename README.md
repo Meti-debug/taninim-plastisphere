@@ -105,6 +105,7 @@ the NCBI SRA under BioProject PRJNA1458552.
 | `data/counts.csv` | Kraken2/Bracken species counts from EPI2ME `wf-metagenomics`: `tax`, `genus`, `species`, then one column per library |
 | `data/otu_table.tsv` | 97% OTU x library read counts, 24 libraries |
 
-`counts.csv` carries the site labels used during sequencing, one position
-upstream of the manuscript labels; the scripts convert them on read. The OTU
-table uses manuscript labels.
+`counts.csv` is the EPI2ME `wf-metagenomics` species table
+(`Lig_wf-metagenomics-counts-species.csv`). Library columns may use the
+manuscript labels or the labels used during sequencing, which are one position
+upstream; the scripts recognise either. The OTU table uses manuscript labels.

@@ -8,7 +8,7 @@ WHAT IT DOES
     restricted the way this design requires.
 
     python analysis/01_diversity_permanova.py
-    python analysis/01_diversity_permanova.py raw   # Bray-Curtis on raw counts
+    python analysis/01_diversity_permanova.py relative   # Bray-Curtis on proportions
 
 INPUT
     data/counts.csv             Kraken2/Bracken species table (see README.md, Input tables).
@@ -22,8 +22,7 @@ OUTPUT
 
 METHOD
     Shannon          natural log, on species relative abundances, zeros dropped.
-    Bray-Curtis      sum|p_i - p_j| / sum(p_i + p_j) on relative abundances, so
-                     the 95,525-read library is not penalised for its depth.
+    Bray-Curtis      sum|x_i - x_j| / sum(x_i + x_j) on species read counts.
     PCoA             double-centred Gower matrix G = -0.5 * C D^2 C, symmetric
                      eigendecomposition, coordinates scaled by sqrt(eigenvalue);
                      negative eigenvalues are discarded, not corrected.
@@ -50,6 +49,7 @@ The p-VALUEs
     the smallest two-sided p obtainable at one station is 0.10.  That floor is
     a property of the design, not of the software.
 """
+import os
 import numpy as np, pandas as pd, itertools, json
 from scipy.stats import ttest_ind, mannwhitneyu
 
@@ -62,22 +62,23 @@ import sys
 # in README.md (Input tables).
 k = pd.read_csv("data/counts.csv")
 ks = [c for c in k.columns if c[0] in "RS" and len(c) == 4]
-ren = {}
-for c in ks:
-    n_ = "R1" + c[2:] if c.startswith("R2") else "R2" + c[2:] if c.startswith("R3") else c
-    ren[c] = "S1P1" if n_ == "S1P4" else n_
+# Sequencing labels (R2 = R1, R3 = R2, S1P4 = S1P1) are converted to manuscript
+# labels; a table that already has manuscript labels is used as it is.
+ren = dict((c, c) for c in ks)
+if any(c.startswith("R3") for c in ks):
+    for c in ks:
+        n_ = "R1" + c[2:] if c.startswith("R2") else "R2" + c[2:] if c.startswith("R3") else c
+        ren[c] = "S1P1" if n_ == "S1P4" else n_
 K = k[ks].fillna(0).copy(); K.columns = [ren[c] for c in ks]
 sm = sorted(K.columns)
 assert len(sm) == 24, f"expected 24 libraries, found {len(sm)}"
 rel = K[sm].to_numpy(float).T
 SOURCE = "Kraken2/Bracken"
 print(f"classifier: {SOURCE}")
-# Bray-Curtis input. "relative" (default): proportions, so library depth does
-# not enter the distance. "raw": read counts as they are, which is what
-# vegan::vegdist(t(counts), "bray") computes and what the original Figure 3
-# used; with unequal library depth it inflates the distance between shallow
-# and deep libraries.
-BC_INPUT = "raw" if "raw" in sys.argv[1:] else "relative"
+# Bray-Curtis input. "raw" (default): read counts, as in the paper and as
+# vegan::vegdist(t(counts), "bray") computes. "relative": proportions of each
+# library, so library depth does not enter the distance.
+BC_INPUT = "relative" if "relative" in sys.argv[1:] else "raw"
 counts_ = rel.copy()
 rel = rel / rel.sum(1, keepdims=True)
 X_BC = counts_ if BC_INPUT == "raw" else rel
@@ -302,6 +303,7 @@ for s1, s2 in pairs:
         hh[f"{s1}-{s2}|{t_}"] = [BC[i, j] for i, j in itertools.combinations(range(n), 2)
                                  if typ[i] == typ[j] == t_ and {site[i], site[j]} == {s1, s2}]
 
+os.makedirs("output", exist_ok=True)
 json.dump(dict(source=SOURCE, sample=sm, site=site.tolist(), type=typ.tolist(), hab=hab.tolist(),
                shannon=H.tolist(), alpha=alpha,
                pcoa=dict(x=CO[:, 0].tolist(), y=CO[:, 1].tolist(),

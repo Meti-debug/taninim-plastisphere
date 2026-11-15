@@ -27,14 +27,14 @@ from scipy.stats import mannwhitneyu, ttest_ind
 
 SITES = ["R1", "R2", "S1", "Sc"]
 
-# Species in Fig. 5A, written as in the figure. Each is matched to one species
-# in the table by genus initial and epithet; an ambiguous or missing match stops
-# the script rather than guessing.
-FIG5A = ["L. clemsonensis", "L. pneumophila", "L. spiritensis",
-         "A. haemolyticus", "A. caviae", "A. dhakensis", "A. hydrophila",
-         "A. media", "A. salmonicida", "A. veronii", "K. oxytoca",
-         "A. baumannii", "K. pneumoniae", "P. aeruginosa", "S. aureus",
-         "E. coli"]
+# Species in Fig. 5A, in figure order.
+FIG5A = ["Legionella clemsonensis", "Legionella pneumophila",
+         "Legionella spiritensis", "Acinetobacter haemolyticus",
+         "Aeromonas caviae", "Aeromonas dhakensis", "Aeromonas hydrophila",
+         "Aeromonas media", "Aeromonas salmonicida", "Aeromonas veronii",
+         "Klebsiella oxytoca", "Acinetobacter baumannii",
+         "Klebsiella pneumoniae", "Pseudomonas aeruginosa",
+         "Staphylococcus aureus", "Escherichia coli"]
 ESKAPEE_SPECIES = ["Enterococcus faecium", "Staphylococcus aureus",
                    "Klebsiella pneumoniae", "Acinetobacter baumannii",
                    "Pseudomonas aeruginosa", "Escherichia coli"]
@@ -43,10 +43,13 @@ ESKAPEE_GENERA = ["Enterobacter"]
 # --- table, with sequencing labels converted to manuscript labels ------------
 k = pd.read_csv("data/counts.csv")
 libs = [c for c in k.columns if c[0] in "RS" and len(c) == 4]
-ren = {}
-for c in libs:
-    n_ = "R1" + c[2:] if c.startswith("R2") else "R2" + c[2:] if c.startswith("R3") else c
-    ren[c] = "S1P1" if n_ == "S1P4" else n_
+# Sequencing labels (R2 = R1, R3 = R2, S1P4 = S1P1) are converted to manuscript
+# labels; a table that already has manuscript labels is used as it is.
+ren = dict((c, c) for c in libs)
+if any(c.startswith("R3") for c in libs):
+    for c in libs:
+        n_ = "R1" + c[2:] if c.startswith("R2") else "R2" + c[2:] if c.startswith("R3") else c
+        ren[c] = "S1P1" if n_ == "S1P4" else n_
 X = k[libs].fillna(0).astype(float)
 X.columns = [ren[c] for c in libs]
 X = X[sorted(X.columns)]
@@ -67,19 +70,11 @@ def bh(p):
     return out
 
 
-def resolve(short):
-    g, ep = short.split(". ")
-    hit = species[(species.str.split().str[0].str[0] == g) &
-                  (species.str.split().str[1] == ep)].unique()
-    if len(hit) != 1:
-        raise SystemExit(f"{short}: {len(hit)} matches in counts.csv {list(hit)}")
-    return hit[0]
-
-
 # --- Fig. 5A ------------------------------------------------------------------
 rows = []
-for short in FIG5A:
-    name = resolve(short)
+for name in FIG5A:
+    if not (species == name).any():
+        raise SystemExit(f"{name} not found in counts.csv")
     ra = X[species == name].sum(axis=0) / total * 100
     a, b = ra[P].to_numpy(), ra[W].to_numpy()
     rows.append(dict(species=name, mean_plastic_pct=a.mean(), mean_water_pct=b.mean(),

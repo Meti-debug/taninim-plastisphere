@@ -15,7 +15,7 @@ suppressMessages(library(vegan))
 set.seed(42)
 NPERM <- 9999
 
-x <- read.csv(file.path(DATA, "counts.csv"), check.names = FALSE)
+x <- seq_labels(read.csv(file.path(DATA, "counts.csv"), check.names = FALSE))
 tax <- intersect(c("total", "kingdom", "phylum", "class", "order", "family",
                    "genus", "tax", "superkingdom", "species"), colnames(x))
 m <- as.matrix(x[, setdiff(colnames(x), tax)]); m[is.na(m)] <- 0

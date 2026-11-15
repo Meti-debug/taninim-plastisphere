@@ -19,7 +19,7 @@
 # five times with seeds 1 to 5. Contributions are summed over the source
 # replicates of an environment, then summarised over 3 sinks x 5 runs.
 #
-# Sample names in counts.csv use the sequencing labels:
+# Sample names are handled as sequencing labels (see 00_paths.R):
 #   R2* = manuscript R1, R3* = manuscript R2, S1P4 = manuscript S1P1.
 #
 # Run from the repository root:
@@ -37,7 +37,7 @@ DEPTH <- 91000
 RUNS  <- 1:5
 
 # -- 1. Count matrix, samples x species ----------------------------------------
-counts_raw <- read.csv(counts_file, check.names = FALSE)
+counts_raw <- seq_labels(read.csv(counts_file, check.names = FALSE))
 tax_cols <- intersect(
   c("total", "kingdom", "phylum", "class", "order", "family", "genus", "tax",
     "superkingdom"), colnames(counts_raw))

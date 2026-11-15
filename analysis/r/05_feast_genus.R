@@ -20,7 +20,7 @@ DEPTH <- 91000
 RUNS  <- 1:5
 
 # -- 1. Genus x sample counts ---------------------------------------------------
-counts_raw <- read.csv(file.path(DATA, "counts.csv"), check.names = FALSE)
+counts_raw <- seq_labels(read.csv(file.path(DATA, "counts.csv"), check.names = FALSE))
 tax_cols <- intersect(c("total", "kingdom", "phylum", "class", "order", "family",
                         "genus", "tax", "superkingdom", "species"), colnames(counts_raw))
 mat <- as.matrix(counts_raw[, setdiff(colnames(counts_raw), tax_cols)])

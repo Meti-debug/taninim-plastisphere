@@ -18,8 +18,8 @@ library(tibble)
 cat("Libraries loaded\n")
 
 # --- Step 2: Load data ---
-counts_raw <- read_csv(file.path(DATA, "counts.csv"),
-                       show_col_types = FALSE)
+counts_raw <- seq_labels(read_csv(file.path(DATA, "counts.csv"),
+                       show_col_types = FALSE))
 meta       <- read.delim(file.path(DATA, "metadata.tsv"),
                          header = TRUE, stringsAsFactors = FALSE)
 

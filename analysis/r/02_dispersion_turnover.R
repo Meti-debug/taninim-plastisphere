@@ -25,9 +25,9 @@ meta <- read.table(
   file.path(DATA, "metadata.tsv"),
   header = TRUE, sep = "\t", stringsAsFactors = FALSE)
 
-sp_tab <- read.csv(
+sp_tab <- seq_labels(read.csv(
   file.path(DATA, "counts.csv"),
-  header = TRUE, check.names = FALSE)
+  header = TRUE, check.names = FALSE))
 
 sp_counts <- sp_tab[, meta$SampleID]
 rownames(sp_counts) <- sp_tab$species

@@ -14,7 +14,7 @@
 source("analysis/r/00_paths.R")
 DEPTH <- 91000
 
-counts_raw <- read.csv(file.path(DATA, "counts.csv"), check.names = FALSE)
+counts_raw <- seq_labels(read.csv(file.path(DATA, "counts.csv"), check.names = FALSE))
 tax_cols <- intersect(c("total", "kingdom", "phylum", "class", "order", "family",
                         "genus", "tax", "superkingdom"), colnames(counts_raw))
 mat <- as.matrix(counts_raw[, setdiff(colnames(counts_raw), c(tax_cols, "species"))])
