@@ -14,8 +14,8 @@ study consensus sequences + curated group 1 references + group 9 outgroup
 | script | what it does | output |
 |---|---|---|
 | `01_build_panel_and_tree.sh` | curates the reference panel, aligns, cuts to the window, collapses identical alleles, infers the tree | `output/ctxm/` |
-| `02_plot_complete_tree.R` | complete tree with all tips and support values | `figures/Figure_CTXM_sample_tree.pdf/.png` |
-| `03_plot_figure5c.R` | Figure 5C, the tree pruned to the tips in `figure5c_tips.txt` | `figures/Figure5C_CTXM.pdf/.png` |
+| `02_plot_complete_tree.R` | complete tree with all tips and support values | `output/figures/Figure_CTXM_sample_tree.pdf/.png` |
+| `03_plot_figure5c.R` | Figure 5C, the tree pruned to the tips in `figure5c_tips.txt` | `output/figures/Figure5C_CTXM.pdf/.png` |
 | `plot_helpers.R` | functions shared by the two plotting scripts | |
 | `run_all.sh` | runs all three in order | |
 

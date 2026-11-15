@@ -11,11 +11,10 @@ WHAT IT DOES
     python analysis/01_diversity_permanova.py raw   # Bray-Curtis on raw counts
 
 INPUT
-    data/counts.csv             Kraken2/Bracken species table, written by
-                                preprocessing/02_epi2me_counts_to_table.py.
+    data/counts.csv             Kraken2/Bracken species table (see data/README.md).
 
 OUTPUT
-    output/fig3.json            everything the figure script needs: per-sample
+    output/fig3.json            the Fig. 3 statistics: per-sample
                                 Shannon, PCoA coordinates and explained
                                 variance, PERMANOVA table, and the
                                 within/between-group Bray-Curtis distributions

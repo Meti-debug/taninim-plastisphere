@@ -3,7 +3,7 @@ Sensitivity of the OTU results to the OTU-discovery subsampling depth.
 
 Usage: python analysis/04_discovery_depth_sensitivity.py TABLE_A TABLE_B [LABEL_A LABEL_B]
 
-Each TABLE is an otu_table.tsv from preprocessing/03_otu97_pipeline.sh run with a
+Each TABLE is an otu_table.tsv built with a
 different BUILD_N (reads per library used to build the OTUs). Every other
 parameter must be identical, so the only variable is discovery depth.
 

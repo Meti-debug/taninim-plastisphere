@@ -19,5 +19,5 @@ bash phylogeny/02_align_trim_tree.sh
 
 echo
 echo "tree      output/phylo_tree.treefile"
-echo "rings     written by figures/fig4c_itol_annotations.R"
+echo "rings     written by r/07_itol_annotations.R"
 echo "deposit   output/phylo_tip_provenance.csv"

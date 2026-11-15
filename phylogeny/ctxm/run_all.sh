@@ -11,7 +11,7 @@ set -euo pipefail
 : "${CTXM_DATA:?export CTXM_DATA to the directory holding refs/ and consensus/}"
 
 WORK="${CTXM_WORK:-output/ctxm}"
-mkdir -p "$WORK" figures
+mkdir -p "$WORK" output/figures
 
 echo "== 1/2  curating the panel, aligning, inferring the tree"
 bash phylogeny/ctxm/01_build_panel_and_tree.sh
@@ -25,5 +25,5 @@ echo "tree      $WORK/ctxm_group1.treefile"
 echo "report    $WORK/ctxm_group1.iqtree"
 echo "versions  $WORK/ctxm_versions.txt"
 echo "collapse  $WORK/haplotype_collapse.tsv"
-echo "figures   figures/Figure_CTXM_sample_tree.pdf  (complete tree)"
-echo "          figures/Figure5C_CTXM.pdf            (Figure 5C)"
+echo "figures   output/figures/Figure_CTXM_sample_tree.pdf  (complete tree)"
+echo "          output/figures/Figure5C_CTXM.pdf            (Figure 5C)"

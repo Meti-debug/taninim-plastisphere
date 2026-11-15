@@ -2,10 +2,10 @@
 
 Place these in `data/` before running anything.
 
-| file | contents | written by |
-|---|---|---|
-| `counts.csv` | Kraken2/Bracken species counts: `tax`, `genus`, `species`, then one column per library | `preprocessing/02_epi2me_counts_to_table.py` |
-| `otu_table.tsv` | 97% OTU x library read counts, 24 libraries | `preprocessing/03_otu97_pipeline.sh` |
+| file | contents |
+|---|---|
+| `counts.csv` | Kraken2/Bracken species counts from EPI2ME `wf-metagenomics`: `tax`, `genus`, `species`, then one column per library |
+| `otu_table.tsv` | 97% OTU x library read counts, 24 libraries |
 
 Both are deposited with the manuscript as Supplementary Data. Raw reads are in
 the NCBI SRA under BioProject PRJNA1458552.

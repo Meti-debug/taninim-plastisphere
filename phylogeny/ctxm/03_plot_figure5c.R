@@ -30,7 +30,7 @@ suppressPackageStartupMessages({
 
 TREE    <- Sys.getenv("CTXM_TREE",   "output/ctxm/ctxm_group1.treefile")
 TIPS    <- Sys.getenv("CTXM_TIPS",   "phylogeny/ctxm/figure5c_tips.txt")
-OUTDIR  <- Sys.getenv("CTXM_OUTDIR", "figures")
+OUTDIR  <- Sys.getenv("CTXM_OUTDIR", "output/figures")
 FIG_W   <- as.numeric(Sys.getenv("CTXM_W", "6.5"))
 FIG_H   <- as.numeric(Sys.getenv("CTXM_H", "2.8"))
 HAPNAME <- Sys.getenv("CTXM_HAPNAME", "blaCTX-M-177-like Taninim Haplotype")

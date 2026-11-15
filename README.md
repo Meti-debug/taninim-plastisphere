@@ -23,15 +23,14 @@ Two independent routes through the data, kept separate throughout:
 ## Layout
 
 ```
-preprocessing/   reads -> abundance tables (see its own README)
-analysis/        Python statistics; writes intermediates to output/
-figures/         Python plot scripts, and the CTX-M figure files
+analysis/        Python statistics; writes results to output/
 r/               R analyses and figures, one script per analysis
 phylogeny/       reference 16S tree, and blaCTX-M group 1 amplicon tree in
                  phylogeny/ctxm/ (each has its own README)
 data/            the input tables (not tracked; see data/README.md)
 output/          everything generated; only output/ctxm/ is tracked (the
-                 deposited CTX-M alignment, tree and IQ-TREE report)
+                 CTX-M alignment, tree and IQ-TREE report); figures are
+                 written to output/figures/
 ```
 
 Scripts use paths relative to the repository root, so run them from there:
@@ -39,7 +38,6 @@ Scripts use paths relative to the repository root, so run them from there:
 ```bash
 mkdir -p output
 python analysis/01_diversity_permanova.py
-python figures/fig3_diversity_permanova.py
 ```
 
 ## Requirements
@@ -49,27 +47,16 @@ python >= 3.11        R >= 4.4
 numpy >= 2.0          ggplot2 >= 3.5
 pandas >= 2.0         pheatmap >= 1.0.12
 scipy >= 1.11         dplyr, tidyr, scales
-matplotlib >= 3.8
 biopython >= 1.83     (phylogeny only)
 ```
 
 External tools, for `phylogeny/` only: MAFFT v7, trimAl, IQ-TREE 2 v2.3.5.
-The OTU pipeline needs VSEARCH v2.32.0.
 
 Figure scripts use the Liberation Sans font.
 
 ## Which script produces what
 
-`analysis/` writes the intermediates that `figures/` reads, so analysis comes
-first. Within each group the numeric prefix is the order.
-
-### preprocessing
-
-| script | what it does |
-|---|---|
-| `01_epi2me_kraken2.md` | record of the EPI2ME run: workflow version, database and every parameter |
-| `02_epi2me_counts_to_table.py` | EPI2ME species counts -> `data/counts.csv` |
-| `03_otu97_pipeline.sh` | quality filter, consensus clustering, chimera removal, mapping -> `otus.fasta`, `otu_table.tsv` |
+Within each group the numeric prefix is the order.
 
 ### analysis
 
@@ -79,13 +66,6 @@ first. Within each group the numeric prefix is the order.
 | `02_core_taxa.py` | core taxa per habitat and sample type, and core retention from river to sea with its permutation test | `data/counts.csv` |
 | `03_four_site_persistence.py` | OTUs present at all four sites, plastic vs planktonic, with its permutation test | an `otu_table.tsv` |
 | `04_discovery_depth_sensitivity.py` | side-by-side comparison of two OTU tables built at different discovery depths | two `otu_table.tsv` |
-
-### figures
-
-| script | what it draws | reads |
-|---|---|---|
-| `fig3_diversity_permanova.py` | diversity, ordination, Bray–Curtis structure | `01` |
-| `fig4ab_venn_otu.py` | shared and unique OTUs, by site and by sample type | an `otu_table.tsv` |
 
 ### r
 
@@ -115,8 +95,8 @@ The tree is deposited in `output/ctxm/`, so the figures can be redrawn without
 re-running IQ-TREE. From the repository root:
 
 ```bash
-Rscript phylogeny/ctxm/02_plot_complete_tree.R   # figures/Figure_CTXM_sample_tree.pdf/.png
-Rscript phylogeny/ctxm/03_plot_figure5c.R        # figures/Figure5C_CTXM.pdf/.png
+Rscript phylogeny/ctxm/02_plot_complete_tree.R   # output/figures/Figure_CTXM_sample_tree.pdf/.png
+Rscript phylogeny/ctxm/03_plot_figure5c.R        # output/figures/Figure5C_CTXM.pdf/.png
 ```
 
 Panel C as placed in the composite Figure 5 (1758 x 1044 px at 600 dpi, text
@@ -141,18 +121,6 @@ CTXM_TREE_FR=0.40 CTXM_ROOT_LEN=0.013 Rscript phylogeny/ctxm/03_plot_figure5c.R
 R packages: ggtree, treeio, ape, ggplot2, dplyr (see `phylogeny/ctxm/README.md`
 for a conda command). Re-running `01` needs the raw consensus and reference
 sequences, `export CTXM_DATA=...`, then `bash phylogeny/ctxm/run_all.sh`.
-
-## Reproducing the OTU table
-
-```bash
-IN_DIR=path/to/fastq OUT_DIR=otu97_25k BUILD_N=25000 \
-  bash preprocessing/03_otu97_pipeline.sh
-```
-
-`BUILD_N` is the number of quality-filtered reads per library pooled to
-construct the OTU set. The reported analysis uses 25,000; the sensitivity run
-uses 10,000. Every other parameter is identical between the two, so discovery
-depth is the only variable. `04_discovery_depth_sensitivity.py` compares them.
 
 ## Data
 

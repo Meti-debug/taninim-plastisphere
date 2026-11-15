@@ -28,7 +28,7 @@ suppressPackageStartupMessages({
 `%||%` <- function(a, b) if (is.null(a)) b else a
 
 TREE   <- Sys.getenv("CTXM_TREE",   "output/ctxm/ctxm_group1.treefile")
-OUTDIR <- Sys.getenv("CTXM_OUTDIR", "figures")
+OUTDIR <- Sys.getenv("CTXM_OUTDIR", "output/figures")
 
 DROP_OUTGROUP <- FALSE           # FALSE = show the group-9 outgroup
 
