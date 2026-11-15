@@ -39,6 +39,7 @@ Within each group the numeric prefix is the order.
 | `02_core_taxa.py` | core taxa per habitat and sample type, and core retention from river to sea with its permutation test | `data/counts.csv` |
 | `03_four_site_persistence.py` | OTUs present at all four sites, plastic vs planktonic, with its permutation test | an `otu_table.tsv` |
 | `04_discovery_depth_sensitivity.py` | side-by-side comparison of two OTU tables built at different discovery depths | two `otu_table.tsv` |
+| `05_pathogen_tests.py` | Fig. 5A Mann–Whitney U with BH correction per species; Fig. 5B ESKAPEE CPM, Welch per site and Wilcoxon rank-sum overall | `data/counts.csv` |
 
 ### analysis/r
 
