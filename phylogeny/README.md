@@ -5,7 +5,7 @@
 Everything at once, from the repository root:
 
 ```bash
-export NCBI_EMAIL=you@example.org
+export NCBI_EMAIL=metigizawmaranata@gmail.com
 bash phylogeny/run_all.sh
 ```
 
@@ -34,18 +34,10 @@ pip install biopython pandas numpy pytrimal
 The tips are **reference 16S sequences downloaded from NCBI for each species
 name detected in this study**. They are not the reads from these libraries.
 
-This distinction has to be explicit in the figure caption. A reader who sees a
-tree in a 16S paper will assume the sequences came from the samples, and a
-reviewer who discovers otherwise mid-review will treat it as a misrepresentation
-rather than a design choice. The honest wording is along the lines of:
-*"Reference 16S rRNA sequences (NCBI) for the N most abundant species detected,
+Reference 16S rRNA sequences (NCBI) for the N most abundant species detected,
 aligned with MAFFT and trimmed with trimAl; maximum-likelihood tree inferred
 with IQ-TREE under GTR+G with 1,000 ultrafast bootstrap replicates. Rings show
-phylum, dominant substrate, and ESKAPEE membership."*
-
-The tree therefore shows how the detected taxa are related to one another. It
-does not show strain-level relationships within this dataset, and nothing in it
-can support a claim about which lineages were transported along the transect.
+phylum, dominant.
 
 ## Reproducibility: the accession table
 
@@ -58,9 +50,8 @@ can support a claim about which lineages were transported along the transect.
 | `fetched_as` | `species` or `genus_fallback` |
 | `retrieved_title` | the record's own description |
 
-**Deposit this table.** The searches use `sort="relevance"`, so NCBI can return
-a different top hit next year; without the accessions the tree cannot be
-rebuilt, by a reviewer or by you.
+without the accessions the tree cannot be
+rebuilt.
 
 ## The genus fallback, and why the table matters
 
