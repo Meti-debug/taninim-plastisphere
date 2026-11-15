@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Build the reference 16S tree end-to-end.
 #
-#   bash phylogeny/run_all.sh
+#   bash analysis/phylogeny/run_all.sh
 #
 # Run from the repository root, with data/counts.csv in place and
 # the IQ-TREE run.
@@ -12,10 +12,10 @@ set -euo pipefail
 mkdir -p output
 
 echo "== 1/2  retrieving reference sequences"
-python3 phylogeny/01_fetch_reference_16S.py
+python3 analysis/phylogeny/01_fetch_reference_16S.py
 
 echo "== 2/2  aligning and inferring the tree"
-bash phylogeny/02_align_trim_tree.sh
+bash analysis/phylogeny/02_align_trim_tree.sh
 
 echo
 echo "tree      output/phylo_tree.treefile"

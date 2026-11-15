@@ -11,7 +11,7 @@ WHAT IT DOES
     python analysis/01_diversity_permanova.py raw   # Bray-Curtis on raw counts
 
 INPUT
-    data/counts.csv             Kraken2/Bracken species table (see data/README.md).
+    data/counts.csv             Kraken2/Bracken species table (see README.md, Input tables).
 
 OUTPUT
     output/fig3.json            the Fig. 3 statistics: per-sample
@@ -61,7 +61,7 @@ SITES = ["R1", "R2", "S1", "Sc"]
 import sys
 # The Kraken2/Bracken table carries the station labels used during
 # sequencing: R2 -> R1, R3 -> R2, and S1P4 -> S1P1.  The mapping is recorded
-# in data/README.md.
+# in README.md (Input tables).
 k = pd.read_csv("data/counts.csv")
 ks = [c for c in k.columns if c[0] in "RS" and len(c) == 4]
 ren = {}

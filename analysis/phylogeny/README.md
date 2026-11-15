@@ -6,7 +6,7 @@ Everything at once, from the repository root:
 
 ```bash
 export NCBI_EMAIL=metigizawmaranata@gmail.com
-bash phylogeny/run_all.sh
+bash analysis/phylogeny/run_all.sh
 ```
 
 Or one step at a time:

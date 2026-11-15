@@ -9,7 +9,7 @@
 #         output/phylo_tree.log                 full IQ-TREE log
 #         output/phylo_versions.txt             tool versions for the Methods
 #
-# Run from the repository root:  bash phylogeny/02_align_trim_tree.sh
+# Run from the repository root:  bash analysis/phylogeny/02_align_trim_tree.sh
 #
 # Requires mafft, trimal and iqtree (or iqtree2) on PATH:
 #   apt-get install -y mafft trimal iqtree
@@ -24,7 +24,7 @@ TRIM=output/phylo_trimmed.fasta
 PREFIX=output/phylo_tree
 THREADS=AUTO               # IQ-TREE threads
 MTHREADS=8                 # MAFFT threads
-MODEL=GTR+G                  # consider MFP (ModelFinder); see phylogeny/README.md
+MODEL=GTR+G                  # consider MFP (ModelFinder); see analysis/phylogeny/README.md
 BOOTSTRAP=1000               # ultrafast bootstrap
 
 [ -s "$RAW" ] || { echo "missing $RAW - run 01_fetch_reference_16S.py first"; exit 1; }
@@ -55,7 +55,7 @@ grep -c '^>' "$ALN" | xargs echo "  sequences aligned:"
 # fell through silently, which would leave the Methods describing a trimming
 # step that never ran.
 echo "== trimAl (automated1)"
-python3 phylogeny/trim_alignment.py "$ALN" "$TRIM"
+python3 analysis/phylogeny/trim_alignment.py "$ALN" "$TRIM"
 [ -s "$TRIM" ] || { echo "trimming produced no output"; exit 1; }
 
 # ---- infer ------------------------------------------------------------------
@@ -64,4 +64,4 @@ echo "== IQ-TREE"
 
 [ -s "${PREFIX}.treefile" ] || { echo "no tree produced - see ${PREFIX}.log"; exit 1; }
 echo "tree: ${PREFIX}.treefile"
-echo "next: python phylogeny/03_itol_annotations.py"
+echo "next: python analysis/phylogeny/03_itol_annotations.py"

@@ -2,12 +2,12 @@
 # =============================================================================
 # Figure 5C: CTX-M group 1 amplicon tree, pruned to a panel.
 #
-#   Rscript phylogeny/ctxm/03_plot_figure5c.R
+#   Rscript analysis/phylogeny/ctxm/03_plot_figure5c.R
 #
 # Inputs, all in the repository:
 #   output/ctxm/ctxm_group1.treefile     the deposited IQ-TREE tree
 #   output/ctxm/haplotype_collapse.tsv   members of each collapsed reference tip
-#   phylogeny/ctxm/figure5c_tips.txt     which tips the panel draws
+#   analysis/phylogeny/ctxm/figure5c_tips.txt     which tips the panel draws
 #
 # Steps, in this order:
 #   1. Root on the group 9 outgroup.
@@ -29,7 +29,7 @@ suppressPackageStartupMessages({
 })
 
 TREE    <- Sys.getenv("CTXM_TREE",   "output/ctxm/ctxm_group1.treefile")
-TIPS    <- Sys.getenv("CTXM_TIPS",   "phylogeny/ctxm/figure5c_tips.txt")
+TIPS    <- Sys.getenv("CTXM_TIPS",   "analysis/phylogeny/ctxm/figure5c_tips.txt")
 OUTDIR  <- Sys.getenv("CTXM_OUTDIR", "output/figures")
 FIG_W   <- as.numeric(Sys.getenv("CTXM_W", "6.5"))
 FIG_H   <- as.numeric(Sys.getenv("CTXM_H", "2.8"))
@@ -42,7 +42,7 @@ TXT     <- as.numeric(Sys.getenv("CTXM_TEXT", "1"))
 TREE_FR <- as.numeric(Sys.getenv("CTXM_TREE_FR", "0.42"))
 STEMNAME <- Sys.getenv("CTXM_STEM", "Figure5C_CTXM")
 
-source("phylogeny/ctxm/plot_helpers.R")
+source("analysis/phylogeny/ctxm/plot_helpers.R")
 OGPAT <- "^blaCTX-M-(14|27|65)(_and_[0-9]+_more)?$"
 
 # --- 1-2. full tree: root, collapse --------------------------------------------

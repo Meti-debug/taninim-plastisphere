@@ -24,7 +24,7 @@ Rscript r/01_chromagar_colonies.R
 | `12_metric_robustness.R` | river or sea x sample type PERMANOVA and turnover test under six distance measures (Supplementary-1) |
 | `13_marine_site_comparison.R` | river signature at the river mouth versus the reference beach, for plastic and water (Results 3.2) |
 
-Inputs are described in `data/README.md`. `02`, `03` and `08` also need
+Inputs are described in the top-level `README.md`. `02`, `03` and `08` also need
 `metadata.tsv`: one row per library, with site and sample type.
 
 ## Provenance
@@ -50,7 +50,7 @@ github.com/cozygene/FEAST, not the Bioconductor package of the same name.
   package defaults of 999 unrestricted permutations and are not the reported
   test.
 - The blaCTX-M group 1 amplicon phylogeny is not in this folder. It is in
-  `phylogeny/ctxm/`, which has its own README: `run_all.sh`,
+  `analysis/phylogeny/ctxm/`, which has its own README: `run_all.sh`,
   `01_build_panel_and_tree.sh` for the allele panel, alignment and IQ-TREE run,
-  and `02` to `06` for the figure panels. The alignment used for the tree, the
+  `02_plot_complete_tree.R` and `03_plot_figure5c.R` for the figures. The alignment used for the tree, the
   treefile and the allele collapse table are in `output/ctxm/`.

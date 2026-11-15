@@ -17,7 +17,7 @@
 # Run from the repository root:
 #
 #   export CTXM_DATA=/path/to/recovered_ctxm/analysis
-#   bash phylogeny/ctxm/01_build_panel_and_tree.sh
+#   bash analysis/phylogeny/ctxm/01_build_panel_and_tree.sh
 #
 # Requires mafft, iqtree2 and seqkit on PATH, plus biopython:
 #   conda create -n phylo -c conda-forge -c bioconda iqtree mafft seqkit -y
@@ -203,5 +203,5 @@ echo "report    $WORK/ctxm_group1.iqtree     (model, alignment length, support)"
 echo "versions  $WORK/ctxm_versions.txt"
 echo "collapse  $WORK/haplotype_collapse.tsv"
 echo
-echo "next: Rscript phylogeny/ctxm/02_plot_complete_tree.R   (complete tree)"
-echo "      Rscript phylogeny/ctxm/03_plot_figure5c.R      (Figure 5C)"
+echo "next: Rscript analysis/phylogeny/ctxm/02_plot_complete_tree.R   (complete tree)"
+echo "      Rscript analysis/phylogeny/ctxm/03_plot_figure5c.R      (Figure 5C)"

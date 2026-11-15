@@ -15,7 +15,7 @@
 #
 # Study tips are read from study_tips.txt, written by 01_build_panel_and_tree.sh.
 #
-#   Rscript phylogeny/ctxm/02_plot_complete_tree.R
+#   Rscript analysis/phylogeny/ctxm/02_plot_complete_tree.R
 #
 # The group 9 outgroup is drawn. DROP_OUTGROUP <- TRUE hides it.
 # =============================================================================
@@ -49,7 +49,7 @@ if (DROP_OUTGROUP) {
   message("outgroup kept in the drawing: ",
           paste(grep(OGPAT, tr$tip.label, value = TRUE), collapse = ", "))
 }
-source("phylogeny/ctxm/plot_helpers.R")
+source("analysis/phylogeny/ctxm/plot_helpers.R")
 tr <- collapse_zero(tr)
 og_tips <- grep(OGPAT, tr$tip.label, value = TRUE)
 STEM <- NULL

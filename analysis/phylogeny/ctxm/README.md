@@ -2,7 +2,7 @@
 
 Maximum-likelihood tree of the blaCTX-M group 1 amplicon consensus sequences
 recovered in this study, placed among reference group 1 alleles and rooted on
-group 9. This tree is separate from the 16S reference tree in `phylogeny/`.
+group 9. This tree is separate from the 16S reference tree in `analysis/phylogeny/`.
 
 ```
 study consensus sequences + curated group 1 references + group 9 outgroup
@@ -25,15 +25,15 @@ The tree is deposited in `output/ctxm/`, so the figures can be redrawn from the
 repository alone. From the repository root:
 
 ```bash
-Rscript phylogeny/ctxm/02_plot_complete_tree.R
-Rscript phylogeny/ctxm/03_plot_figure5c.R
+Rscript analysis/phylogeny/ctxm/02_plot_complete_tree.R
+Rscript analysis/phylogeny/ctxm/03_plot_figure5c.R
 ```
 
 To rebuild the tree from the consensus and reference sequences:
 
 ```bash
 export CTXM_DATA=/path/to/ctxm/analysis   # holds refs/ and consensus/
-bash phylogeny/ctxm/run_all.sh
+bash analysis/phylogeny/ctxm/run_all.sh
 ```
 
 ## Dependencies

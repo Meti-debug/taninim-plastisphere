@@ -1,6 +1,6 @@
 # Shared paths for the R figure scripts.
 #
-# DATA holds the input tables described in data/README.md.
+# DATA holds the input tables described in the top-level README.md.
 # OUT is where figures and derived files are written.
 
 DATA <- "data"

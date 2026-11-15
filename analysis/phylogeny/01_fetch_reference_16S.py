@@ -160,4 +160,4 @@ if len(P):
               f"branches:")
         for a, g in dup.groupby("accession"):
             print(f"    {a}: {', '.join(g.query_species)}")
-print("\nnext: bash phylogeny/02_align_trim_tree.sh")
+print("\nnext: bash analysis/phylogeny/02_align_trim_tree.sh")
