@@ -43,58 +43,10 @@ TREE_FR <- as.numeric(Sys.getenv("CTXM_TREE_FR", "0.42"))
 STEMNAME <- Sys.getenv("CTXM_STEM", "Figure5C_CTXM")
 
 source("analysis/phylogeny/ctxm/plot_helpers.R")
-OGPAT <- "^blaCTX-M-(14|27|65)(_and_[0-9]+_more)?$"
-
-# --- 1-2. full tree: root, collapse --------------------------------------------
-full <- ape::read.tree(TREE)
-og   <- grep(OGPAT, full$tip.label, value = TRUE)
-full <- ape::root(full, outgroup = og, resolve.root = TRUE, edgelabel = TRUE)
-full <- collapse_zero(full)
-
-# --- 3. prune ------------------------------------------------------------------
-keep <- trimws(readLines(TIPS, warn = FALSE))
-keep <- keep[nzchar(keep) & !startsWith(keep, "#")]
-miss <- setdiff(keep, full$tip.label)
-if (length(miss)) stop("tips not in the tree: ", paste(miss, collapse = ", "))
-tr <- ape::keep.tip(full, keep)
-
-# --- 4. support by clade -------------------------------------------------------
-n   <- length(tr$tip.label)
-nf  <- length(full$tip.label)
-fmt <- function(s) {
-  p <- suppressWarnings(as.numeric(strsplit(s, "/")[[1]]))
-  if (length(p) != 2 || anyNA(p)) return(NA_character_)
-  sprintf("%.0f/%.0f", p[1], p[2])
-}
-sup <- vapply((n + 1):(n + tr$Nnode), function(k) {
-  if (k == n + 1) return(NA_character_)            # the root: no clade to support
-  tips <- ape::extract.clade(tr, k)$tip.label
-  fmt(full$node.label[ape::getMRCA(full, tips) - nf])
-}, character(1))
-supdf <- data.frame(node = (n + 1):(n + tr$Nnode), sup = sup)
-
-# --- 5. fixed-length root branches ---------------------------------------------
 ROOT_LEN <- as.numeric(Sys.getenv("CTXM_ROOT_LEN", "0.009"))   # drawn root branch length
-root_edges <- which(tr$edge[, 1] == n + 1)
-true_root <- tr$edge.length[root_edges]
-tr$edge.length[root_edges] <- ROOT_LEN
-message("root branches drawn at ", ROOT_LEN, "; true lengths ",
-        paste(sprintf("%.4f", true_root), collapse = ", "))
+pt <- panel_tree(TREE, TIPS, ROOT_LEN, HAPNAME)
+tr <- pt$tree; supdf <- pt$support; n <- pt$n; tip_label <- pt$tip_label
 
-# --- labels --------------------------------------------------------------------
-ct <- utils::read.delim(sub("[^/]+$", "haplotype_collapse.tsv", TREE),
-                        stringsAsFactors = FALSE)
-members <- setNames(strsplit(ct$members, ","), ct$tip_label)
-num <- function(x) as.integer(sub("^blaCTX-M-", "", x))
-
-tip_label <- function(lab) {
-  if (lab == "R1W") return(HAPNAME)
-  m <- members[[lab]]
-  if (is.null(m) || length(m) == 1) return(lab)
-  m <- m[order(num(m))]
-  if (length(m) == 2) return(sprintf("blaCTX-M-%d / -%d", num(m[1]), num(m[2])))
-  sprintf("%s group (n = %d)", sub("_and_.*$", "", lab), length(m))
-}
 meta <- data.frame(label = tr$tip.label,
                    show  = vapply(tr$tip.label, tip_label, character(1)),
                    star  = ifelse(tr$tip.label == "R1W", "filled",

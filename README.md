@@ -67,6 +67,7 @@ re-running IQ-TREE. From the repository root:
 ```bash
 Rscript analysis/phylogeny/ctxm/02_plot_complete_tree.R   # output/figures/Figure_CTXM_sample_tree.pdf/.png
 Rscript analysis/phylogeny/ctxm/03_plot_figure5c.R        # output/figures/Figure5C_CTXM.pdf/.png
+Rscript analysis/phylogeny/ctxm/04_plot_figure_s6.R       # output/figures/FigureS6_AB.pdf/.png
 ```
 
 Panel C as placed in the composite Figure 5 (1758 x 1044 px at 600 dpi, text
@@ -82,6 +83,7 @@ CTXM_TREE_FR=0.40 CTXM_ROOT_LEN=0.013 Rscript analysis/phylogeny/ctxm/03_plot_fi
 | `analysis/phylogeny/ctxm/01_build_panel_and_tree.sh` | curate references, align (MAFFT), cut to CDS 28-400, collapse identical alleles, infer the tree (IQ-TREE) |
 | `analysis/phylogeny/ctxm/02_plot_complete_tree.R` | complete tree, all tips, SH-aLRT/UFBoot at every resolved node |
 | `analysis/phylogeny/ctxm/03_plot_figure5c.R` | Figure 5C, the tree pruned to the tips in `figure5c_tips.txt` |
+| `analysis/phylogeny/ctxm/04_plot_figure_s6.R` | Figure S6 A and B: the same tree and the variable sites of the drawn sequences |
 | `analysis/phylogeny/ctxm/plot_helpers.R` | shared plotting functions |
 | `output/ctxm/ctxm_group1.treefile` | the tree both figures are drawn from |
 | `output/ctxm/ctxm_group1.iqtree`, `.log` | model selection, alignment statistics, support |
