@@ -1,19 +1,4 @@
 """trimAl -automated1, via the binary if present, otherwise via pytrimal.
-
-Called by 02_align_trim_tree.sh; can also be run directly:
-
-    python phylogeny/trim_alignment.py <aligned.fasta> <trimmed.fasta>
-
-WHY THIS EXISTS
-    `trimal` is not packaged in Ubuntu 24.04, so `apt-get install trimal`
-    fails there.  pytrimal is the same C++ code as a Python module and
-    installs with pip on any platform, so the trimming step does not depend
-    on the distribution.
-
-    Either route is reported explicitly and recorded in output/phylo_versions.txt.
-    What must never happen is the silent fallback the original notebook had -
-    copying the untrimmed alignment forward on failure, leaving the Methods
-    describing a step that did not run.
 """
 import shutil, subprocess, sys
 
