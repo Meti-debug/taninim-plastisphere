@@ -21,7 +21,7 @@ Or one step at a time:
 |---|---|
 | curate the panel, align, trim to the window, infer the tree | `01_build_panel_and_tree.sh` |
 | complete tree, one tip per sample, support at every resolved node | `04_plot_sample_tree.R` |
-| Figure 5C: pruned panel, identical study tips drawn once | `06_plot_figure5c.R` |
+| Figure 5C: the tree pruned to the tips in `figure5c_tips.txt` | `06_plot_figure5c.R` |
 
 Both plotting scripts source `plot_helpers.R` (gene-name typesetting,
 zero-length branch collapse, stem shortening). Outputs go to `figures/`:
@@ -60,9 +60,16 @@ them.
 group 9 is a separate lineage, so this is an outgroup rooting and it locates the
 root of group 1. Both figures draw the outgroup. Its stem is about 0.47
 substitutions per site against about 0.01 for all of group 1, so that single
-edge is shortened for display and marked with a break and its true length. In
-the pruned Figure 5C the stem runs to the common ancestor of the retained group
-1 tips and reads 0.51.
+edge is shortened for display and marked with a break and its true length.
+
+Figure 5C does not draw the outgroup. The tree is rooted on it, zero-length
+branches are collapsed in the complete tree, and the result is pruned to the
+tips listed in `figure5c_tips.txt`. The two branches leaving the root are drawn
+at a fixed length with a break mark, because the root position is set by the
+undrawn outgroup (true lengths 0.024 and 0). Support at each panel node is the
+value of the same clade in the complete tree, looked up by its tips.
+`R1W` stands for the five identical study sequences, and `blaCTX-M-36` for the
+identical S1W sequence.
 
 ## Support values: display is not interpretation
 
@@ -70,8 +77,8 @@ IQ-TREE is run with `-alrt 1000 -B 1000`, giving paired SH-aLRT/UFBoot labels.
 38 of the 61 internal branches are at IQ-TREE's minimum length and carry no
 substitution. They are polytomies drawn as bifurcations, so both figures collapse
 them first. `04_plot_sample_tree.R` then prints the pair at every remaining node
-(23) and marks those passing SH-aLRT >= 80 and UFBoot >= 95. Figure 5C shows only
-the group 1 versus group 9 split (100/100).
+(23) and marks those passing SH-aLRT >= 80 and UFBoot >= 95. Figure 5C prints the
+pair at every node it draws except the root.
 
 Low values therefore appear in the figure on purpose. That is not a
 contradiction of the threshold as long as the Methods separates the two

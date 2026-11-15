@@ -1,0 +1,20 @@
+# Tips drawn in Figure 5C, as they are labelled in ctxm_group1.treefile.
+# R1W stands for the five identical study consensus sequences
+# (R1W, R1P, R2W, S1W, ScW); blaCTX-M-36 also stands for the identical
+# S1W sequence blaCTX-M-36_S1W. Edit this list to change the panel.
+blaCTX-M-29
+blaCTX-M-30
+blaCTX-M-12_and_1_more
+blaCTX-M-60
+R1W
+blaCTX-M-177
+blaCTX-M-212
+blaCTX-M-55_and_10_more
+blaCTX-M-114
+blaCTX-M-82
+blaCTX-M-101
+blaCTX-M-220_and_1_more
+blaCTX-M-15_and_55_more
+blaCTX-M-36
+blaCTX-M-1_and_7_more
+blaCTX-M-10_and_1_more
