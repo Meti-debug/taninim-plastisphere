@@ -108,10 +108,3 @@ the NCBI SRA under BioProject PRJNA1458552.
 `counts.csv` carries the site labels used during sequencing, one position
 upstream of the manuscript labels; the scripts convert them on read. The OTU
 table uses manuscript labels.
-
-| in `counts.csv` | in the manuscript |
-|---|---|
-| `R2P1`–`R2W3` | `R1P1`–`R1W3` |
-| `R3P1`–`R3W3` | `R2P1`–`R2W3` |
-| `S1P4` | `S1P1` |
-| all others | unchanged |
