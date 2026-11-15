@@ -4,12 +4,6 @@ Data analysis
 
 Analysis code for the study.
 
-Twenty-four libraries: 12 plastic-bound and 12 planktonic, 3 replicates at
-each of 4 sites (R1 Ada Stream confluence, R2 estuary, S1 river mouth,
-Sc Caesarea beach). Full-length 16S rRNA, Oxford Nanopore PromethION 2 Solo.
-
-Two independent routes through the data, kept separate throughout:
-
 - **Species-level profiles** from Kraken2 and Bracken, run through the EPI2ME
   `wf-metagenomics` workflow. Everything that needs a taxonomic name comes
   from here: diversity, ordination, PERMANOVA, core taxa, pathogen abundances,
@@ -20,24 +14,6 @@ Two independent routes through the data, kept separate throughout:
   species is treated as an OTU; the two are never combined within a single
   statistic.
 
-## Layout
-
-```
-analysis/             Python statistics; writes results to output/
-analysis/r/           R analyses and figures, one script per analysis
-analysis/phylogeny/   reference 16S tree, and the blaCTX-M group 1 amplicon
-                      tree in analysis/phylogeny/ctxm/ (each has a README)
-output/               everything generated; only output/ctxm/ is tracked (the
-                      CTX-M alignment, tree and IQ-TREE report); figures are
-                      written to output/figures/
-```
-
-Scripts use paths relative to the repository root, so run them from there:
-
-```bash
-mkdir -p output
-python analysis/01_diversity_permanova.py
-```
 
 ## Requirements
 
