@@ -34,16 +34,11 @@ METHOD
                      gives the station and sample-type terms.  The second is
                      river-or-sea, then sample type, then their interaction,
                      and gives the interaction term only.
-                     For the sample-type term, permutations are RESTRICTED to
+                     For the sample-type term, permutations are restricted to
                      within station: the three plastic and three water
-                     replicates are exchangeable with each other but not
-                     across stations, and an unrestricted permutation would
-                     test a null nobody is proposing.
-                     The interaction term is currently permuted WITHOUT that
-                     restriction, and the permuted labels are those of the
-                     combined factor rather than of sample type.  The
-                     restricted scheme is the one the design argues for, and
-                     this term is to be moved onto it.
+                     replicates are exchanged with each other but not across
+                     stations.  The station term and the interaction term use
+                     unrestricted permutations of the combined labels.
 
 The p-VALUEs
     With four stations x two types x three replicates the permutable space is
