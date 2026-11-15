@@ -48,8 +48,7 @@ collapse_zero <- function(tr, tol = 1e-5) {
 # The stem joining group 1 to the group 9 outgroup is about 0.47 substitutions
 # per site, while all of group 1 spans about 0.01. Drawn to scale, group 1
 # collapses into a vertical line. Shorten that one edge for display and return
-# what is needed to mark the break. The true length must be stated on the figure
-# and in the caption.
+# what is needed to mark the break and label its true length.
 shorten_stem <- function(tr, og_tips, show_len) {
   n <- length(tr$tip.label)
   ingroup <- setdiff(tr$tip.label, og_tips)

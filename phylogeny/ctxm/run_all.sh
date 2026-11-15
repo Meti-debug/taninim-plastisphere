@@ -24,6 +24,6 @@ echo
 echo "tree      $WORK/ctxm_group1.treefile"
 echo "report    $WORK/ctxm_group1.iqtree"
 echo "versions  $WORK/ctxm_versions.txt"
-echo "deposit   $WORK/haplotype_collapse.tsv"
+echo "collapse  $WORK/haplotype_collapse.tsv"
 echo "figures   figures/Figure_CTXM_sample_tree.pdf  (complete tree)"
 echo "          figures/Figure5C_CTXM.pdf            (Figure 5C)"

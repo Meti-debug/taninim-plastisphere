@@ -1,183 +1,129 @@
-# CTX-M group 1 amplicon phylogeny
+# blaCTX-M group 1 amplicon phylogeny
 
-    consensus/*.consensus.fasta + curated group-1 panel + group-9 outgroup
-      -> MAFFT -> fixed coordinate window -> collapse identical refs -> IQ-TREE
+Maximum-likelihood tree of the blaCTX-M group 1 amplicon consensus sequences
+recovered in this study, placed among reference group 1 alleles and rooted on
+group 9. This tree is separate from the 16S reference tree in `phylogeny/`.
 
-This is a different tree from the one in `phylogeny/`. That one is built from
-reference 16S sequences for the taxa detected in this study. This one is built
-from the **amplicon consensus sequences of the samples themselves**, together
-with reference alleles for context.
+```
+study consensus sequences + curated group 1 references + group 9 outgroup
+  -> MAFFT -> CDS positions 28-400 -> collapse identical references -> IQ-TREE
+```
 
-Run from the repository root:
+## Scripts
+
+| script | what it does | output |
+|---|---|---|
+| `01_build_panel_and_tree.sh` | curates the reference panel, aligns, cuts to the window, collapses identical alleles, infers the tree | `output/ctxm/` |
+| `02_plot_complete_tree.R` | complete tree with all tips and support values | `figures/Figure_CTXM_sample_tree.pdf/.png` |
+| `03_plot_figure5c.R` | Figure 5C, the tree pruned to the tips in `figure5c_tips.txt` | `figures/Figure5C_CTXM.pdf/.png` |
+| `plot_helpers.R` | functions shared by the two plotting scripts | |
+| `run_all.sh` | runs all three in order | |
+
+## Running
+
+The tree is deposited in `output/ctxm/`, so the figures can be redrawn from the
+repository alone. From the repository root:
 
 ```bash
-export CTXM_DATA=/path/to/recovered_ctxm/analysis
+Rscript phylogeny/ctxm/02_plot_complete_tree.R
+Rscript phylogeny/ctxm/03_plot_figure5c.R
+```
+
+To rebuild the tree from the consensus and reference sequences:
+
+```bash
+export CTXM_DATA=/path/to/ctxm/analysis   # holds refs/ and consensus/
 bash phylogeny/ctxm/run_all.sh
 ```
 
-Or one step at a time:
-
-| step | script |
-|---|---|
-| curate the panel, align, trim to the window, infer the tree | `01_build_panel_and_tree.sh` |
-| complete tree, one tip per sample, support at every resolved node | `02_plot_complete_tree.R` |
-| Figure 5C: the tree pruned to the tips in `figure5c_tips.txt` | `03_plot_figure5c.R` |
-
-Both plotting scripts source `plot_helpers.R` (gene-name typesetting,
-zero-length branch collapse, stem shortening). Outputs go to `figures/`:
-`Figure_CTXM_sample_tree.*` and `Figure5C_CTXM.*`.
-
-Dependencies:
+## Dependencies
 
 ```bash
-conda create -n phylo  -c conda-forge -c bioconda iqtree mafft seqkit -y
-conda create -n rphylo -c conda-forge r-base r-ggplot2 r-dplyr r-ape \
+conda create -n phylo  -c conda-forge -c bioconda iqtree=2.0.7 mafft=7.526 seqkit -y
+conda create -n rphylo -c conda-forge -c bioconda r-base r-ggplot2 r-dplyr r-ape \
                                      bioconductor-ggtree bioconductor-treeio -y
 pip install biopython
 ```
 
-`treeio` and `ggtree` are Bioconductor packages. `install.packages()` will not
-find them and reports "not available for this version of R", which is
-misleading — the problem is the repository, not the R version. Use
-`BiocManager::install()` or the conda env above.
+`ggtree` and `treeio` are Bioconductor packages; outside conda, install them
+with `BiocManager::install()`.
 
-## Files kept in output/ctxm
+## Reference panel
 
-| file | content |
-|---|---|
-| `ctxm_group1.treefile` | maximum-likelihood tree with SH-aLRT/UFBoot node labels; both figures use it |
-| `ctxm_group1.contree` | UFBoot consensus tree |
-| `ctxm_group1.iqtree`, `ctxm_group1.log` | IQ-TREE report and log |
-| `ctxm_versions.txt` | tool versions, window, options |
-| `tree_input.fasta` | the 373-column alignment the tree was inferred from |
-| `set.aln.fasta` | full-length alignment before cutting to the window |
-| `group1_clean.fasta`, `outgroup.fasta`, `study.fasta` | curated group 1 references, group 9 outgroup, study sequences |
-| `haplotype_collapse.tsv` | members of each collapsed reference tip |
-| `drop.txt` | alleles excluded before alignment |
-| `study_ids.txt`, `study_tips.txt` | study sequence identifiers and their tip labels |
-
-IQ-TREE's working files (checkpoint, bootstrap trees, distance matrices,
-splits) are not kept; `01` writes them again when run.
-
-## What this tree is, and what it is not
-
-The tips for this study are **per-sample consensus sequences of a single
-blaCTX-M group 1 amplicon**, roughly 400 bp of the CDS. They are not whole
-genes, not assemblies, and not separate alleles.
-
-**Over the 28-400 window, the five sample consensus sequences are identical.**
-Any branching among the study tips in the complete tree is IQ-TREE placing
-identical sequences, not sequence divergence, and it cannot support a claim
-about which lineages moved along the transect. Figure 5C therefore draws them as
-one tip. Reporting the sample tips as distinct haplotypes would misrepresent
-them.
-
-## Rooting
-
-`01_build_panel_and_tree.sh` passes `-o <group-9 allele>` to IQ-TREE. CTX-M
-group 9 is a separate lineage, so this is an outgroup rooting and it locates the
-root of group 1. Both figures draw the outgroup. Its stem is about 0.47
-substitutions per site against about 0.01 for all of group 1, so that single
-edge is shortened for display and marked with a break and its true length.
-
-Figure 5C does not draw the outgroup. The tree is rooted on it, zero-length
-branches are collapsed in the complete tree, and the result is pruned to the
-tips listed in `figure5c_tips.txt`. The two branches leaving the root are drawn
-at a fixed length with a break mark, because the root position is set by the
-undrawn outgroup (true lengths 0.024 and 0). Support at each panel node is the
-value of the same clade in the complete tree, looked up by its tips.
-`R1W` stands for the five identical study sequences, and `blaCTX-M-36` for the
-identical S1W sequence.
-
-## Support values: display is not interpretation
-
-IQ-TREE is run with `-alrt 1000 -B 1000`, giving paired SH-aLRT/UFBoot labels.
-38 of the 61 internal branches are at IQ-TREE's minimum length and carry no
-substitution. They are polytomies drawn as bifurcations, so both figures collapse
-them first. `02_plot_complete_tree.R` then prints the pair at every remaining node
-(23) and marks those passing SH-aLRT >= 80 and UFBoot >= 95. Figure 5C prints the
-pair at every node it draws except the root.
-
-Low values therefore appear in the figure on purpose. That is not a
-contradiction of the threshold as long as the Methods separates the two
-statements: values are shown at all nodes, and nodes are regarded as well
-supported at >= 80 / >= 95. Writing the threshold as a display rule makes the
-figure look wrong.
-
-## Reference curation
-
-`01` drops five group-1 alleles before aligning, and the reasons belong in the
-supplementary rather than only in a shell comment:
+Group 1 reference alleles were taken from the NCBI Bacterial Antimicrobial
+Resistance Reference Gene Database. Five were excluded before alignment
+(`output/ctxm/drop.txt`):
 
 | allele | reason |
 |---|---|
-| CTX-M-211 | 885 bp; a 9 bp insertion breaks the CDS coordinates |
-| CTX-M-123, -132 | 90-93% identity to the group-1 consensus; group-1/9 recombinants |
-| CTX-M-153, -234 | same recombinant signature |
+| CTX-M-211 | 9 bp insertion that disrupts the CDS coordinates |
+| CTX-M-123, CTX-M-132, CTX-M-153, CTX-M-234 | group 1/group 9 recombinants |
 
-`01` also collapses reference alleles that are **identical over the amplified
-window** into one tip, and writes `haplotype_collapse.tsv` listing which
-alleles each tip stands for. **Deposit that table.** Without it a tip labelled
-`blaCTX-M-15_and_11_more` cannot be interpreted, and the allele count in the
-Methods cannot be checked against the panel.
+The remaining 135 references were collapsed to 58 tips, one per sequence that
+is distinct over the window. `output/ctxm/haplotype_collapse.tsv` lists the
+alleles each tip represents. Tips are labelled `blaCTX-M-15_and_55_more`; the
+figures show these as `blaCTX-M-15 group (n = 56)`, or `blaCTX-M-12 / -96` for
+pairs.
 
-## The window
+## Alignment and tree
 
-The amplicon covers part of the CDS, so the alignment is cut to a fixed
-coordinate window rather than trimmed with trimAl. The deposited tree uses CDS
-positions 28-400, which excludes the primer footprints; this is the default in
-`01_build_panel_and_tree.sh` (`CTXM_LO`, `CTXM_HI`). Exploratory runs used other
-windows; if the window is changed, the Methods and every number below change
-with it.
+| | |
+|---|---|
+| alignment | MAFFT v7.526, `--auto --adjustdirection` |
+| window | CDS positions 28-400, excluding the primer footprints |
+| sequences | 64: 58 reference tips, 6 study sequences |
+| columns | 373; 116 parsimony-informative, 225 constant |
+| inference | IQ-TREE 2.0.7, `-m MFP -B 1000 -alrt 1000 --bnni` |
+| model | K2P+R2, selected by ModelFinder under BIC |
+| rooting | group 9 outgroup (CTX-M-14/-27, CTX-M-65) |
+| log-likelihood | -1510.452 |
 
-## To report in the Methods
+All values are from `output/ctxm/ctxm_group1.iqtree` and
+`output/ctxm/ctxm_versions.txt`.
 
-Measured from the run of 2026-11-10, recorded in
-`output/ctxm/ctxm_versions.txt` and `output/ctxm/ctxm_group1.iqtree`:
+The six study sequences are the consensus sequences from five libraries (R1W,
+R1P, R2W, S1W, ScW) and a second sequence from S1W that is identical to
+blaCTX-M-36. The five consensus sequences are identical over the window. S1P
+and ScP, with 39 and 17 reads, did not yield a consensus.
 
-```
-mafft              v7.526, --auto --adjustdirection
-seqkit             v2.13.0
-iqtree             2.0.7, -m MFP -B 1000 -alrt 1000 --bnni
-window             CDS positions 28-400 (primer footprints excluded)
-alignment          64 sequences, 373 columns, 82 distinct patterns
-sites              116 parsimony-informative, 225 constant
-study sequences    6: five consensus (R1W, R1P, R2W, S1W, ScW) and the
-                   blaCTX-M-36-identical sequence from S1W
-reference tips     58 after collapsing identical alleles over the window
-reference alleles  135 collapsed to 58 distinct tips
-rooting            group-9 outgroup (blaCTX-M-14_and_1_more, blaCTX-M-65)
-model selected     K2P+R2, by BIC
-log-likelihood     -1510.452
-tree length        0.745
-support shown      every non-zero-length node; supported at >=80 SH-aLRT / >=95 UFBoot
-```
+## Figures
 
-Take every number from those two files, not from memory.
+Both figures are drawn from `output/ctxm/ctxm_group1.treefile`.
 
-The model is **selected**, not assumed. Write that ModelFinder selected it under
-BIC.
+- Branches of zero length (38 of 61 internal branches) are collapsed to
+  polytomies before drawing.
+- Support is shown as SH-aLRT/UFBoot. Nodes with SH-aLRT >= 80 and UFBoot >= 95
+  are considered well supported.
+- Gene names are set as italic *bla* with the allele as subscript in the
+  complete tree, and as bold italic labels in Figure 5C.
 
-## Two things the run reports that belong in the paper
+**Complete tree** (`02_plot_complete_tree.R`). All 64 tips, including the
+group 9 outgroup. The branch joining group 1 to the outgroup (0.47
+substitutions per site) is drawn shortened and marked with a break. Support is
+shown at every node; filled dots mark nodes passing both thresholds.
 
-IQ-TREE prints, during alignment parsing:
+**Figure 5C** (`03_plot_figure5c.R`). The rooted tree pruned to the tips in
+`figure5c_tips.txt`; the outgroup is not drawn. Support at each node is that of
+the same clade in the complete tree. The two branches leaving the root are
+drawn at a fixed length and marked with a break. The filled star marks the
+blaCTX-M-177-like sequence shared by R1W, R1P, R2W, S1W and ScW (drawn once,
+as they are identical); the open star marks blaCTX-M-36, identical to the
+second S1W sequence.
 
-```
-NOTE: R1P is identical to R1W but kept for subsequent analysis
-NOTE: R2W (identical to R1W) is ignored but added at the end
-NOTE: S1W (identical to R1W) is ignored but added at the end
-NOTE: ScW (identical to R1W) is ignored but added at the end
-NOTE: blaCTX-M-36_S1W is identical to blaCTX-M-36 but kept for subsequent analysis
-```
+The panel used in the composite Figure 5 is the same script at a smaller size;
+the command is in the top-level `README.md`.
 
-The five consensus sequences are identical across the 373-column window, which
-is why Figure 5C draws them as one tip. A statement that the haplotype was detected at all
-four sites is true as detection, but it is four detections of one sequence,
-not four related sequences, and the text should not imply otherwise.
+## Files in output/ctxm
 
-Five libraries yielded a consensus, not seven. S1P and ScP, at 39 and 17
-reads, did not.
-
-Note also that the community 16S tree in `phylogeny/` was built in a separate
-environment, with `apt-get install mafft trimal iqtree` and no version pin. Its
-versions are not the ones recorded here and need their own check.
+| file | content |
+|---|---|
+| `ctxm_group1.treefile` | maximum-likelihood tree with SH-aLRT/UFBoot labels |
+| `ctxm_group1.contree` | UFBoot consensus tree |
+| `ctxm_group1.iqtree`, `ctxm_group1.log` | IQ-TREE report and log |
+| `ctxm_versions.txt` | tool versions, window and options |
+| `tree_input.fasta` | the 373-column alignment used for the tree |
+| `set.aln.fasta` | full-length alignment before cutting to the window |
+| `group1_clean.fasta`, `outgroup.fasta`, `study.fasta` | reference, outgroup and study sequences |
+| `haplotype_collapse.tsv` | alleles represented by each reference tip |
+| `drop.txt` | alleles excluded before alignment |
+| `study_ids.txt`, `study_tips.txt` | study sequence identifiers and tip labels |

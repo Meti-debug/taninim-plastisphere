@@ -10,7 +10,7 @@
 #   phylogeny/ctxm/figure5c_tips.txt     which tips the panel draws
 #
 # Steps, in this order:
-#   1. Root on the group 9 outgroup, as in the Methods.
+#   1. Root on the group 9 outgroup.
 #   2. Collapse zero-length branches in the COMPLETE tree. Doing this before
 #      pruning means every node left in the panel is a clade of the full tree.
 #   3. Prune to the tips in figure5c_tips.txt. The outgroup is not drawn.

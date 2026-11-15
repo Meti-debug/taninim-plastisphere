@@ -10,7 +10,7 @@
 #         output/ctxm/set.aln.fasta             MAFFT alignment
 #         output/ctxm/tree_input.fasta           trimmed, collapsed, relabelled
 #         output/ctxm/haplotype_collapse.tsv     which alleles each tip stands for
-#         output/ctxm/ctxm_versions.txt          tool versions for the Methods
+#         output/ctxm/ctxm_versions.txt          tool versions, window and options
 #         output/ctxm/ctxm_group1.treefile       the tree, Newick
 #         output/ctxm/ctxm_group1.iqtree         model fit and alignment stats
 #
@@ -22,10 +22,9 @@
 # Requires mafft, iqtree2 and seqkit on PATH, plus biopython:
 #   conda create -n phylo -c conda-forge -c bioconda iqtree mafft seqkit -y
 #
-# Unlike the 16S tree in phylogeny/, this alignment is NOT trimmed with trimAl.
-# It is cut to a fixed coordinate window, because the amplicon covers only part
-# of the CDS and the window has to be the same in every sample for the tips to
-# be comparable. Report the window, not a trimming heuristic.
+# The alignment is cut to a fixed CDS window (default 28-400) rather than
+# trimmed with trimAl, because the amplicon covers only part of the CDS and the
+# same positions are compared for every sequence.
 # =============================================================================
 set -euo pipefail
 
@@ -48,23 +47,19 @@ IQ=$(command -v iqtree2 || command -v iqtree) || {
     echo "iqtree not found on PATH"; exit 1; }
 
 # --- 1. Curate the reference panel -------------------------------------------
-# These five alleles are removed deliberately, and the reasons belong in the
-# Methods and the supplementary, not only here:
-#   CTX-M-211             885 bp, a 9 bp insertion that breaks CDS coordinates
-#   CTX-M-123,-132        90-93% identity to the group-1 consensus; group-1/9
-#   CTX-M-153,-234        recombinants carrying the same signature
+# Five alleles are excluded:
+#   CTX-M-211                    9 bp insertion that disrupts CDS coordinates
+#   CTX-M-123, -132, -153, -234  group 1/group 9 recombinants
 printf 'blaCTX-M-%s\n' 123 132 153 234 211 > drop.txt
 seqkit grep -v -n -f drop.txt "$D"/refs/group1_v2.fasta > group1_clean.fasta
 echo "panel: $(grep -c '^>' group1_clean.fasta) group-1 alleles retained"
 
 # --- 2. Outgroup: CTX-M group 9, a distinct lineage --------------------------
-# Rooting on group 9 is an outgroup rooting. Rooting on a group-1 allele
-# instead is an ingroup rooting and does not locate the root of group 1; see
-# phylogeny/ctxm/README.md before changing this.
+# The tree is rooted on these group 9 alleles.
 seqkit grep -nrp 'blaCTX-M-(14|27|65)$' "$D"/refs/group9_v2.fasta > outgroup.fasta
 echo "outgroup: $(grep -c '^>' outgroup.fasta) group-9 alleles"
 
-# --- 3. Record versions now, so the Methods cannot drift from the run --------
+# --- 3. Record tool versions and settings -----------------------------------
 {
     echo "run date   $(date -u +%Y-%m-%dT%H:%M:%SZ)"
     echo "mafft      $(mafft --version 2>&1 | head -1)"
@@ -176,7 +171,7 @@ with open("study_tips.txt", "w") as fh:
 print(f"{len(refs)} alleles -> {len(groups)} haplotypes; "
       f"{len(qs)} study sequences; {len(out)} tips")
 print("study tips: " + ", ".join(study_tips))
-print("collapse table -> haplotype_collapse.tsv  (cite this in the Methods)")
+print("collapse table -> haplotype_collapse.tsv")
 PYEOF
 
 # --- 7. Maximum-likelihood tree ----------------------------------------------
@@ -205,8 +200,8 @@ grep -E 'Best-fit model|Number of parsimony informative sites' ctxm_group1.iqtre
 echo
 echo "tree      $WORK/ctxm_group1.treefile"
 echo "report    $WORK/ctxm_group1.iqtree     (model, alignment length, support)"
-echo "versions  $WORK/ctxm_versions.txt      (quote these in the Methods)"
-echo "deposit   $WORK/haplotype_collapse.tsv"
+echo "versions  $WORK/ctxm_versions.txt"
+echo "collapse  $WORK/haplotype_collapse.tsv"
 echo
 echo "next: Rscript phylogeny/ctxm/02_plot_complete_tree.R   (complete tree)"
 echo "      Rscript phylogeny/ctxm/03_plot_figure5c.R      (Figure 5C)"

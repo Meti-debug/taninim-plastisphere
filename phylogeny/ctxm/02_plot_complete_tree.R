@@ -1,14 +1,13 @@
 #!/usr/bin/env Rscript
 # =============================================================================
-# CTX-M group 1 tree — one tip per sample, each labelled with its collection
-# site, location and matrix.
+# CTX-M group 1 tree, complete: all tips, including the group 9 outgroup.
 #
 # EXPECTED INPUT LABEL FORMAT
 #   samples     R1W, R1P, R2W, S1W, ScW, ...   (relabelled during alignment)
 #   references  blaCTX-M-<n>, or blaCTX-M-<n>_and_<k>_more for collapsed tips
 # This is what 01_build_panel_and_tree.sh writes.
 #
-# Display choices, all stated in the caption:
+# Display:
 #   * zero-length branches are collapsed to polytomies, so support is shown
 #     only on branches that carry at least one substitution;
 #   * the group 1 stem (about 0.47) is shortened for display and marked with
@@ -18,12 +17,7 @@
 #
 #   Rscript phylogeny/ctxm/02_plot_complete_tree.R
 #
-# The group-9 outgroup is KEPT in the drawing by default. Dropping it costs
-# more than it saves: treeio::drop.tip discards the @data slot that carries the
-# SH-aLRT/UFBoot node labels, so the support values vanish from the figure, and
-# a reader is left unable to see the rooting the Methods claims. Set
-# DROP_OUTGROUP <- TRUE only if the outgroup must be hidden, and then say in the
-# caption that it was pruned.
+# The group 9 outgroup is drawn. DROP_OUTGROUP <- TRUE hides it.
 # =============================================================================
 suppressPackageStartupMessages({
   library(ggtree); library(ggplot2); library(ape); library(dplyr)
@@ -149,10 +143,8 @@ meta <- data.frame(label = tips, stringsAsFactors = FALSE) %>%
     bold  = ifelse(is.na(match(label, study$label)), "plain", "bold"),
     expr  = gene_exprs(show, bold == "bold"))
 
-# Support is DISPLAYED at every node carrying a paired value. The >=80/>=95 rule
-# marks which nodes are to be INTERPRETED as well supported. Keeping display and
-# interpretation separate is what lets low values appear in the figure without
-# contradicting the Methods.
+# Support is shown at every node carrying a value; nodes with SH-aLRT >= 80 and
+# UFBoot >= 95 are marked with a filled dot.
 #
 # IQ-TREE writes "SH-aLRT/UFBoot" into the internal-node labels, which ape keeps
 # in $node.label. Node i of $node.label is tree node Ntip + i.
