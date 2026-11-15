@@ -72,7 +72,6 @@ Run in order from the repository root; each sources `analysis/r/00_paths.R`.
 
 | script | what it produces |
 |---|---|
-| `01_chromagar_colonies.R` | CHROMagar colony colours and total growth per river |
 | `02_alpha_diversity.R` | Shannon diversity per sample type, Wilcoxon tests |
 | `03_beta_diversity_pcoa.R` | Bray-Curtis, PCoA, pairwise dissimilarity panels |
 | `04_core_microbiome_heatmap.R` | the 15 most abundant consistently detected species |

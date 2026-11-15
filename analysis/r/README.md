@@ -4,13 +4,12 @@ Run from the repository root, in order. Each script sources `00_paths.R`,
 which sets `DATA` to `data/` and `OUT` to `output/`.
 
 ```bash
-Rscript analysis/r/01_chromagar_colonies.R
+Rscript analysis/r/03_beta_diversity_pcoa.R
 ```
 
 | script | what it produces |
 |---|---|
 | `00_paths.R` | shared input and output paths; not run directly |
-| `01_chromagar_colonies.R` | CHROMagar colony colours and total growth per river |
 | `02_alpha_diversity.R` | Shannon diversity per sample type, Wilcoxon tests, boxplots |
 | `03_beta_diversity_pcoa.R` | Bray-Curtis dissimilarity, PCoA, pairwise dissimilarity panels |
 | `04_core_microbiome_heatmap.R` | the 15 most abundant species detected in all 12 samples of a sample type |
@@ -35,7 +34,7 @@ source("analysis/r/02_alpha_diversity.R")
 
 ## Provenance
 
-Scripts `01`–`07` are taken from the R session code used for the paper, with
+Scripts `02`–`07` are taken from the R session code used for the paper, with
 absolute paths replaced by `DATA` and `OUT` and nothing else changed. `08` to
 `13` were written afterwards, for the tests added in revision. `08` builds the Bray-Curtis
 matrix exactly as `03` does. `09` needs the source-tracking FEAST from
