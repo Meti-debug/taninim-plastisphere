@@ -27,8 +27,6 @@ biopython >= 1.83     (phylogeny only)
 
 External tools, for `analysis/phylogeny/` only: MAFFT v7, trimAl, IQ-TREE 2 v2.3.5.
 
-Figure scripts use the Liberation Sans font.
-
 ## Which script produces what
 
 Within each group the numeric prefix is the order.
