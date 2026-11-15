@@ -46,7 +46,7 @@ METHOD
                      restricted scheme is the one the design argues for, and
                      this term is to be moved onto it.
 
-READ THIS BEFORE QUOTING A p-VALUE
+The p-VALUEs
     With four stations x two types x three replicates the permutable space is
     small.  A restricted permutation test on sample type has 20^4 = 160,000
     distinct arrangements, which is plenty; a per-station test has only 20, so
