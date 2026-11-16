@@ -42,7 +42,7 @@ METHOD
                      station.  With two stations per region, it describes these
                      four stations, not river versus sea in general.
 
-P-VALUES IN THE PAPER
+P-VALUES
     The PERMANOVA p-values (Fig. 3F, Supplementary Table S1) come from 9,999
     permutations, so the smallest value reported is p = 0.0001.  Restricting
     sample type to within stations still leaves 20^4 = 160,000 distinct
@@ -61,8 +61,7 @@ SITES = ["R1", "R2", "S1", "Sc"]
 
 import sys
 # The Kraken2/Bracken table carries the station labels used during
-# sequencing: R2 -> R1, R3 -> R2, and S1P4 -> S1P1.  The mapping is recorded
-# in README.md (Input tables).
+# sequencing: R2 -> R1, R3 -> R2, and S1P4 -> S1P1.
 k = pd.read_csv("data/counts.csv")
 ks = [c for c in k.columns if c[0] in "RS" and len(c) == 4]
 # Sequencing labels (R2 = R1, R3 = R2, S1P4 = S1P1) are converted to manuscript
