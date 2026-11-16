@@ -1,17 +1,12 @@
 # The Taninim River-Sea Continuum: Plastisphere’s Persistence, Connectivity, and Potential Pathogen Dispersal into the Eastern Mediterranean Sea
 
-Analysis code for the paper of the same title.
+Analysis code.
 
 - **Species-level profiles** from Kraken2 and Bracken, run through the EPI2ME
-  `wf-metagenomics` workflow. Everything that needs a taxonomic name comes
+  `wf-metagenomics` workflow. Taxonomy assignment comes
   from here: diversity, ordination, PERMANOVA, core taxa, pathogen abundances,
   source tracking and the reference tree.
-- **97% OTUs**, reference-free, built from cluster consensus sequences. Used
-  only for OTU richness and for the shared and unique comparisons between
-  sites and sample types. No OTU carries a taxonomic assignment and no Kraken2
-  species is treated as an OTU; the two are never combined within a single
-  statistic.
-
+- **97% OTUs**, reference-free, built from cluster consensus sequences. 
 
 ## Requirements
 
