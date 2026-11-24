@@ -1,9 +1,0 @@
-output/*
-!output/.gitkeep
-data/*.tsv
-data/*.csv
-__pycache__/
-*.pyc
-.DS_Store
-figures/*.pdf
-*.fasta
