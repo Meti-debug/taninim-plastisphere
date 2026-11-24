@@ -69,8 +69,7 @@ Rscript analysis/phylogeny/ctxm/03_plot_figure5c.R        # output/figures/Figur
 Rscript analysis/phylogeny/ctxm/04_plot_figure_s6.R       # output/figures/FigureS6_AB.pdf/.png
 ```
 
-Panel C as placed in the composite Figure 5 (1758 x 1044 px at 600 dpi, text
-scaled to match panels A and B):
+Panel C as placed in the composite Figure 5 
 
 ```bash
 CTXM_STEM=Figure5C_CTXM_composite CTXM_W=2.93 CTXM_H=1.74 CTXM_TEXT=0.66 \
@@ -105,6 +104,4 @@ the NCBI SRA under BioProject PRJNA1458552.
 | `data/otu_table.tsv` | 97% OTU x library read counts, 24 libraries |
 
 `counts.csv` is the EPI2ME `wf-metagenomics` species table
-(`Lig_wf-metagenomics-counts-species.csv`). Library columns may use the
-manuscript labels or the labels used during sequencing, which are one position
-upstream; the scripts recognise either. The OTU table uses manuscript labels.
+(`Lig_wf-metagenomics-counts-species.csv`). 
