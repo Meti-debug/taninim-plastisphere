@@ -102,6 +102,7 @@ the NCBI SRA under BioProject PRJNA1458552.
 |---|---|
 | `data/counts.csv` | Kraken2/Bracken species counts from EPI2ME `wf-metagenomics`: `tax`, `genus`, `species`, then one column per library |
 | `data/otu_table.tsv` | 97% OTU x library read counts, 24 libraries |
+| `data/metadata.tsv` | one row per library: `SampleID`, `Site`, `SampleType`, `RiverSea`; read by `analysis/r/01` and `02` |
 
 `counts.csv` is the EPI2ME `wf-metagenomics` species table
 (`Lig_wf-metagenomics-counts-species.csv`). 
