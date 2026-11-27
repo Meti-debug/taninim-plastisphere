@@ -1,0 +1,42 @@
+# Conda environment for all analyses in this repository.
+#
+#   conda env create -f environment.yml
+#   conda activate taninim-plastisphere
+#
+# FEAST (github.com/cozygene/FEAST, v0.1.0) is not on conda. Install it once
+# inside the environment:
+#   Rscript -e 'remotes::install_github("cozygene/FEAST")'
+name: taninim-plastisphere
+channels:
+  - conda-forge
+  - bioconda
+dependencies:
+  # Python: analysis/01, 02, 03, 04, 05 and the 16S reference tree
+  - python>=3.11
+  - numpy>=2.0
+  - pandas>=2.0
+  - scipy>=1.11
+  - biopython>=1.83
+  - pip
+  - pip:
+      - pytrimal
+  # R: analysis/02 (R scripts), 06_FEAST and 07_CTXM
+  - r-base>=4.4
+  - r-vegan
+  - r-ggplot2>=3.5
+  - r-dplyr
+  - r-tidyr
+  - r-readr
+  - r-tibble
+  - r-scales
+  - r-ape
+  - r-remotes
+  - r-rcpp
+  - r-rcpparmadillo
+  - bioconductor-ggtree
+  - bioconductor-treeio
+  # Command-line tools: 16S reference tree and blaCTX-M tree
+  - mafft=7.526
+  - iqtree=2.0.7
+  - trimal
+  - seqkit
