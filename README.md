@@ -12,97 +12,78 @@ Analysis code.
   species is treated as an OTU; the two are never combined within a single
   statistic.
 
-## Requirements
+## Layout
 
 ```
-python >= 3.11        R >= 4.4
-numpy >= 2.0          ggplot2 >= 3.5
-pandas >= 2.0         pheatmap >= 1.0.12
-scipy >= 1.11         dplyr, tidyr, scales
-biopython >= 1.83     (phylogeny only)
+taninim-plastisphere/
+├── README.md
+├── requirements.txt          Python packages
+├── environment.yml           conda environment (Python, R and command-line tools)
+├── data/                     input tables; see data/README.md
+├── figures/                  final Figures 1-5 and supplementary figures
+├── analysis/
+│   ├── paths.R               shared paths for the R scripts
+│   ├── 01_alpha_diversity/   Shannon diversity                      Fig. 3A-E
+│   ├── 02_beta_diversity/    Bray-Curtis, PCoA, PERMANOVA           Fig. 3F-H, Table S1
+│   ├── 03_OTU/               97% OTU persistence and sensitivity    Fig. 4A-B
+│   ├── 04_core_taxa/         core taxa and the 16S reference tree   Fig. 4C-D
+│   ├── 05_pathogens/         pathogen and ESKAPEE abundance         Fig. 5A-B
+│   ├── 06_FEAST/             source tracking and sensitivity        Fig. 4E, Table S6, Fig. S7
+│   └── 07_CTXM/              blaCTX-M group 1 tree                  Fig. 5C, Fig. S6
+└── supplementary/            supplementary tables
 ```
 
-External tools, for `analysis/phylogeny/` only: MAFFT v7, trimAl, IQ-TREE 2 v2.3.5.
+Each analysis folder has a `README.md` listing what it generates, what it
+reads and what it writes, and an `output/` folder for its results. Outputs are
+not tracked in git, except the deposited CTX-M tree in `analysis/07_CTXM/tree/`.
 
-## Which script produces what
+## Running
 
-Within each group the numeric prefix is the order.
-
-### analysis
-
-| script | what it produces | reads |
-|---|---|---|
-| `01_diversity_permanova.py` | Shannon, Bray–Curtis, PCoA, PERMANOVA -> `output/fig3.json` | `data/counts.csv` |
-| `02_core_taxa.py` | core taxa per habitat and sample type, and core retention from river to sea with its permutation test | `data/counts.csv` |
-| `03_four_site_persistence.py` | OTUs present at all four sites, plastic vs planktonic, with its permutation test | an `otu_table.tsv` |
-| `04_discovery_depth_sensitivity.py` | side-by-side comparison of two OTU tables built at different discovery depths | two `otu_table.tsv` |
-| `05_pathogen_tests.py` | Fig. 5A Mann–Whitney U with BH correction per species; Fig. 5B ESKAPEE CPM, Welch per site and Wilcoxon rank-sum overall | `data/counts.csv` |
-
-### analysis/r
-
-FEAST source tracking and the dispersion and robustness tests, which are run in
-R. Each script runs on its own; see `analysis/r/README.md`.
-
-| script | what it produces |
-|---|---|
-| `01_source_tracking_feast.R` | FEAST source tracking, four source-sink scenarios |
-| `02_dispersion_turnover.R` | betadisper dispersion and river-sea turnover tests |
-| `03_feast_sensitivity.R` | FEAST sensitivity for the S1 water sink |
-| `04_river_signature.R` | non-marine taxa in river-mouth water |
-| `05_feast_genus.R` | FEAST on genus-level counts |
-| `06_metric_robustness.R` | PERMANOVA and turnover under six distance measures |
-| `07_marine_site_comparison.R` | river signature at the river mouth versus the reference beach |
-
-### analysis/phylogeny
-
-`bash analysis/phylogeny/run_all.sh` builds the reference 16S tree from the 500 most
-abundant species. See `analysis/phylogeny/README.md`.
-
-### CTX-M group 1 tree (Figure 5C and the complete tree)
-
-The tree is deposited in `output/ctxm/`, so the figures can be redrawn without
-re-running IQ-TREE. From the repository root:
+Put `counts.csv` and `otu_table.tsv` in `data/` (see `data/README.md`), then,
+from the repository root:
 
 ```bash
-Rscript analysis/phylogeny/ctxm/02_plot_complete_tree.R   # output/figures/Figure_CTXM_sample_tree.pdf/.png
-Rscript analysis/phylogeny/ctxm/03_plot_figure5c.R        # output/figures/Figure5C_CTXM.pdf/.png
-Rscript analysis/phylogeny/ctxm/04_plot_figure_s6.R       # output/figures/FigureS6_AB.pdf/.png
+conda env create -f environment.yml
+conda activate taninim-plastisphere
+Rscript -e 'remotes::install_github("cozygene/FEAST")'
+
+python  analysis/01_alpha_diversity/script.py
+python  analysis/02_beta_diversity/script.py
+Rscript analysis/02_beta_diversity/dispersion_turnover.R
+Rscript analysis/02_beta_diversity/metric_robustness.R
+python  analysis/03_OTU/script.py data/otu_table.tsv
+python  analysis/04_core_taxa/script.py
+python  analysis/05_pathogens/script.py
+Rscript analysis/06_FEAST/primary_analysis.R
+Rscript analysis/06_FEAST/sensitivity_analysis.R
+Rscript analysis/06_FEAST/genus_level.R
+Rscript analysis/06_FEAST/river_signature.R
+Rscript analysis/06_FEAST/marine_site_comparison.R
+Rscript analysis/07_CTXM/02_plot_complete_tree.R
+Rscript analysis/07_CTXM/03_plot_figure5c.R
+Rscript analysis/07_CTXM/04_plot_figure_s6.R
 ```
 
-Panel C as placed in the composite Figure 5 
+Panel C as placed in the composite Figure 5:
 
 ```bash
 CTXM_STEM=Figure5C_CTXM_composite CTXM_W=2.93 CTXM_H=1.74 CTXM_TEXT=0.66 \
-CTXM_TREE_FR=0.40 CTXM_ROOT_LEN=0.013 Rscript analysis/phylogeny/ctxm/03_plot_figure5c.R
+CTXM_TREE_FR=0.40 CTXM_ROOT_LEN=0.013 Rscript analysis/07_CTXM/03_plot_figure5c.R
 ```
 
-| file | role |
-|---|---|
-| `analysis/phylogeny/ctxm/01_build_panel_and_tree.sh` | curate references, align (MAFFT), cut to CDS 28-400, collapse identical alleles, infer the tree (IQ-TREE) |
-| `analysis/phylogeny/ctxm/02_plot_complete_tree.R` | complete tree, all tips, SH-aLRT/UFBoot at every resolved node |
-| `analysis/phylogeny/ctxm/03_plot_figure5c.R` | Figure 5C, the tree pruned to the tips in `figure5c_tips.txt` |
-| `analysis/phylogeny/ctxm/04_plot_figure_s6.R` | Figure S6 A and B: the same tree and the variable sites of the drawn sequences |
-| `analysis/phylogeny/ctxm/plot_helpers.R` | shared plotting functions |
-| `output/ctxm/ctxm_group1.treefile` | the tree both figures are drawn from |
-| `output/ctxm/ctxm_group1.iqtree`, `.log` | model selection, alignment statistics, support |
-| `output/ctxm/tree_input.fasta` | the alignment the tree was inferred from |
-| `output/ctxm/haplotype_collapse.tsv` | which alleles each collapsed reference tip stands for |
+Two steps need data that are not in the repository: the 16S reference tree
+(`analysis/04_core_taxa/reference_16S_tree/run_all.sh`) fetches sequences from
+NCBI, and rebuilding the CTX-M tree
+(`analysis/07_CTXM/01_build_panel_and_tree.sh`) needs the amplicon consensus
+and reference sequences in `$CTXM_DATA`.
 
-R packages: ggtree, treeio, ape, ggplot2, dplyr (see `analysis/phylogeny/ctxm/README.md`
-for a conda command). Re-running `01` needs the raw consensus and reference
-sequences: `export CTXM_DATA=...`, then `bash analysis/phylogeny/ctxm/01_build_panel_and_tree.sh`.
+## Requirements
 
-## Input tables
-
-The scripts read two tables from a `data/` folder in the repository root.
-Both are deposited with the manuscript as Supplementary Data; raw reads are in
-the NCBI SRA under BioProject PRJNA1458552.
-
-| file | contents |
-|---|---|
-| `data/counts.csv` | Kraken2/Bracken species counts from EPI2ME `wf-metagenomics`: `tax`, `genus`, `species`, then one column per library |
-| `data/otu_table.tsv` | 97% OTU x library read counts, 24 libraries |
-| `data/metadata.tsv` | one row per library: `SampleID`, `Site`, `SampleType`, `RiverSea`; read by `analysis/r/01` and `02` |
-
-`counts.csv` is the EPI2ME `wf-metagenomics` species table
-(`Lig_wf-metagenomics-counts-species.csv`). 
+Python 3.11 or later with numpy, pandas, scipy and biopython
+(`requirements.txt`). R 4.4 or later with vegan, ggplot2, dplyr, tidyr,
+readr, tibble, scales, ape, ggtree, treeio and FEAST
+(github.com/cozygene/FEAST, v0.1.0, not the Bioconductor package of the same
+name). Command-line tools for the trees: MAFFT, trimAl, IQ-TREE 2 and seqkit;
+the versions used for the CTX-M tree are in
+`analysis/07_CTXM/tree/ctxm_versions.txt`. `environment.yml` installs all of
+these except FEAST.

@@ -1,9 +1,16 @@
-output/*
-!output/.gitkeep
-data/*.tsv
+# Generated results: every analysis writes to its own output/ folder
+analysis/*/output/*
+!analysis/*/output/.gitkeep
+Rplots.pdf
+
+# Input tables are deposited with the manuscript (see data/README.md)
 data/*.csv
+data/*.tsv
+
+# Sequences, except the deposited CTX-M tree inputs
+*.fasta
+!analysis/07_CTXM/tree/*.fasta
+
 __pycache__/
 *.pyc
 .DS_Store
-*.fasta
-!data/metadata.tsv

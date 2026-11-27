@@ -1,0 +1,207 @@
+#!/usr/bin/env bash
+# =============================================================================
+# CTX-M group 1 amplicon phylogeny.
+#
+# INPUT   $CTXM_DATA/refs/group1_v2.fasta        curated group-1 reference panel
+#         $CTXM_DATA/refs/group9_v2.fasta        group-9 alleles, used as outgroup
+#         $CTXM_DATA/consensus/*.consensus.fasta per-sample amplicon consensus
+#
+# OUTPUT  analysis/07_CTXM/tree/group1_clean.fasta         panel after curation
+#         analysis/07_CTXM/tree/set.aln.fasta             MAFFT alignment
+#         analysis/07_CTXM/tree/tree_input.fasta           trimmed, collapsed, relabelled
+#         analysis/07_CTXM/tree/haplotype_collapse.tsv     which alleles each tip stands for
+#         analysis/07_CTXM/tree/ctxm_versions.txt          tool versions, window and options
+#         analysis/07_CTXM/tree/ctxm_group1.treefile       the tree, Newick
+#         analysis/07_CTXM/tree/ctxm_group1.iqtree         model fit and alignment stats
+#
+# Run from the repository root:
+#
+#   export CTXM_DATA=/path/to/recovered_ctxm/analysis
+#   bash analysis/07_CTXM/01_build_panel_and_tree.sh
+#
+# Requires mafft, iqtree2 and seqkit on PATH, plus biopython:
+#   conda create -n phylo -c conda-forge -c bioconda iqtree mafft seqkit -y
+#
+# The alignment is cut to a fixed CDS window (default 28-400) rather than
+# trimmed with trimAl, because the amplicon covers only part of the CDS and the
+# same positions are compared for every sequence.
+# =============================================================================
+set -euo pipefail
+
+D="${CTXM_DATA:?export CTXM_DATA to the directory holding refs/ and consensus/}"
+WORK="${CTXM_WORK:-analysis/07_CTXM/tree}"
+LO="${CTXM_LO:-28}"         # first CDS position after the forward primer footprint
+HI="${CTXM_HI:-400}"        # last position with usable depth (>=100x, all samples)
+THREADS="${CTXM_THREADS:-8}"
+
+for f in "$D/refs/group1_v2.fasta" "$D/refs/group9_v2.fasta"; do
+    [ -s "$f" ] || { echo "missing $f"; exit 1; }
+done
+ls "$D"/consensus/*.consensus.fasta >/dev/null 2>&1 || {
+    echo "no consensus FASTA files in $D/consensus/"; exit 1; }
+
+mkdir -p "$WORK"
+cd "$WORK"
+
+IQ=$(command -v iqtree2 || command -v iqtree) || {
+    echo "iqtree not found on PATH"; exit 1; }
+
+# --- 1. Curate the reference panel -------------------------------------------
+# Five alleles are excluded:
+#   CTX-M-211                    9 bp insertion that disrupts CDS coordinates
+#   CTX-M-123, -132, -153, -234  group 1/group 9 recombinants
+printf 'blaCTX-M-%s\n' 123 132 153 234 211 > drop.txt
+seqkit grep -v -n -f drop.txt "$D"/refs/group1_v2.fasta > group1_clean.fasta
+echo "panel: $(grep -c '^>' group1_clean.fasta) group-1 alleles retained"
+
+# --- 2. Outgroup: CTX-M group 9, a distinct lineage --------------------------
+# The tree is rooted on these group 9 alleles.
+seqkit grep -nrp 'blaCTX-M-(14|27|65)$' "$D"/refs/group9_v2.fasta > outgroup.fasta
+echo "outgroup: $(grep -c '^>' outgroup.fasta) group-9 alleles"
+
+# --- 3. Record tool versions and settings -----------------------------------
+{
+    echo "run date   $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+    echo "mafft      $(mafft --version 2>&1 | head -1)"
+    echo "iqtree     $($IQ --version 2>&1 | head -1)"
+    echo "seqkit     $(seqkit version 2>&1 | head -1)"
+    echo "window     CDS positions $LO-$HI"
+    echo "model      MFP (ModelFinder; selection recorded in ctxm_group1.iqtree)"
+    echo "support    1000 SH-aLRT replicates, 1000 ultrafast bootstrap, --bnni"
+} > ctxm_versions.txt
+cat ctxm_versions.txt
+
+# --- 4. Assemble the study sequences -----------------------------------------
+# One consensus per library, plus any additional study haplotypes named in
+# CTXM_EXTRA. A single consensus per library collapses within-sample variation,
+# so a second allele present in one library is invisible unless it is supplied
+# here as its own record. Example:
+#
+#   export CTXM_EXTRA="$HOME/ctxm_rebuild/hap2_S1W.fasta"
+#
+# Study records are identified by membership in study_ids.txt rather than by an
+# ID prefix, so extra files keep whatever headers they already carry.
+cat "$D"/consensus/*.consensus.fasta > study.fasta
+if [ -n "${CTXM_EXTRA:-}" ]; then
+    for f in $CTXM_EXTRA; do
+        [ -s "$f" ] || { echo "CTXM_EXTRA file not found or empty: $f"; exit 1; }
+        cat "$f" >> study.fasta
+        echo "extra study sequences from $f: $(grep -c '^>' "$f")"
+    done
+fi
+grep '^>' study.fasta | sed 's/^>//;s/[[:space:]].*//' > study_ids.txt
+echo "study sequences: $(wc -l < study_ids.txt)"
+
+# --- 5. Align (--adjustdirection guards against reverse-complement input) ----
+cat group1_clean.fasta outgroup.fasta study.fasta > set.fasta
+mafft --auto --adjustdirection --thread "$THREADS" set.fasta > set.aln.fasta
+
+# --- 6. Trim to the window, collapse indistinguishable alleles, relabel ------
+python3 - "$LO" "$HI" <<'PYEOF'
+import sys
+from collections import defaultdict
+from Bio import SeqIO
+from Bio.Seq import Seq
+from Bio.SeqRecord import SeqRecord
+
+LO, HI = int(sys.argv[1]) - 1, int(sys.argv[2])
+
+# sample index -> transect site (W = water, P = plastic biofilm)
+SITE = {"s01": "R1W", "s02": "R1P", "s03": "R2W", "s04": "S1W",
+        "s05": "S1P", "s06": "ScW", "s07": "ScP"}
+
+# mafft --adjustdirection prefixes reverse-complemented records with _R_, so
+# strip that before matching an ID against the study list.
+def base_id(i):
+    return i[3:] if i.startswith("_R_") else i
+
+study_ids = {l.strip() for l in open("study_ids.txt") if l.strip()}
+recs = list(SeqIO.parse("set.aln.fasta", "fasta"))
+qs   = [r for r in recs if base_id(r.id) in study_ids]
+refs = [r for r in recs if base_id(r.id) not in study_ids]
+missing = study_ids - {base_id(r.id) for r in qs}
+if missing:
+    sys.exit("study sequences lost during alignment: " + ", ".join(sorted(missing)))
+if not qs:
+    sys.exit("no study sequences found; check study_ids.txt")
+
+# collapse references identical across the amplified window
+groups = defaultdict(list)
+for r in refs:
+    groups[str(r.seq[LO:HI]).upper()].append(r.id)
+
+out, table = [], []
+for seq, members in sorted(groups.items(), key=lambda kv: -len(kv[1])):
+    members = sorted(members)
+    if len(members) == 1:
+        name = members[0]
+    else:
+        # name the collapsed tip after its most clinically recognised member
+        pref = [m for m in members if m in
+                ("blaCTX-M-15", "blaCTX-M-1", "blaCTX-M-3", "blaCTX-M-55")]
+        head = pref[0] if pref else members[0]
+        name = f"{head}_and_{len(members)-1}_more"
+    out.append(SeqRecord(Seq(seq), id=name, description=""))
+    table.append((name, len(members), ",".join(members)))
+
+def tip_name(rid):
+    """Per-library consensus -> site code; anything else keeps its own name."""
+    rid = base_id(rid)
+    parts = rid.split("_")
+    if len(parts) > 1 and parts[1] in SITE:
+        return SITE[parts[1]]
+    return rid
+
+study_tips = []
+for r in qs:
+    name = tip_name(r.id)
+    study_tips.append(name)
+    out.append(SeqRecord(Seq(str(r.seq[LO:HI]).upper()), id=name, description=""))
+
+SeqIO.write(out, "tree_input.fasta", "fasta")
+with open("haplotype_collapse.tsv", "w") as fh:
+    fh.write("tip_label\tn_alleles\tmembers\n")
+    for n, c, m in table:
+        fh.write(f"{n}\t{c}\t{m}\n")
+# the plotting scripts read this rather than carrying a hardcoded sample table,
+# so an extra haplotype supplied through CTXM_EXTRA is coloured automatically
+with open("study_tips.txt", "w") as fh:
+    fh.write("\n".join(study_tips) + "\n")
+
+print(f"{len(refs)} alleles -> {len(groups)} haplotypes; "
+      f"{len(qs)} study sequences; {len(out)} tips")
+print("study tips: " + ", ".join(study_tips))
+print("collapse table -> haplotype_collapse.tsv")
+PYEOF
+
+# --- 7. Maximum-likelihood tree ----------------------------------------------
+# -m MFP  ModelFinder selects the model; do not hardcode the selected model
+# -B      ultrafast bootstrap      -alrt  SH-aLRT
+# --bnni  reduces UFBoot bias from model violation
+# The collapse step in step 6 renames any tip that stands for more than one
+# allele, so blaCTX-M-14 can become blaCTX-M-14_and_1_more. Read the outgroup
+# names back from the tree input rather than from outgroup.fasta, or IQ-TREE
+# exits with "Alignment does not have specified outgroup taxon". All group-9
+# tips are passed together so the outgroup is rooted as a clade.
+OGPAT=$(grep '^>' outgroup.fasta | sed 's/^>//;s/ .*//;s/^blaCTX-M-//' | paste -sd'|')
+OG=$(grep '^>' tree_input.fasta | sed 's/^>//' \
+     | grep -E "^blaCTX-M-(${OGPAT})(_and_[0-9]+_more)?$" | paste -sd,)
+[ -n "$OG" ] || { echo "no group-9 outgroup tip found in tree_input.fasta"; exit 1; }
+echo "outgroup tips: $OG"
+"$IQ" -s tree_input.fasta \
+      -m MFP -B 1000 -alrt 1000 --bnni \
+      -T "$THREADS" -o "$OG" \
+      --prefix ctxm_group1 -redo
+
+[ -s ctxm_group1.treefile ] || { echo "no tree produced; see ctxm_group1.log"; exit 1; }
+
+echo
+grep -E 'Best-fit model|Number of parsimony informative sites' ctxm_group1.iqtree || true
+echo
+echo "tree      $WORK/ctxm_group1.treefile"
+echo "report    $WORK/ctxm_group1.iqtree     (model, alignment length, support)"
+echo "versions  $WORK/ctxm_versions.txt"
+echo "collapse  $WORK/haplotype_collapse.tsv"
+echo
+echo "next: Rscript analysis/07_CTXM/02_plot_complete_tree.R   (complete tree)"
+echo "      Rscript analysis/07_CTXM/03_plot_figure5c.R      (Figure 5C)"
