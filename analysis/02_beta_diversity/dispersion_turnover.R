@@ -52,7 +52,7 @@ print(table(site, type))
 # Check against the manuscript: site R2 0.307, sample type R2 0.217, model R2 0.524.
 # This call also fixes the random-number stream, so the p-values below match the
 # reported ones.
-print(adonis2(bray ~ site + type, permutations = NPERM))
+print(adonis2(bray ~ site + type, by = "terms", permutations = NPERM))
 
 # -- 2. Dispersion: site x sample type (8 groups of 3) -------------------------
 cat("\n## Site x sample type\n")
