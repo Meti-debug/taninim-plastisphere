@@ -24,7 +24,7 @@ TRIM=analysis/04_core_taxa/output/phylo_trimmed.fasta
 PREFIX=analysis/04_core_taxa/output/phylo_tree
 THREADS=AUTO               # IQ-TREE threads
 MTHREADS=8                 # MAFFT threads
-MODEL=GTR+G                  # consider MFP (ModelFinder); see analysis/04_core_taxa/reference_16S_tree/README.md
+MODEL=GTR+G                  # model used for the reference tree
 BOOTSTRAP=1000               # ultrafast bootstrap
 
 [ -s "$RAW" ] || { echo "missing $RAW - run 01_fetch_reference_16S.py first"; exit 1; }

@@ -9,7 +9,7 @@ WHAT IT DOES
     python analysis/02_beta_diversity/script.py relative   # Bray-Curtis on proportions
 
 INPUT
-    data/counts.csv             Kraken2/Bracken species table (see README.md, Input tables).
+    data/counts.csv             Kraken2/Bracken species table (see data/README.md).
 
 OUTPUT (in analysis/02_beta_diversity/output/)
     beta_diversity.json         Fig. 3F-H statistics: PCoA coordinates and
