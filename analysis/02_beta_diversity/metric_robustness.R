@@ -5,7 +5,6 @@
 # river-sea turnover (analysis/02_beta_diversity/dispersion_turnover.R) under six distance measures.
 # Also reports, for each fraction, the ratio of the median river-sea distance to
 # the median distance between sites within the same salinity regime.
-# Reported in Results 3.2 and Supplementary-1.
 #
 # Run from the repository root:
 #   Rscript analysis/02_beta_diversity/metric_robustness.R
