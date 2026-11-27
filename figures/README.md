@@ -12,7 +12,7 @@ listed below.
 |   |                       | F-H | `analysis/02_beta_diversity/script.py` |
 | 4 | `Figure4/Figure4.tif` | A-B | `analysis/03_OTU/` (presence rule; needs `data/otu_table.tsv`) |
 |   |                       | C   | `analysis/04_core_taxa/reference_16S_tree/` (tree), annotated in iTOL |
-|   |                       | D   | `analysis/04_core_taxa/script.py` |
+|   |                       | D   | the 15 most abundant species present in all 12 libraries of each sample type (no script yet) |
 |   |                       | E   | `analysis/06_FEAST/primary_analysis.R` |
 | 5 | `Figure5/Figure5.tif` | A-B | `analysis/05_pathogens/script.py` |
 |   |                       | C   | `analysis/07_CTXM/03_plot_figure5c.R` |
@@ -21,4 +21,5 @@ listed below.
 `analysis/07_CTXM/04_plot_figure_s6.R`; Figure S7 comes from
 `analysis/06_FEAST/sensitivity_analysis.R`.
 
-Format: TIFF, RGB, LZW compression, 170 x 122 mm.
+Format: TIFF, RGB, LZW compression. Figures 2, 3 and 5 at 600 dpi, Figure 1 at
+800 dpi, Figure 4 at 1000 dpi.
