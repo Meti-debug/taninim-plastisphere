@@ -4,10 +4,9 @@
 # Bray-Curtis matrix used in the PERMANOVA, and a within-site permutation test
 # of the difference in river-sea turnover between plastic-bound and planktonic
 # communities, and a check of the river or sea x sample type PERMANOVA.
-# Reported in Results 3.2 and Supplementary-1.
 #
 # The count matrix, site relabelling and Bray-Curtis matrix are built the same
-# way as for the PCoA in the paper (Bray-Curtis on species counts).
+# way as for the PCoA (Bray-Curtis on species counts).
 #
 # Run from the repository root:
 #   Rscript analysis/02_beta_diversity/dispersion_turnover.R
@@ -48,10 +47,6 @@ site <- factor(meta_clean$Site, levels = c("R1", "R2", "S1", "Sc"))
 type <- factor(meta_clean$SampleType)
 rs   <- factor(ifelse(site %in% c("R1", "R2"), "river", "sea"))
 print(table(site, type))
-
-# Check against the manuscript: site R2 0.307, sample type R2 0.217, model R2 0.524.
-# This call also fixes the random-number stream, so the p-values below match the
-# reported ones.
 print(adonis2(bray ~ site + type, by = "terms", permutations = NPERM))
 
 # -- 2. Dispersion: site x sample type (8 groups of 3) -------------------------
