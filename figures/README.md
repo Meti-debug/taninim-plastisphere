@@ -1,8 +1,5 @@
 # Figures
 
-Final main-text figures as submitted, one folder per figure. The panels were
-assembled in PowerPoint; the numbers behind each panel come from the analysis
-listed below.
 
 | figure | file | panel | produced by |
 |---|---|---|---|
@@ -17,9 +14,6 @@ listed below.
 | 5 | `Figure5/Figure5.tif` | A-B | `analysis/05_pathogens/script.py` |
 |   |                       | C   | `analysis/07_CTXM/03_plot_figure5c.R` |
 
-`Supplementary/` holds the supplementary figures. Figure S6 is drawn by
-`analysis/07_CTXM/04_plot_figure_s6.R`; Figure S7 comes from
-`analysis/06_FEAST/sensitivity_analysis.R`.
 
-Format: TIFF, RGB, LZW compression. Figures 2, 3 and 5 at 600 dpi, Figure 1 at
-800 dpi, Figure 4 at 1000 dpi.
+
+
