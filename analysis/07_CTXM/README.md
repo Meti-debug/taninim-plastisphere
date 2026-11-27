@@ -98,38 +98,6 @@ pairs.
 All values are from `analysis/07_CTXM/tree/ctxm_group1.iqtree` and
 `analysis/07_CTXM/tree/ctxm_versions.txt`.
 
-The six study sequences are the consensus sequences from five libraries (R1W,
-R1P, R2W, S1W, ScW) and a second sequence from S1W that is identical to
-blaCTX-M-36. The five consensus sequences are identical over the window. S1P
-and ScP, with 39 and 17 reads, did not yield a consensus.
-
-## Figures
-
-Both figures are drawn from `analysis/07_CTXM/tree/ctxm_group1.treefile`.
-
-- Branches of zero length (38 of 61 internal branches) are collapsed to
-  polytomies before drawing.
-- Support is shown as SH-aLRT/UFBoot. Nodes with SH-aLRT >= 80 and UFBoot >= 95
-  are considered well supported.
-- Gene names are set as italic *bla* with the allele as subscript in the
-  complete tree, and as bold italic labels in Figure 5C.
-
-**Complete tree** (`02_plot_complete_tree.R`). All 64 tips, including the
-group 9 outgroup. The branch joining group 1 to the outgroup (0.47
-substitutions per site) is drawn shortened and marked with a break. Support is
-shown at every node; filled dots mark nodes passing both thresholds.
-
-**Figure 5C** (`03_plot_figure5c.R`). The rooted tree pruned to the tips in
-`figure5c_tips.txt`; the outgroup is not drawn. Support at each node is that of
-the same clade in the complete tree. The two branches leaving the root are
-drawn at a fixed length and marked with a break. The filled star marks the
-blaCTX-M-177-like sequence shared by R1W, R1P, R2W, S1W and ScW (drawn once,
-as they are identical); the open star marks blaCTX-M-36, identical to the
-second S1W sequence.
-
-The panel used in the composite Figure 5 is the same script at a smaller size;
-the command is in the top-level `README.md`.
-
 ## Files in tree/
 
 | file | content |
