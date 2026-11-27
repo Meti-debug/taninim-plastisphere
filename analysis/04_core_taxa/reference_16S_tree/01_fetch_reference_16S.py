@@ -151,7 +151,7 @@ open("analysis/04_core_taxa/output/phylo_failed_species.txt", "w").write("\n".jo
 nfb = int((P.fetched_as == "genus_fallback").sum()) if len(P) else 0
 print(f"\nretrieved {len(seqs)} of {len(species_list)}")
 print(f"  species-level records : {len(seqs) - nfb}")
-print(f"  genus fallbacks       : {nfb}   <- not that species; see the README")
+print(f"  genus fallbacks       : {nfb}   <- not that species; see THE GENUS FALLBACK above")
 print(f"  not found             : {len(failed)}")
 if len(P):
     dup = P[P.duplicated("accession", keep=False)].sort_values("accession")
