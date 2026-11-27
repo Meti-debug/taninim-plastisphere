@@ -1,9 +1,9 @@
-"""Pathogen abundance tests, plastic-associated vs planktonic (Figure 5A-B).
+"""Pathogen abundance tests, plastic-associated vs. planktonic (Figure 5A-B).
 
     python analysis/05_pathogens/script.py
 
 INPUT
-    data/counts.csv     Kraken2/Bracken species table (see README.md, Input tables)
+    data/counts.csv    
 
 OUTPUT (in analysis/05_pathogens/output/)
     fig5a_species_tests.tsv   per species: mean relative abundance (%)
@@ -45,8 +45,7 @@ ESKAPEE_SPECIES = ["Enterococcus faecium", "Staphylococcus aureus",
 # --- table, with sequencing labels converted to manuscript labels ------------
 k = pd.read_csv("data/counts.csv")
 libs = [c for c in k.columns if c[0] in "RS" and len(c) == 4]
-# Sequencing labels (R2 = R1, R3 = R2, S1P4 = S1P1) are converted to manuscript
-# labels; a table that already has manuscript labels is used as it is.
+# Sequencing labels (R2 = R1, R3 = R2, S1P4 = S1P1)
 ren = dict((c, c) for c in libs)
 if any(c.startswith("R3") for c in libs):
     for c in libs:
