@@ -1,10 +1,7 @@
 """Beta diversity, ordination and PERMANOVA (Figure 3F-H).
 
 WHAT IT DOES
-    The community-structure analysis, from the species table to the numbers
-    behind Figure 3F-H.  Shannon diversity (Figure 3A-E) is computed by
-    analysis/01_alpha_diversity/script.py.  Nothing here calls vegan or
-    scikit-bio; the three methods are implemented directly so that the exact
+    Figure 3F-H. the three methods are implemented directly so that the exact
     model being fitted is visible, and so that the permutation scheme can be
     restricted the way this design requires.
 
@@ -15,7 +12,7 @@ INPUT
     data/counts.csv             Kraken2/Bracken species table (see README.md, Input tables).
 
 OUTPUT (in analysis/02_beta_diversity/output/)
-    beta_diversity.json         the Fig. 3F-H statistics: PCoA coordinates and
+    beta_diversity.json         Fig. 3F-H statistics: PCoA coordinates and
                                 explained variance, PERMANOVA table, and the
                                 within/between-group Bray-Curtis distributions
                                 for panels G and H.
@@ -27,16 +24,20 @@ METHOD
                      negative eigenvalues are discarded, not corrected.
     PERMANOVA        sequential (adonis2-style) sums of squares from traces of
                      hat matrices, trace(H G H), with 9,999 permutations.
-                     Two models are fitted, matching the two reported in the
-                     manuscript.  The first is station then sample type, and
-                     gives the station and sample-type terms.  The second is
-                     station + sample type + river-or-sea x sample type, and
+                     Two models are fitted.  
+                     The first is station then sample type, and gives the station and sample-type terms.  
+                     The second is station + sample type + river-or-sea x sample type, and
                      gives the interaction term only.
+                     
                      For the sample-type term, permutations are restricted to
                      within station: the three plastic and three water
                      replicates are exchanged with each other but not across
-                     stations.  The station term uses unrestricted
-                     permutations.  The interaction is tested by permuting
+                     stations.  
+                     
+                     The station term uses unrestricted
+                     permutations.  
+                     
+                     The interaction is tested by permuting
                      residuals of the model without it (Freedman-Lane), within
                      station.  With two stations per region, it describes these
                      four stations, not river versus sea in general.
@@ -63,8 +64,7 @@ import sys
 # sequencing: R2 -> R1, R3 -> R2, and S1P4 -> S1P1.
 k = pd.read_csv("data/counts.csv")
 ks = [c for c in k.columns if c[0] in "RS" and len(c) == 4]
-# Sequencing labels (R2 = R1, R3 = R2, S1P4 = S1P1) are converted to manuscript
-# labels; a table that already has manuscript labels is used as it is.
+# Sequencing labels (R2 = R1, R3 = R2, S1P4 = S1P1) 
 ren = dict((c, c) for c in ks)
 if any(c.startswith("R3") for c in ks):
     for c in ks:
@@ -76,9 +76,6 @@ assert len(sm) == 24, f"expected 24 libraries, found {len(sm)}"
 rel = K[sm].to_numpy(float).T
 SOURCE = "Kraken2/Bracken"
 print(f"classifier: {SOURCE}")
-# Bray-Curtis input. "raw" (default): read counts, as in the paper and as
-# vegan::vegdist(t(counts), "bray") computes. "relative": proportions of each
-# library, so library depth does not enter the distance.
 BC_INPUT = "relative" if "relative" in sys.argv[1:] else "raw"
 counts_ = rel.copy()
 rel = rel / rel.sum(1, keepdims=True)
