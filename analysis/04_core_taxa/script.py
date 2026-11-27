@@ -4,7 +4,7 @@ Core taxa per habitat and sample type, and core retention from river to sea
 
 Usage: python analysis/04_core_taxa/script.py
 
-Definition (Fig. 4 caption): a species is core in a habitat when its relative
+A species is core in a habitat when its relative
 abundance is > 0.1% in at least 5 of the 6 samples of that habitat
 (river = R1 + R2, marine = S1 + Sc; 3 replicates per site), computed
 separately for plastic-bound (P) and planktonic (W) samples. Reads without a
@@ -12,8 +12,9 @@ species assignment ("Unknown") count towards the library total but are not
 reported as a taxon.
 
 Retention = share of river-core species that are also marine-core.
-Test: is retention higher on plastic than in water? Observed statistic =
-retention(plastic) - retention(water). Null model: sample type has no effect,
+Test: is retention higher on plastic than in water? 
+Observed statistic = retention(plastic) - retention(water). 
+Null model: sample type has no effect,
 so within each site the six libraries (3 P + 3 W) are shuffled and three are
 labelled plastic, three water; the statistic is recomputed 9,999 times.
 One-sided p = (shuffles with statistic >= observed + 1) / (9,999 + 1).
