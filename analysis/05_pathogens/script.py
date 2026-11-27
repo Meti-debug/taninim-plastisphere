@@ -17,7 +17,7 @@ METHOD
     Fig. 5A  two-sided Mann-Whitney U, 12 plastic vs 12 water libraries per
              species; Benjamini-Hochberg correction across the species tested.
     Fig. 5B  ESKAPEE = E. faecium, S. aureus, K. pneumoniae, A. baumannii,
-             P. aeruginosa, Enterobacter spp. and E. coli, summed per library.
+             P. aeruginosa, Enterobacter cloacae and E. coli, summed per library.
              Welch's t-test at each site (n = 3 per type) and Wilcoxon rank-sum
              (two-sided Mann-Whitney U) across all sites (n = 12 per type).
 """
@@ -39,8 +39,8 @@ FIG5A = ["Legionella clemsonensis", "Legionella pneumophila",
          "Staphylococcus aureus", "Escherichia coli"]
 ESKAPEE_SPECIES = ["Enterococcus faecium", "Staphylococcus aureus",
                    "Klebsiella pneumoniae", "Acinetobacter baumannii",
-                   "Pseudomonas aeruginosa", "Escherichia coli"]
-ESKAPEE_GENERA = ["Enterobacter"]
+                   "Pseudomonas aeruginosa", "Enterobacter cloacae",
+                   "Escherichia coli"]
 
 # --- table, with sequencing labels converted to manuscript labels ------------
 k = pd.read_csv("data/counts.csv")
@@ -57,7 +57,6 @@ X.columns = [ren[c] for c in libs]
 X = X[sorted(X.columns)]
 assert X.shape[1] == 24, f"expected 24 libraries, found {X.shape[1]}"
 species = k["species"].astype(str).str.strip()
-genus = k["genus"].astype(str).str.strip()
 total = X.sum(axis=0)
 site = np.array([s[:2] for s in X.columns])
 typ = np.array([s[2] for s in X.columns])
@@ -85,7 +84,7 @@ fa = pd.DataFrame(rows)
 fa["bh_q"] = bh(fa["mwu_p"])
 
 # --- Fig. 5B ------------------------------------------------------------------
-esk = species.isin(ESKAPEE_SPECIES) | genus.isin(ESKAPEE_GENERA)
+esk = species.isin(ESKAPEE_SPECIES)
 cpm = (X[esk].sum(axis=0) / total * 1e6).to_numpy()
 rows = []
 for s in SITES:

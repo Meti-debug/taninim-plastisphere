@@ -22,5 +22,6 @@ python analysis/05_pathogens/script.py
 
 Method: Figure 5A, two-sided Mann-Whitney U, 12 plastic vs 12 water libraries
 per species, Benjamini-Hochberg across the species shown. Figure 5B, ESKAPEE
-counts per million summed per library; Welch's t-test per site (n = 3) and
+(*E. faecium*, *S. aureus*, *K. pneumoniae*, *A. baumannii*, *P. aeruginosa*,
+*Enterobacter cloacae* and *E. coli*) counts per million summed per library; Welch's t-test per site (n = 3) and
 Wilcoxon rank-sum across all sites (n = 12).
