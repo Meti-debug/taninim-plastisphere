@@ -32,8 +32,7 @@ SITES = ["R1", "R2", "S1", "Sc"]
 # sequencing: R2 -> R1, R3 -> R2, and S1P4 -> S1P1.
 k = pd.read_csv("data/counts.csv")
 ks = [c for c in k.columns if c[0] in "RS" and len(c) == 4]
-# Sequencing labels (R2 = R1, R3 = R2, S1P4 = S1P1) are converted to manuscript
-# labels; a table that already has manuscript labels is used as it is.
+# Sequencing labels (R2 = R1, R3 = R2, S1P4 = S1P1)
 ren = dict((c, c) for c in ks)
 if any(c.startswith("R3") for c in ks):
     for c in ks:
