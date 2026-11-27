@@ -22,22 +22,24 @@ set.seed(42)
 NPERM <- 9999
 
 # -- 1. Load data and build the Bray-Curtis matrix -----------------------------
-meta <- read.table(
-  file.path(DATA, "metadata.tsv"),
-  header = TRUE, sep = "\t", stringsAsFactors = FALSE)
-
 sp_tab <- seq_labels(read.csv(
   file.path(DATA, "counts.csv"),
   header = TRUE, check.names = FALSE))
 
-# metadata.tsv: SampleID is the barcode, SampleName the library label used
-# as the column name in counts.csv.
-sp_counts <- sp_tab[, meta$SampleName]
+# Library columns are named site + sample type + replicate, e.g. R3P2.
+libs <- grep("^(R2|R3|S1|Sc)[PW][0-9]$", colnames(sp_tab), value = TRUE)
+stopifnot(length(libs) == 24)
+sp_counts <- sp_tab[, libs]
 rownames(sp_counts) <- sp_tab$species
 sp_counts_clean <- sp_counts[rowSums(sp_counts) > 0, ]
 
-meta_clean <- meta
-meta_clean$Site <- dplyr::recode(meta_clean$Site, "R2" = "R1", "R3" = "R2")
+# Site and sample type come from the library names. Sequencing labels R2 and
+# R3 are manuscript R1 and R2.
+meta_clean <- data.frame(
+  SampleName = libs,
+  Site       = dplyr::recode(substr(libs, 1, 2), "R2" = "R1", "R3" = "R2"),
+  SampleType = ifelse(substr(libs, 3, 3) == "P", "Plastic", "Water"),
+  stringsAsFactors = FALSE)
 
 bray <- vegdist(t(sp_counts_clean), method = "bray")
 stopifnot(all(labels(bray) == meta_clean$SampleName))
@@ -111,7 +113,7 @@ cat("permutation p: ", p_val, "\n")
 
 # -- 7. River or sea x sample type PERMANOVA -----------------------------------
 # Independent check of the interaction reported from
-# analysis/01_diversity_permanova.py, with all samples permuted freely.
+# analysis/02_beta_diversity/script.py, with all samples permuted freely.
 set.seed(42)
 meta_clean$RiverSea <- ifelse(meta_clean$Site %in% c("R1", "R2"), "river", "sea")
 cat("\n## River or sea x sample type PERMANOVA\n")

@@ -21,15 +21,6 @@ cat("Libraries loaded\n")
 # --- Step 2: Load data ---
 counts_raw <- seq_labels(read_csv(file.path(DATA, "counts.csv"),
                        show_col_types = FALSE))
-meta       <- read.delim(file.path(DATA, "metadata.tsv"),
-                         header = TRUE, stringsAsFactors = FALSE)
-
-# --- Step 3: Fix column names ---
-# Handle #SampleID / X.SampleID
-colnames(meta) <- gsub("^#", "", colnames(meta))
-colnames(meta) <- gsub("^X\\.", "", colnames(meta))
-meta$SampleID  <- trimws(meta$SampleID)
-cat(sprintf("Metadata columns: %s\n", paste(colnames(meta), collapse = ", ")))
 
 # --- Step 4: Build count matrix ---
 tax_cols <- intersect(

@@ -11,7 +11,6 @@ Generates:
 
 Input:
 - data/counts.csv
-- data/metadata.tsv (R scripts only)
 
 Output:
 - analysis/02_beta_diversity/output/beta_diversity.json

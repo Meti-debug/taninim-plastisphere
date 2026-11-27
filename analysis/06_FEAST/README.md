@@ -10,7 +10,6 @@ Generates:
 
 Input:
 - data/counts.csv
-- data/metadata.tsv
 
 Output (analysis/06_FEAST/output/):
 - FEAST_summary.csv, FEAST_sourcetracking_4scenarios.png, sc1-sc4 source contribution matrices
